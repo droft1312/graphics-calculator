@@ -35,7 +35,7 @@ namespace CPP_GraphPlotting
     abstract class Operation
     {
         public string value; // value of the current node
-        public Operation left, right; // reference to leafs
+        public Operation left, right, parent; // reference to leafs
         /// <summary>
         /// Inserts value to the left leaf of the tree
         /// </summary>
@@ -100,7 +100,7 @@ namespace CPP_GraphPlotting
                 throw new Exception ("Something went wrong with the parsin. No such s[0] = " + v[0] + " has been found");
             }
 
-            value = Plotter.GetStringFromIndex (v, 2); // so if we got an input of s(p,x) => value = p,x)
+            value = Plotter.GetStringFromIndex (v, 2); // so if we got an input of *(p,x) => value = p,x)
         }
     }
 

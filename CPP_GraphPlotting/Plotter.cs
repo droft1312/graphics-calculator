@@ -37,7 +37,9 @@ namespace CPP_GraphPlotting
                 var lastLeft = head.FindLastLeft (); // we find again the last left leaf
                 lastLeft.InsertLeft (new MathOperator (s)); // we attach new object 
                 // at this point our s = ,x)), and now we have got to go back
-                string currentString = GetStringFromIndex (lastLeft.left.value, 1); // currentString = x)) 
+                Parse (lastLeft.left.value);
+            } else if (s[0] == ',') {
+
             }
         }
 
