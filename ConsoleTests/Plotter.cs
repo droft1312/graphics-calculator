@@ -23,16 +23,18 @@ namespace ConsoleTests
                     head = new MultiplicationNode (s, null);
                 } else if (s[0] == '+') {
                     head = new SumNode (s, null);
+                } else if (s[0] == '/') {
+                    head = new DivisionNode (s, null);
                 }
 
 
-                Parse (head.value, head);
+                CreateTree (head.value, head);
             }
         }
         
         // s(*(p,+(x,3)))
 
-        public void Parse(string s, BaseNode baseNode) {
+        public void CreateTree(string s, BaseNode baseNode) {
 
             // if the string is empty, we don't do anything. This is the base case to leave the recursion
             if (s == string.Empty) return;
@@ -42,21 +44,21 @@ namespace ConsoleTests
 
                 SinNode node = new SinNode (s, baseNode); // dedicated class
                 baseNode.Insert (node); // we insert it to the current head node
-                Parse (node.value, node); // we change the head node to the newly created one
+                CreateTree (node.value, node); // we change the head node to the newly created one
 
             } else if (s[0] == '*') {
 
                 // same as in the first 'if'
                 MultiplicationNode node = new MultiplicationNode (s, baseNode);
                 baseNode.Insert (node);
-                Parse (node.value, node);
+                CreateTree (node.value, node);
                 
             } else if (s[0] == '+') {
 
                 // same as in the first 'if'
                 SumNode node = new SumNode (s, baseNode);
                 baseNode.Insert (node);
-                Parse (node.value, node);
+                CreateTree (node.value, node);
 
             } else if (s[0] == 'p' || (s[0] >= '0' && s[0] <= '9')) {
 
@@ -67,8 +69,9 @@ namespace ConsoleTests
                 if (s[0] == 'p') {
                     toParseIntoNumber = "p";
                 } else {
-                    while (s[counter] != ',') {
+                    while (s[counter] >= '0' && s[counter] <= '9') {
                         toParseIntoNumber += s[counter];
+                        counter++;
                     }
                 }
 
@@ -81,18 +84,18 @@ namespace ConsoleTests
                 // same stuff as in the first 'if'
                 NumberNode node = new NumberNode (newS, baseNode, toParseIntoNumber);
                 baseNode.Insert (node);
-                Parse (node.value, node);
+                CreateTree (node.value, node);
 
             } else if (s[0] == 'x') {
 
                 // same as in the first 'if'
                 BasicFunctionXNode node = new BasicFunctionXNode (s, baseNode);
                 baseNode.Insert (node);
-                Parse (node.value, node);
+                CreateTree (node.value, node);
                 
             } else if (s[0] == '(' || s[0] == ' ') {
                 s = GetStringFromIndex (s, 1); // practically delete that ( or ' '
-                Parse (s, baseNode);
+                CreateTree (s, baseNode);
             } else if (s[0] == ')') {
 
                 // count how many times ')' appears, let this number be 'i', then our head node is gonna go 'i' levels up
@@ -114,7 +117,7 @@ namespace ConsoleTests
 
 
                 s = GetStringFromIndex (s, i);
-                Parse (s, baseNode);
+                CreateTree (s, baseNode);
 
             } else if (s[0] == ',') {
                 if (baseNode.parent == null) throw new Exception ("Error in your input");
@@ -122,8 +125,12 @@ namespace ConsoleTests
                 // go one level up
                 baseNode = baseNode.parent;
                 s = GetStringFromIndex (s, 1);
-                Parse (s, baseNode);
+                CreateTree (s, baseNode);
             }
+        }
+
+        public BaseNode GetTree() {
+            return head;
         }
 
 

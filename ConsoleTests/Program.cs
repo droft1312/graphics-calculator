@@ -9,21 +9,15 @@ namespace ConsoleTests
     class Program
     {
         static void Main (string[] args) {
-            string s = ")))";
+            string input = "s(+(x,3))";
 
-            int i = 0;
+            Plotter plotter = new Plotter ();
+            plotter.ProcessString (input);
+            var obj = plotter.GetTree ();
 
-            while ( s[i] == ')' && (s[i] != ',' || s[i] != ' ')) {
-                i++;
-
-                if (i == s.Length) break;
-            }
-
-            Console.WriteLine (i);
-
-            string @newS = "";
-
-            Console.WriteLine ("Substring: " + s.Substring (i));
+            // find the most left
+            var lastLeft = obj.FindLastLeft ();
+            Console.WriteLine (lastLeft.GetType().Name);
 
             Console.ReadKey ();
         }

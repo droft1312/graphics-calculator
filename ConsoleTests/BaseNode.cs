@@ -20,6 +20,13 @@ namespace ConsoleTests
                 // do nothing
             }
         }
+
+        public BaseNode FindLastLeft () {
+            return (left == null ? this : left.FindLastLeft ());
+        }
+        public BaseNode FindLastRight () {
+            return (right == null ? this : right.FindLastRight ());
+        }
     }
 
     
@@ -39,6 +46,14 @@ namespace ConsoleTests
         }
     }
 
+    class DivisionNode : BaseNode
+    {
+        public DivisionNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+    }
+
     class NumberNode : BaseNode
     {
         double realValue;
@@ -53,6 +68,10 @@ namespace ConsoleTests
             } else {
                 this.realValue = Double.Parse (realValue);
             }
+        }
+
+        public override string ToString () {
+            return realValue.ToString ();
         }
     }
 
