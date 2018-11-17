@@ -25,22 +25,27 @@ namespace CPP_GraphPlotting
                 // if it is any of those above mentioned operations like sum/multiplication
                 if (z == 0) { // check if it's actually the very beginning, if it is, then we assign a value to a head
                     z++;
-                    head = new BasicMathAction (s);
+                    head = new BasicMathAction (s, null);
                     Parse (head.value); // we go again but the string now is from s[2], so head.value = *(p,x))
                 } else {
                     var lastLeftObject = head.FindLastLeft (); // we find the last object left object in the tree
-                    lastLeftObject.InsertLeft (new BasicMathAction (s)); // add new one
+                    lastLeftObject.InsertLeft (new BasicMathAction (s, lastLeftObject)); // add new one
                     Parse ((lastLeftObject.left == null ? throw new Exception("Problem occured with parsing a string. WTF IS GOING ON") : lastLeftObject.left.value));
                 }
-            } else if (s[0] == 'x' || "0123456789".ToCharArray ().Contains (s[0]) || s[0] == 'n' || s[0] == 'r' || s[0] == 'p') {
+            } else if (s[0] == 'x' || (s[0]>='0' && s[0] <= '9') || s[0] == 'n' || s[0] == 'r' || s[0] == 'p') {
                 // that implies we have reached the base case, which in this case is 'p'
                 var lastLeft = head.FindLastLeft (); // we find again the last left leaf
-                lastLeft.InsertLeft (new MathOperator (s)); // we attach new object 
+                lastLeft.InsertLeft (new MathOperator (s, lastLeft)); // we attach new object 
                 // at this point our s = ,x)), and now we have got to go back
                 Parse (lastLeft.left.value);
             } else if (s[0] == ',') {
-
+                var lastLeft = head.FindLastLeft ();
+                var oneLevelUp = lastLeft.parent;
             }
+        }
+
+        public bool IsCorrectFormat (string input) {
+            string specialCharacters = "(), ";
         }
 
         public static string GetStringFromIndex (string s, int i) {

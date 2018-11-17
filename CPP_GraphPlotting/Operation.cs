@@ -81,7 +81,7 @@ namespace CPP_GraphPlotting
     {
         MathActions type;
         
-        public BasicMathAction (string v) {
+        public BasicMathAction (string v, Operation parent) {
             if (v[0] == '+') {
                 type = MathActions.sum;
             } else if (v[0] == '-') {
@@ -101,6 +101,7 @@ namespace CPP_GraphPlotting
             }
 
             value = Plotter.GetStringFromIndex (v, 2); // so if we got an input of *(p,x) => value = p,x)
+            this.parent = parent;
         }
     }
 
@@ -108,7 +109,7 @@ namespace CPP_GraphPlotting
     {
         MathOperators type;
 
-        public MathOperator (string v) {
+        public MathOperator (string v, Operation parent) {
            if (v[0] == 'x') {
                 type = MathOperators.functionX;
             } else if ("0123456789".ToCharArray().Contains(v[0])) {
@@ -122,6 +123,7 @@ namespace CPP_GraphPlotting
             }
 
             value = Plotter.GetStringFromIndex (v, 1); // so if we got an input of p, x) => value = ,x)
+            this.parent = parent;
         }
     }
 }
