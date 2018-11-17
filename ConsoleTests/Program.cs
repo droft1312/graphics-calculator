@@ -9,23 +9,21 @@ namespace ConsoleTests
     class Program
     {
         static void Main (string[] args) {
-            string s = "3,+(x,3)))";
+            string s = ")))";
 
-            int counter = 0;
-            string @newString = "";
+            int i = 0;
 
-            while (s[counter] != ',') {
-                newString += s[counter];
-                counter++;
+            while ( s[i] == ')' && (s[i] != ',' || s[i] != ' ')) {
+                i++;
+
+                if (i == s.Length) break;
             }
-            Console.WriteLine (newString);
 
-            newString = "";
+            Console.WriteLine (i);
 
-            for (int i = counter; i < s.Length; i++) {
-                newString += s[i];
-            }
-            Console.WriteLine (newString);
+            string @newS = "";
+
+            Console.WriteLine ("Substring: " + s.Substring (i));
 
             Console.ReadKey ();
         }

@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace ConsoleTests
 {
-    class BinaryTree
-    {
-        public List<BaseNode> roots = new List<BaseNode> ();
-
-        public BinaryTree () {
-        }
-    }
-
     class BaseNode
     {
         public string value;
@@ -27,14 +19,6 @@ namespace ConsoleTests
             } else {
                 // do nothing
             }
-        }
-
-        public BaseNode FindLastLeft() {
-            return (left == null ? this : left.FindLastLeft ());
-        }
-        
-        public BaseNode FindLastRight() {
-            return (right == null ? this : right.FindLastRight ());
         }
     }
 
@@ -58,7 +42,6 @@ namespace ConsoleTests
     class NumberNode : BaseNode
     {
         double realValue;
-
 
         public NumberNode(string input, BaseNode parentNode, string realValue) {
             value = Plotter.GetStringFromIndex (input, 1);

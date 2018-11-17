@@ -11,7 +11,7 @@ namespace ConsoleTests
         BaseNode head;
         bool isFirst = true;
 
-        // s(*(p,+(x,3)))
+        
         
         public void ProcessString(string s) {
             if (isFirst) {
@@ -29,25 +29,38 @@ namespace ConsoleTests
                 Parse (head.value, head);
             }
         }
+        
+        // s(*(p,+(x,3)))
 
         public void Parse(string s, BaseNode baseNode) {
+
+            // if the string is empty, we don't do anything. This is the base case to leave the recursion
+            if (s == string.Empty) return;
+
+            // if it's 's', or '+', or whatever, we create a dedicated class (watch first case to see the logic)
             if (s[0] == 's') {
-                var lastLeft = baseNode.FindLastLeft ();
-                lastLeft.Insert (new SinNode (s, lastLeft));
+
+                SinNode node = new SinNode (s, baseNode); // dedicated class
+                baseNode.Insert (node); // we insert it to the current head node
+                Parse (node.value, node); // we change the head node to the newly created one
+
             } else if (s[0] == '*') {
-                var lastLeft = baseNode.FindLastLeft ();
-                lastLeft.Insert (new MultiplicationNode (s, lastLeft));
-                lastLeft = baseNode.FindLastLeft ();
-                Parse (lastLeft.value, baseNode);
+
+                // same as in the first 'if'
+                MultiplicationNode node = new MultiplicationNode (s, baseNode);
+                baseNode.Insert (node);
+                Parse (node.value, node);
+                
             } else if (s[0] == '+') {
-                var lastLeft = baseNode.FindLastLeft ();
+
+                // same as in the first 'if'
                 SumNode node = new SumNode (s, baseNode);
-                lastLeft.Insert (node);
-                lastLeft = baseNode.FindLastLeft ();
-                Parse (lastLeft.value, baseNode);
+                baseNode.Insert (node);
+                Parse (node.value, node);
 
             } else if (s[0] == 'p' || (s[0] >= '0' && s[0] <= '9')) {
 
+                // stuff below just parses number
                 string toParseIntoNumber = string.Empty;
                 int counter = 0;
 
@@ -65,32 +78,51 @@ namespace ConsoleTests
                     newS += s[counter];
                 }
 
-                var lastLeft = baseNode.FindLastLeft ();
+                // same stuff as in the first 'if'
                 NumberNode node = new NumberNode (newS, baseNode, toParseIntoNumber);
-                lastLeft.Insert (node);
-                lastLeft = baseNode.FindLastLeft ();
-                Parse (newS, baseNode);
+                baseNode.Insert (node);
+                Parse (node.value, node);
+
             } else if (s[0] == 'x') {
-                var lastLeft = baseNode.FindLastLeft ();
+
+                // same as in the first 'if'
                 BasicFunctionXNode node = new BasicFunctionXNode (s, baseNode);
-                lastLeft.Insert (node);
-                lastLeft = baseNode.FindLastLeft ();
-                Parse (lastLeft.value, baseNode);
+                baseNode.Insert (node);
+                Parse (node.value, node);
+                
             } else if (s[0] == '(' || s[0] == ' ') {
                 s = GetStringFromIndex (s, 1); // practically delete that ( or ' '
                 Parse (s, baseNode);
             } else if (s[0] == ')') {
-                if (baseNode.parent != null) {
-                    baseNode = baseNode.parent;
-                    s = Plotter.GetStringFromIndex (s, 1);
-                    Parse (s, baseNode);
+
+                // count how many times ')' appears, let this number be 'i', then our head node is gonna go 'i' levels up
+
+                int i = 0;
+
+                while (s[i] == ')' && (s[i] != ',' || s[i] != ' ')) {
+                    i++;
+                    if (i == s.Length) break;
                 }
+
+                for (int j = 0; j < i; j++) {
+                    if (baseNode.parent != null) {
+                        baseNode = baseNode.parent;
+                    } else {
+                        throw new Exception ("Eror in your input");
+                    }
+                }
+
+
+                s = GetStringFromIndex (s, i);
+                Parse (s, baseNode);
+
             } else if (s[0] == ',') {
+                if (baseNode.parent == null) throw new Exception ("Error in your input");
+
+                // go one level up
+                baseNode = baseNode.parent;
                 s = GetStringFromIndex (s, 1);
-                var preLastLeft = baseNode.FindLastLeft ().parent;
-                Parse (s, preLastLeft);
-            } else if (s[0] == string.Empty.ToCharArray()[0]) {
-                return;
+                Parse (s, baseNode);
             }
         }
 
