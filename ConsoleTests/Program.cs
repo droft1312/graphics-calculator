@@ -9,7 +9,7 @@ namespace ConsoleTests
     class Program
     {
         static void Main (string[] args) {
-            string s = "25365,+(x,3)))";
+            string s = "3,+(x,3)))";
 
             int counter = 0;
             string @newString = "";

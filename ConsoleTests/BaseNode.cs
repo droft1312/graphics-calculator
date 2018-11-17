@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace ConsoleTests
 {
+    class BinaryTree
+    {
+        public List<BaseNode> roots = new List<BaseNode> ();
+
+        public BinaryTree () {
+        }
+    }
+
     class BaseNode
     {
         public string value;
@@ -30,14 +38,7 @@ namespace ConsoleTests
         }
     }
 
-    class SinNode : BaseNode
-    {
-        public SinNode (string input, BaseNode parentNode) {
-            value = Plotter.GetStringFromIndex (input, 1);
-            parent = parentNode;
-        }
-    }
-
+    
     class MultiplicationNode : BaseNode
     {
         public MultiplicationNode (string input, BaseNode parentNode) {
@@ -71,4 +72,21 @@ namespace ConsoleTests
             }
         }
     }
+
+    class BasicFunctionXNode : BaseNode
+    {
+        public BasicFunctionXNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+    }
+
+    class SinNode : BaseNode
+    {
+        public SinNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+    }
+
 }

@@ -40,6 +40,11 @@ namespace ConsoleTests
                 lastLeft = baseNode.FindLastLeft ();
                 Parse (lastLeft.value, baseNode);
             } else if (s[0] == '+') {
+                var lastLeft = baseNode.FindLastLeft ();
+                SumNode node = new SumNode (s, baseNode);
+                lastLeft.Insert (node);
+                lastLeft = baseNode.FindLastLeft ();
+                Parse (lastLeft.value, baseNode);
 
             } else if (s[0] == 'p' || (s[0] >= '0' && s[0] <= '9')) {
 
@@ -66,14 +71,26 @@ namespace ConsoleTests
                 lastLeft = baseNode.FindLastLeft ();
                 Parse (newS, baseNode);
             } else if (s[0] == 'x') {
-                
+                var lastLeft = baseNode.FindLastLeft ();
+                BasicFunctionXNode node = new BasicFunctionXNode (s, baseNode);
+                lastLeft.Insert (node);
+                lastLeft = baseNode.FindLastLeft ();
+                Parse (lastLeft.value, baseNode);
             } else if (s[0] == '(' || s[0] == ' ') {
                 s = GetStringFromIndex (s, 1); // practically delete that ( or ' '
                 Parse (s, baseNode);
+            } else if (s[0] == ')') {
+                if (baseNode.parent != null) {
+                    baseNode = baseNode.parent;
+                    s = Plotter.GetStringFromIndex (s, 1);
+                    Parse (s, baseNode);
+                }
             } else if (s[0] == ',') {
                 s = GetStringFromIndex (s, 1);
                 var preLastLeft = baseNode.FindLastLeft ().parent;
                 Parse (s, preLastLeft);
+            } else if (s[0] == string.Empty.ToCharArray()[0]) {
+                return;
             }
         }
 
