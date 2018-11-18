@@ -9,15 +9,14 @@ namespace ConsoleTests
     class Program
     {
         static void Main (string[] args) {
-            string input = "s(+(x,3))";
+            string input = "s(*(p, +(x,3)))";
 
             Plotter plotter = new Plotter ();
             plotter.ProcessString (input);
             var obj = plotter.GetTree ();
 
-            // find the most left
-            var lastLeft = obj.FindLastLeft ();
-            Console.WriteLine (lastLeft.GetType().Name);
+            Console.WriteLine (obj.FindLastLeft().parent.GetType().Name);
+            Console.Write ("");
 
             Console.ReadKey ();
         }

@@ -77,8 +77,8 @@ namespace ConsoleTests
 
                 string @newS = string.Empty;
 
-                for (int i = counter; i < s.Length; i++) {
-                    newS += s[counter];
+                for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
+                    newS += s[i];
                 }
 
                 // same stuff as in the first 'if'
