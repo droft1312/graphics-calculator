@@ -59,7 +59,7 @@ namespace ConsoleTests
         double realValue;
 
         public NumberNode(string input, BaseNode parentNode, string realValue) {
-            value = Plotter.GetStringFromIndex (input, 1);
+            value = input;
             parent = parentNode;
 
 
