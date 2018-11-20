@@ -10,10 +10,13 @@ namespace ConsoleTests
     {
         static void Main (string[] args) {
             string input = "/(*(x,+(3,*(2,x))),+(x,*(5,x)))";
+            
+            Plotter plotter = new Plotter ();
+            plotter.ProcessString (input);
 
-            BaseNode plus = new SumNode (input, null);
+            var tree = plotter.GetTree ();
 
-            Console.WriteLine (plus is SumNode);
+            plotter.ProcessTree (1);
 
             Console.ReadKey ();
         }

@@ -13,46 +13,7 @@ namespace ConsoleTests
 
         public void ProcessTree(double input) {
             BaseNode @base = head;
-            Console.WriteLine (ReadTree (input, @base));
-        }
-
-        public double ReadTree(double input, BaseNode node, bool goLeft = true) {
-
-            if (goLeft) {
-                // go left subtree
-                if (node.left != null) {
-                    if (!node.left.visited) {
-                        ReadTree (input, node.left);
-                    }
-                } else {
-                    double value = GetValueOfNode (node, input);
-                    node.visited = true;
-                    var parent = node.parent;
-                    parent.visited = true;
-
-                    if (parent.GetType () == typeof (MultiplicationNode)) {
-                        return value * ReadTree (input, parent, false);
-                    } else if (parent.GetType () == typeof (SumNode)) {
-                        return value + ReadTree (input, parent, false);
-                    } else if (parent.GetType () == typeof (DivisionNode)) {
-                        return value / ReadTree (input, parent, false);
-                    } else if (parent.GetType () == typeof (SubstractionNode)) {
-                        return value - ReadTree (input, parent, false);
-                    } else if (parent.GetType () == typeof (PowerNode)) {
-                        return Math.Pow (value, ReadTree (input, parent, false));
-                    }
-                }
-            } else {
-                // go right subtree
-                if (node.right != null) {
-                    if (!node.right.visited) {
-                        ReadTree (input, node.right); // go left again
-                    }
-                } else {
-                }
-            }
-
-            return -1;
+            Console.WriteLine (@base.Calculate(input));
         }
         
         

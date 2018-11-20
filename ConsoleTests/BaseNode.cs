@@ -22,6 +22,10 @@ namespace ConsoleTests
             }
         }
 
+        public virtual double Calculate (double number) {
+            return -1;
+        }
+
         public BaseNode FindLastLeft () {
             return (left == null ? this : left.FindLastLeft ());
         }
@@ -36,6 +40,10 @@ namespace ConsoleTests
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
+
+        public override double Calculate (double number) {
+            return left.Calculate (number) - right.Calculate (number);
+        }
     }
     
     class MultiplicationNode : BaseNode
@@ -43,6 +51,10 @@ namespace ConsoleTests
         public MultiplicationNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public override double Calculate (double number) {
+            return left.Calculate (number) * right.Calculate (number);
         }
     }
 
@@ -52,6 +64,11 @@ namespace ConsoleTests
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
+
+        
+        public override double Calculate (double number) {
+            return left.Calculate (number) + right.Calculate (number);
+        }
     }
 
     class DivisionNode : BaseNode
@@ -59,6 +76,10 @@ namespace ConsoleTests
         public DivisionNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public override double Calculate (double number) {
+            return left.Calculate (number) / right.Calculate (number);
         }
     }
 
@@ -83,6 +104,10 @@ namespace ConsoleTests
         public override string ToString () {
             return realValue.ToString ();
         }
+
+        public override double Calculate (double number) {
+            return realValue;
+        }
     }
 
     class BasicFunctionXNode : BaseNode
@@ -90,6 +115,10 @@ namespace ConsoleTests
         public BasicFunctionXNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public override double Calculate (double number) {
+            return number;
         }
     }
 
