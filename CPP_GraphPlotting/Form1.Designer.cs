@@ -29,6 +29,7 @@
         {
             this.inputTextbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.plotGraph = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputTextbox
@@ -48,11 +49,22 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Function:";
             // 
+            // plotGraph
+            // 
+            this.plotGraph.Location = new System.Drawing.Point(330, 13);
+            this.plotGraph.Name = "plotGraph";
+            this.plotGraph.Size = new System.Drawing.Size(75, 23);
+            this.plotGraph.TabIndex = 2;
+            this.plotGraph.Text = "Plot";
+            this.plotGraph.UseVisualStyleBackColor = true;
+            this.plotGraph.Click += new System.EventHandler(this.plotGraph_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.plotGraph);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.inputTextbox);
             this.Name = "Form1";
@@ -66,6 +78,7 @@
 
         private System.Windows.Forms.TextBox inputTextbox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button plotGraph;
     }
 }
 

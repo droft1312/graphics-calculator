@@ -12,9 +12,22 @@ namespace CPP_GraphPlotting
 {
     public partial class Form1 : Form
     {
+        Plotter plotter;
+
         public Form1 ()
         {
             InitializeComponent ();
+            plotter = new Plotter ();
+        }
+
+        private void plotGraph_Click (object sender, EventArgs e) {
+            string input = inputTextbox.Text;
+
+            try {
+
+            } catch (Exception ex) {
+                MessageBox.Show (ex.Message);
+            }
         }
     }
 }
