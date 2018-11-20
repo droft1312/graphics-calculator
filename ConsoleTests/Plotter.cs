@@ -11,6 +11,49 @@ namespace ConsoleTests
         BaseNode head;
         bool isFirst = true;
 
+        public void ProcessTree(double input) {
+            BaseNode @base = head;
+            Console.WriteLine (ReadTree (input, @base));
+        }
+
+        public double ReadTree(double input, BaseNode node, bool goLeft = true) {
+
+            if (goLeft) {
+                // go left subtree
+                if (node.left != null) {
+                    if (!node.left.visited) {
+                        ReadTree (input, node.left);
+                    }
+                } else {
+                    double value = GetValueOfNode (node, input);
+                    node.visited = true;
+                    var parent = node.parent;
+                    parent.visited = true;
+
+                    if (parent.GetType () == typeof (MultiplicationNode)) {
+                        return value * ReadTree (input, parent, false);
+                    } else if (parent.GetType () == typeof (SumNode)) {
+                        return value + ReadTree (input, parent, false);
+                    } else if (parent.GetType () == typeof (DivisionNode)) {
+                        return value / ReadTree (input, parent, false);
+                    } else if (parent.GetType () == typeof (SubstractionNode)) {
+                        return value - ReadTree (input, parent, false);
+                    } else if (parent.GetType () == typeof (PowerNode)) {
+                        return Math.Pow (value, ReadTree (input, parent, false));
+                    }
+                }
+            } else {
+                // go right subtree
+                if (node.right != null) {
+                    if (!node.right.visited) {
+                        ReadTree (input, node.right); // go left again
+                    }
+                } else {
+                }
+            }
+
+            return -1;
+        }
         
         
         public void ProcessString(string s) {
@@ -25,6 +68,12 @@ namespace ConsoleTests
                     head = new SumNode (s, null);
                 } else if (s[0] == '/') {
                     head = new DivisionNode (s, null);
+                } else if (s[0] == '-') {
+                    head = new SubstractionNode (s, null);
+                } else if (s[0] == 'c') {
+                    head = new CosNode (s, null);
+                } else if (s[0] == '^') {
+                    head = new PowerNode (s, null);
                 }
 
 
@@ -32,8 +81,6 @@ namespace ConsoleTests
             }
         }
         
-        // s(*(p,+(x,3)))
-
         public void CreateTree(string s, BaseNode baseNode) {
 
             // if the string is empty, we don't do anything. This is the base case to leave the recursion
@@ -46,17 +93,41 @@ namespace ConsoleTests
                 baseNode.Insert (node); // we insert it to the current head node
                 CreateTree (node.value, node); // we change the head node to the newly created one
 
+            } else if (s[0] == 'c') {
+
+                CosNode node = new CosNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
             } else if (s[0] == '*') {
 
                 // same as in the first 'if'
                 MultiplicationNode node = new MultiplicationNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
-                
+
             } else if (s[0] == '+') {
 
                 // same as in the first 'if'
                 SumNode node = new SumNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == '/') {
+
+                DivisionNode node = new DivisionNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == '-') {
+
+                SubstractionNode node = new SubstractionNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == '^') {
+
+                PowerNode node = new PowerNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
@@ -92,7 +163,7 @@ namespace ConsoleTests
                 BasicFunctionXNode node = new BasicFunctionXNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
-                
+
             } else if (s[0] == '(' || s[0] == ' ') {
                 s = GetStringFromIndex (s, 1); // practically delete that ( or ' '
                 CreateTree (s, baseNode);
@@ -131,6 +202,16 @@ namespace ConsoleTests
 
         public BaseNode GetTree() {
             return head;
+        }
+
+        public double GetValueOfNode(BaseNode baseNode, double value) {
+            if (baseNode.GetType() == typeof(NumberNode)) {
+                return ((NumberNode)baseNode).RealValue;
+            } else if (baseNode.GetType() == typeof(BasicFunctionXNode)) {
+                return value;
+            } else {
+                return -1;
+            }
         }
 
 

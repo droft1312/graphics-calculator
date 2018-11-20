@@ -10,6 +10,7 @@ namespace ConsoleTests
     {
         public string value;
         public BaseNode left, right, parent;
+        public bool visited = false;
 
         public void Insert(BaseNode node) {
             if (left == null) {
@@ -29,6 +30,13 @@ namespace ConsoleTests
         }
     }
 
+    class SubstractionNode : BaseNode
+    {
+        public SubstractionNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+    }
     
     class MultiplicationNode : BaseNode
     {
@@ -70,6 +78,8 @@ namespace ConsoleTests
             }
         }
 
+        public double RealValue { get { return realValue; } }
+
         public override string ToString () {
             return realValue.ToString ();
         }
@@ -91,4 +101,20 @@ namespace ConsoleTests
         }
     }
 
+
+    class CosNode : BaseNode
+    {
+        public CosNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+    }
+
+    class PowerNode : BaseNode
+    {
+        public PowerNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+    }
 }

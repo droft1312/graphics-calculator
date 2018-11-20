@@ -9,14 +9,11 @@ namespace ConsoleTests
     class Program
     {
         static void Main (string[] args) {
-            string input = "s(*(p, +(x,3)))";
+            string input = "/(*(x,+(3,*(2,x))),+(x,*(5,x)))";
 
-            Plotter plotter = new Plotter ();
-            plotter.ProcessString (input);
-            var obj = plotter.GetTree ();
+            BaseNode plus = new SumNode (input, null);
 
-            Console.WriteLine (obj.FindLastLeft().parent.GetType().Name);
-            Console.Write ("");
+            Console.WriteLine (plus is SumNode);
 
             Console.ReadKey ();
         }
