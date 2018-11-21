@@ -47,6 +47,10 @@ namespace CPP_GraphPlotting
         public override double Calculate (double number) {
             return left.Calculate (number) - right.Calculate (number);
         }
+
+        public override string ToString () {
+            return "-";
+        }
     }
     
     class MultiplicationNode : BaseNode
@@ -58,6 +62,10 @@ namespace CPP_GraphPlotting
 
         public override double Calculate (double number) {
             return left.Calculate (number) * right.Calculate (number);
+        }
+
+        public override string ToString () {
+            return "*";
         }
     }
 
@@ -72,6 +80,10 @@ namespace CPP_GraphPlotting
         public override double Calculate (double number) {
             return left.Calculate (number) + right.Calculate (number);
         }
+
+        public override string ToString () {
+            return "+";
+        }
     }
 
     class DivisionNode : BaseNode
@@ -83,6 +95,10 @@ namespace CPP_GraphPlotting
 
         public override double Calculate (double number) {
             return left.Calculate (number) / right.Calculate (number);
+        }
+
+        public override string ToString () {
+            return "/";
         }
     }
 
@@ -123,6 +139,10 @@ namespace CPP_GraphPlotting
         public override double Calculate (double number) {
             return number;
         }
+
+        public override string ToString () {
+            return "x";
+        }
     }
 
     class SinNode : BaseNode
@@ -134,6 +154,9 @@ namespace CPP_GraphPlotting
 
         public override double Calculate (double number) {
             return Math.Sin (left.Calculate (number));
+        }
+        public override string ToString () {
+            return "sin";
         }
     }
 
@@ -148,6 +171,10 @@ namespace CPP_GraphPlotting
         public override double Calculate (double number) {
             return Math.Cos (left.Calculate (number));
         }
+
+        public override string ToString () {
+            return "cos";
+        }
     }
 
     class PowerNode : BaseNode
@@ -159,6 +186,10 @@ namespace CPP_GraphPlotting
 
         public override double Calculate (double number) {
             return Math.Pow (left.Calculate (number), right.Calculate (number));
+        }
+
+        public override string ToString () {
+            return "^";
         }
     }
 }

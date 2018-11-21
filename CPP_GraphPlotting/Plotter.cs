@@ -6,11 +6,34 @@ namespace CPP_GraphPlotting
     {
         BaseNode head;
 
+        string output = string.Empty;
+        int counterForInorderTraversal = 0;
+
+        public string GenerateGraphVIZTEXT() {
+            output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
+            InorderTraverse (head);
+            return output;
+        }
+
+        public void InorderTraverse (BaseNode node) {
+            if (node == null)
+                return;
+
+            counterForInorderTraversal++;
+            /* first recur on left child */
+            InorderTraverse (node.left);
+
+            /* then print the data of node */
+            output += "node" + counterForInorderTraversal + " [ label = \"" + node.ToString () + "\"]\n";
+
+            /* now recur on right child */
+            InorderTraverse (node.right);
+        }
+
         public double ProcessTree (double input) {
             BaseNode @base = head;
             return @base.Calculate (input);
         }
-
 
         public void ProcessString (string s) {
 
