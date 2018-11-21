@@ -38,7 +38,10 @@ namespace ConsoleTests
                 string toParseIntoNumber = getBetween (items[i], "node", " [").Replace (" ", string.Empty);
                 int count1 = int.Parse (toParseIntoNumber);
                 toParseIntoNumber = getBetween (items[i + 1], "node", " [").Replace (" ", string.Empty);
-                if (toParseIntoNumber == string.Empty) break;
+                if (toParseIntoNumber == string.Empty) {
+                    newItems.Add (items[i]);
+                    break;
+                }
                 int count2 = int.Parse (toParseIntoNumber);
 
                 if (node == "+" || node == "-" || node == "*" || node == "/" || node == "^") {
@@ -47,7 +50,7 @@ namespace ConsoleTests
                     newItems.Add (items[i + 1]);
                     int count3 = int.Parse (getBetween (items[i + 2], "node", " [").Replace (" ", string.Empty));
                     newItems.Add (string.Format ("node{0} -- node{1}", count1, count3));
-                    i++;
+                    if (i != items.Length - 1) i++; 
                 } else {
                     newItems.Add (items[i]); // print (insert) current node
                     newItems.Add (string.Format ("node{0} -- node{1}", count1, count2)); // print node(currentNumber) -- nextNode(nextNumber)
