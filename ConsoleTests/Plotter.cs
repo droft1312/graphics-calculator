@@ -56,7 +56,7 @@ node6 [ label = "x"]
             var items = transitional_output.Split ('\n');
             List<string> @newItems = new List<string> ();
             for (int i = 0; i < items.Length; i++) {
-                string node = getBetween (items[i], "label = \"", "\"]");
+                string node = getBetween (items[i], "label = \"", "\" ]");
                 string toParseIntoNumber = getBetween (items[i], "node", " [").Replace (" ", string.Empty);
                 int count1 = int.Parse (toParseIntoNumber);
                 toParseIntoNumber = getBetween (items[i + 1], "node", " [").Replace (" ", string.Empty);
@@ -72,7 +72,7 @@ node6 [ label = "x"]
                     newItems.Add (items[i + 1]);
                     int count3 = int.Parse (getBetween (items[i + 2], "node", " [").Replace (" ", string.Empty));
                     newItems.Add (string.Format ("node{0} -- node{1}", count1, count3));
-                    if (i != items.Length - 1) i++; 
+                    i++; 
                 } else {
                     newItems.Add (items[i]); // print (insert) current node
                     newItems.Add (string.Format ("node{0} -- node{1}", count1, count2)); // print node(currentNumber) -- nextNode(nextNumber)
@@ -93,7 +93,7 @@ node6 [ label = "x"]
 
             counterForInorderTraversal++;
             /* first print data of node */
-            transitional_output += "node" + counterForInorderTraversal + " [ label = \"" + node.ToString () + "\"]\n";
+            transitional_output += "node" + counterForInorderTraversal + " [ label = \"" + node.ToString () + "\" ]\n";
 
             /* then recur on left sutree */
             PreOrderTraverse (node.left);
