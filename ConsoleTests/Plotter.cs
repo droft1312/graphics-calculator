@@ -14,7 +14,29 @@ namespace ConsoleTests
         string output = string.Empty;
         int counterForInorderTraversal = 0;
 
-        /*
+        /* Algorithm for generateGraphVIZTEXT()
+         * Typical input:
+node1 [ label = "sin"]
+node2 [ label = "*"]
+node3 [ label = "x"]
+node4 [ label = "+"]
+node5 [ label = "3"]
+node6 [ label = "x"]
+
+            Typical output:
+node1 [ label = "sin"]
+node1 -- node2 
+node2 [ label = "*"]
+node2 -- node3
+node3 [ label = "x"]
+node2 -- node4
+node4 [ label = "+"]
+node4 -- node5
+node5 [ label = "3"]
+node4 -- node6
+node6 [ label = "x"]
+
+
          if (node == '*' / '+' / '-' / '/')
 	        Print current node 
 	        Print node(currentNumber) -- nextNode(nextNodeNumber)
