@@ -128,6 +128,10 @@ namespace CPP_GraphPlotting
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
+
+        public override double Calculate (double number) {
+            return Math.Sin (left.Calculate (number));
+        }
     }
 
 
@@ -137,6 +141,10 @@ namespace CPP_GraphPlotting
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
+
+        public override double Calculate (double number) {
+            return Math.Cos (left.Calculate (number));
+        }
     }
 
     class PowerNode : BaseNode
@@ -144,6 +152,10 @@ namespace CPP_GraphPlotting
         public PowerNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public override double Calculate (double number) {
+            return Math.Pow (left.Calculate (number), right.Calculate (number));
         }
     }
 }

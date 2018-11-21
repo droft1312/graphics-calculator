@@ -30,6 +30,7 @@
             this.inputTextbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.plotGraph = new System.Windows.Forms.Button();
+            this.plot = new OxyPlot.WindowsForms.PlotView();
             this.SuspendLayout();
             // 
             // inputTextbox
@@ -59,11 +60,24 @@
             this.plotGraph.UseVisualStyleBackColor = true;
             this.plotGraph.Click += new System.EventHandler(this.plotGraph_Click);
             // 
+            // plot
+            // 
+            this.plot.Location = new System.Drawing.Point(12, 50);
+            this.plot.Name = "plot";
+            this.plot.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plot.Size = new System.Drawing.Size(776, 388);
+            this.plot.TabIndex = 3;
+            this.plot.Text = "plotView1";
+            this.plot.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plot.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plot.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.plot);
             this.Controls.Add(this.plotGraph);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.inputTextbox);
@@ -79,6 +93,7 @@
         private System.Windows.Forms.TextBox inputTextbox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button plotGraph;
+        private OxyPlot.WindowsForms.PlotView plot;
     }
 }
 

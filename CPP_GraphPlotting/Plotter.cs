@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CPP_GraphPlotting
 {
@@ -11,38 +7,36 @@ namespace CPP_GraphPlotting
         BaseNode head;
         bool isFirst = true;
 
-        public void ProcessTree(double input) {
+        public double ProcessTree (double input) {
             BaseNode @base = head;
-            Console.WriteLine (@base.Calculate(input));
+            return @base.Calculate (input);
         }
-        
-        
-        public void ProcessString(string s) {
-            if (isFirst) {
-                isFirst = false;
-
-                if (s[0] == 's') {
-                    head = new SinNode (s, null);
-                } else if (s[0] == '*') {
-                    head = new MultiplicationNode (s, null);
-                } else if (s[0] == '+') {
-                    head = new SumNode (s, null);
-                } else if (s[0] == '/') {
-                    head = new DivisionNode (s, null);
-                } else if (s[0] == '-') {
-                    head = new SubstractionNode (s, null);
-                } else if (s[0] == 'c') {
-                    head = new CosNode (s, null);
-                } else if (s[0] == '^') {
-                    head = new PowerNode (s, null);
-                }
 
 
-                CreateTree (head.value, head);
+        public void ProcessString (string s) {
+
+            if (s[0] == 's') {
+                head = new SinNode (s, null);
+            } else if (s[0] == '*') {
+                head = new MultiplicationNode (s, null);
+            } else if (s[0] == '+') {
+                head = new SumNode (s, null);
+            } else if (s[0] == '/') {
+                head = new DivisionNode (s, null);
+            } else if (s[0] == '-') {
+                head = new SubstractionNode (s, null);
+            } else if (s[0] == 'c') {
+                head = new CosNode (s, null);
+            } else if (s[0] == '^') {
+                head = new PowerNode (s, null);
             }
+
+
+            CreateTree (head.value, head);
+
         }
-        
-        public void CreateTree(string s, BaseNode baseNode) {
+
+        public void CreateTree (string s, BaseNode baseNode) {
 
             // if the string is empty, we don't do anything. This is the base case to leave the recursion
             if (s == string.Empty) return;
@@ -160,21 +154,6 @@ namespace CPP_GraphPlotting
                 CreateTree (s, baseNode);
             }
         }
-
-        public BaseNode GetTree() {
-            return head;
-        }
-
-        public double GetValueOfNode(BaseNode baseNode, double value) {
-            if (baseNode.GetType() == typeof(NumberNode)) {
-                return ((NumberNode)baseNode).RealValue;
-            } else if (baseNode.GetType() == typeof(BasicFunctionXNode)) {
-                return value;
-            } else {
-                return -1;
-            }
-        }
-
 
         /// <summary>
         /// Returns a new string that starts from a specified index
