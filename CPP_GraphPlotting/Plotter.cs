@@ -5,7 +5,6 @@ namespace CPP_GraphPlotting
     class Plotter
     {
         BaseNode head;
-        bool isFirst = true;
 
         public double ProcessTree (double input) {
             BaseNode @base = head;
@@ -29,6 +28,8 @@ namespace CPP_GraphPlotting
                 head = new CosNode (s, null);
             } else if (s[0] == '^') {
                 head = new PowerNode (s, null);
+            } else if (s[0] == 'x') {
+                head = new BasicFunctionXNode (s, null);
             }
 
 

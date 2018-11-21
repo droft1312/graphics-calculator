@@ -8,9 +8,14 @@ namespace CPP_GraphPlotting
 {
     class BaseNode
     {
+        /// <summary>
+        /// If input during the initializing of the node was s(x) => value = (x)
+        /// </summary>
         public string value;
+        /// <summary>
+        /// Left, right, and parent reference for binary tree
+        /// </summary>
         public BaseNode left, right, parent;
-        public bool visited = false;
 
         public void Insert(BaseNode node) {
             if (left == null) {
@@ -22,15 +27,13 @@ namespace CPP_GraphPlotting
             }
         }
 
+        /// <summary>
+        /// Calculates the value of the current node
+        /// </summary>
+        /// <param name="number">Input</param>
+        /// <returns></returns>
         public virtual double Calculate (double number) {
             return -1;
-        }
-
-        public BaseNode FindLastLeft () {
-            return (left == null ? this : left.FindLastLeft ());
-        }
-        public BaseNode FindLastRight () {
-            return (right == null ? this : right.FindLastRight ());
         }
     }
 
