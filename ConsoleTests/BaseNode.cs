@@ -8,11 +8,18 @@ namespace ConsoleTests
 {
     class BaseNode
     {
+        /// <summary>
+        /// If input during the initializing of the node was s(x) => value = (x)
+        /// </summary>
         public string value;
+        /// <summary>
+        /// Left, right, and parent reference for binary tree
+        /// </summary>
         public BaseNode left, right, parent;
+
         public bool visited = false;
 
-        public void Insert(BaseNode node) {
+        public void Insert (BaseNode node) {
             if (left == null) {
                 left = node;
             } else if (right == null) {
@@ -22,15 +29,13 @@ namespace ConsoleTests
             }
         }
 
+        /// <summary>
+        /// Calculates the value of the current node
+        /// </summary>
+        /// <param name="number">Input</param>
+        /// <returns></returns>
         public virtual double Calculate (double number) {
             return -1;
-        }
-
-        public BaseNode FindLastLeft () {
-            return (left == null ? this : left.FindLastLeft ());
-        }
-        public BaseNode FindLastRight () {
-            return (right == null ? this : right.FindLastRight ());
         }
     }
 
@@ -44,8 +49,12 @@ namespace ConsoleTests
         public override double Calculate (double number) {
             return left.Calculate (number) - right.Calculate (number);
         }
+
+        public override string ToString () {
+            return "-";
+        }
     }
-    
+
     class MultiplicationNode : BaseNode
     {
         public MultiplicationNode (string input, BaseNode parentNode) {
@@ -56,6 +65,10 @@ namespace ConsoleTests
         public override double Calculate (double number) {
             return left.Calculate (number) * right.Calculate (number);
         }
+
+        public override string ToString () {
+            return "*";
+        }
     }
 
     class SumNode : BaseNode
@@ -65,9 +78,13 @@ namespace ConsoleTests
             parent = parentNode;
         }
 
-        
+
         public override double Calculate (double number) {
             return left.Calculate (number) + right.Calculate (number);
+        }
+
+        public override string ToString () {
+            return "+";
         }
     }
 
@@ -81,13 +98,17 @@ namespace ConsoleTests
         public override double Calculate (double number) {
             return left.Calculate (number) / right.Calculate (number);
         }
+
+        public override string ToString () {
+            return "/";
+        }
     }
 
     class NumberNode : BaseNode
     {
         double realValue;
 
-        public NumberNode(string input, BaseNode parentNode, string realValue) {
+        public NumberNode (string input, BaseNode parentNode, string realValue) {
             value = input;
             parent = parentNode;
 
@@ -120,6 +141,10 @@ namespace ConsoleTests
         public override double Calculate (double number) {
             return number;
         }
+
+        public override string ToString () {
+            return "x";
+        }
     }
 
     class SinNode : BaseNode
@@ -127,6 +152,13 @@ namespace ConsoleTests
         public SinNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public override double Calculate (double number) {
+            return Math.Sin (left.Calculate (number));
+        }
+        public override string ToString () {
+            return "sin";
         }
     }
 
@@ -137,6 +169,14 @@ namespace ConsoleTests
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
+
+        public override double Calculate (double number) {
+            return Math.Cos (left.Calculate (number));
+        }
+
+        public override string ToString () {
+            return "cos";
+        }
     }
 
     class PowerNode : BaseNode
@@ -144,6 +184,14 @@ namespace ConsoleTests
         public PowerNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public override double Calculate (double number) {
+            return Math.Pow (left.Calculate (number), right.Calculate (number));
+        }
+
+        public override string ToString () {
+            return "^";
         }
     }
 }

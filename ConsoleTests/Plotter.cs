@@ -9,40 +9,105 @@ namespace ConsoleTests
     class Plotter
     {
         BaseNode head;
-        bool isFirst = true;
 
-        public void ProcessTree(double input) {
-            BaseNode @base = head;
-            Console.WriteLine (@base.Calculate(input));
-        }
-        
-        
-        public void ProcessString(string s) {
-            if (isFirst) {
-                isFirst = false;
+        string transitional_output = string.Empty;
+        string output = string.Empty;
+        int counterForInorderTraversal = 0;
 
-                if (s[0] == 's') {
-                    head = new SinNode (s, null);
-                } else if (s[0] == '*') {
-                    head = new MultiplicationNode (s, null);
-                } else if (s[0] == '+') {
-                    head = new SumNode (s, null);
-                } else if (s[0] == '/') {
-                    head = new DivisionNode (s, null);
-                } else if (s[0] == '-') {
-                    head = new SubstractionNode (s, null);
-                } else if (s[0] == 'c') {
-                    head = new CosNode (s, null);
-                } else if (s[0] == '^') {
-                    head = new PowerNode (s, null);
+        /*
+         if (node == '*' / '+' / '-' / '/')
+	        Print current node 
+	        Print node(currentNumber) -- nextNode(nextNodeNumber)
+	        Print nextNode(nextNodeNumber)
+	        Print node(currentNumber) -- nextnextNode(nextNodeNumber)
+            i++
+        else 
+	        Print current node
+	        Print node(currentNumber) -- nextNode(nextNodeNumber) */
+
+        public string GenerateGraphVIZTEXT () {
+            output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
+            transitional_output = string.Empty;
+            counterForInorderTraversal = 0;
+            PreOrderTraverse (head);
+
+            var items = transitional_output.Split ('\n');
+            List<string> @newItems = new List<string> ();
+            for (int i = 0; i < items.Length; i++) {
+                string node = getBetween (items[i], "label = \"", "\"]");
+                string toParseIntoNumber = getBetween (items[i], "node", " [").Replace (" ", string.Empty);
+                int count1 = int.Parse (toParseIntoNumber);
+                toParseIntoNumber = getBetween (items[i + 1], "node", " [").Replace (" ", string.Empty);
+                if (toParseIntoNumber == string.Empty) break;
+                int count2 = int.Parse (toParseIntoNumber);
+
+                if (node == "+" || node == "-" || node == "*" || node == "/" || node == "^") {
+                    newItems.Add (items[i]); // print (insert) current node
+                    newItems.Add (string.Format ("node{0} -- node{1}", count1, count2)); // print node(currentNumber) -- nextNode(nextNumber)
+                    newItems.Add (items[i + 1]);
+                    int count3 = int.Parse (getBetween (items[i + 2], "node", " [").Replace (" ", string.Empty));
+                    newItems.Add (string.Format ("node{0} -- node{1}", count1, count3));
+                    i++;
+                } else {
+                    newItems.Add (items[i]); // print (insert) current node
+                    newItems.Add (string.Format ("node{0} -- node{1}", count1, count2)); // print node(currentNumber) -- nextNode(nextNumber)
                 }
-
-
-                CreateTree (head.value, head);
             }
+
+            foreach (var item in newItems) output += item + "\n";
+
+            output += "}";
+
+            return output;
         }
-        
-        public void CreateTree(string s, BaseNode baseNode) {
+
+        public void PreOrderTraverse (BaseNode node) {
+            if (node == null) {
+                return;
+            }
+
+            counterForInorderTraversal++;
+            /* first print data of node */
+            transitional_output += "node" + counterForInorderTraversal + " [ label = \"" + node.ToString () + "\"]\n";
+
+            /* then recur on left sutree */
+            PreOrderTraverse (node.left);
+
+            /* now recur on right subtree */
+            PreOrderTraverse (node.right);
+        }
+
+        public double ProcessTree (double input) {
+            BaseNode @base = head;
+            return @base.Calculate (input);
+        }
+
+        public void ProcessString (string s) {
+
+            if (s[0] == 's') {
+                head = new SinNode (s, null);
+            } else if (s[0] == '*') {
+                head = new MultiplicationNode (s, null);
+            } else if (s[0] == '+') {
+                head = new SumNode (s, null);
+            } else if (s[0] == '/') {
+                head = new DivisionNode (s, null);
+            } else if (s[0] == '-') {
+                head = new SubstractionNode (s, null);
+            } else if (s[0] == 'c') {
+                head = new CosNode (s, null);
+            } else if (s[0] == '^') {
+                head = new PowerNode (s, null);
+            } else if (s[0] == 'x') {
+                head = new BasicFunctionXNode (s, null);
+            }
+
+
+            CreateTree (head.value, head);
+
+        }
+
+        public void CreateTree (string s, BaseNode baseNode) {
 
             // if the string is empty, we don't do anything. This is the base case to leave the recursion
             if (s == string.Empty) return;
@@ -161,21 +226,6 @@ namespace ConsoleTests
             }
         }
 
-        public BaseNode GetTree() {
-            return head;
-        }
-
-        public double GetValueOfNode(BaseNode baseNode, double value) {
-            if (baseNode.GetType() == typeof(NumberNode)) {
-                return ((NumberNode)baseNode).RealValue;
-            } else if (baseNode.GetType() == typeof(BasicFunctionXNode)) {
-                return value;
-            } else {
-                return -1;
-            }
-        }
-
-
         /// <summary>
         /// Returns a new string that starts from a specified index
         /// </summary>
@@ -189,6 +239,24 @@ namespace ConsoleTests
                 @return += s[j];
 
             return @return;
+        }
+
+        /// <summary>
+        /// Returns a substring of a string that is in between 2 other substrings
+        /// </summary>
+        /// <param name="strSource">Input text</param>
+        /// <param name="strStart">Left border</param>
+        /// <param name="strEnd">Right border</param>
+        /// <returns></returns>
+        public static string getBetween (string strSource, string strStart, string strEnd) {
+            int Start, End;
+            if (strSource.Contains (strStart) && strSource.Contains (strEnd)) {
+                Start = strSource.IndexOf (strStart, 0) + strStart.Length;
+                End = strSource.IndexOf (strEnd, Start);
+                return strSource.Substring (Start, End - Start);
+            } else {
+                return "";
+            }
         }
     }
 }
