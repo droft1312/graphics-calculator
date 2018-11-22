@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace ConsoleTests
 {
+    static class NodeCounter
+    {
+        public static int Count = 0;
+    }
+
     class BaseNode
     {
         /// <summary>
@@ -18,6 +23,12 @@ namespace ConsoleTests
         public BaseNode left, right, parent;
 
         public bool visited = false;
+
+        public int number;
+
+        public BaseNode () {
+            number = ++NodeCounter.Count;
+        }
 
         public void Insert (BaseNode node) {
             if (left == null) {
@@ -59,7 +70,7 @@ namespace ConsoleTests
         }
 
         public override string Print () {
-            return base.Print ();
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
     }
 
@@ -76,6 +87,10 @@ namespace ConsoleTests
 
         public override string ToString () {
             return "*";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
     }
 
@@ -94,6 +109,10 @@ namespace ConsoleTests
         public override string ToString () {
             return "+";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
     }
 
     class DivisionNode : BaseNode
@@ -109,6 +128,10 @@ namespace ConsoleTests
 
         public override string ToString () {
             return "/";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
     }
 
@@ -137,6 +160,7 @@ namespace ConsoleTests
         public override double Calculate (double number) {
             return realValue;
         }
+        
     }
 
     class BasicFunctionXNode : BaseNode
@@ -168,6 +192,10 @@ namespace ConsoleTests
         public override string ToString () {
             return "sin";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}", number, left.number);
+        }
     }
 
 
@@ -185,6 +213,10 @@ namespace ConsoleTests
         public override string ToString () {
             return "cos";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}", number, left.number);
+        }
     }
 
     class PowerNode : BaseNode
@@ -200,6 +232,9 @@ namespace ConsoleTests
 
         public override string ToString () {
             return "^";
+        }
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
     }
 }

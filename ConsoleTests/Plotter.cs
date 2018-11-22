@@ -15,75 +15,57 @@ namespace ConsoleTests
         int counterForInorderTraversal = 0;
 
         /* Algorithm for generateGraphVIZTEXT()
-         * Typical input:
-node1 [ label = "sin"]
-node2 [ label = "*"]
-node3 [ label = "x"]
-node4 [ label = "+"]
-node5 [ label = "3"]
-node6 [ label = "x"]
+         * Input:
+            node1 [ label = "+" ]
+            node2 [ label = "-" ]
+            node3 [ label = "x" ]
+            node4 [ label = "3" ]
+            node5 [ label = "x" ]
 
-            Typical output:
-node1 [ label = "sin"]
-node1 -- node2 
-node2 [ label = "*"]
-node2 -- node3
-node3 [ label = "x"]
-node2 -- node4
-node4 [ label = "+"]
-node4 -- node5
-node5 [ label = "3"]
-node4 -- node6
-node6 [ label = "x"]
+            Output:
+            node1 [ label = "+" ]
+            node2 [ label = "-" ]
+            node3 [ label = "x" ]
+            node4 [ label = "3" ]
+            node5 [ label = "x" ]
+            node1 -- node2
+            node2 -- node3
+            node2 -- node4
+            node1 -- node5 */
 
+        private string nodeConnections = "";
 
-         if (node == '*' / '+' / '-' / '/')
-	        Print current node 
-	        Print node(currentNumber) -- nextNode(nextNodeNumber)
-	        Print nextNode(nextNodeNumber)
-	        Print node(currentNumber) -- nextnextNode(nextNodeNumber)
-            i++
-        else 
-	        Print current node
-	        Print node(currentNumber) -- nextNode(nextNodeNumber) */
+        private  void PrintNodeConnections(BaseNode root) {
+            if (root == null) {
+                return;
+            }
+
+            /* first print data of node */
+
+            nodeConnections += root.Print ();
+
+            /* then recur on left sutree */
+            PrintNodeConnections (root.left);
+
+            /* now recur on right subtree */
+            PrintNodeConnections (root.right);
+        }
 
         public string GenerateGraphVIZTEXT () {
+            // -------------------------------------------------------------------
             output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
             transitional_output = string.Empty;
             counterForInorderTraversal = 0;
             PreOrderTraverse (head);
+            // -------------------------------------------------------------------
 
-            var items = transitional_output.Split ('\n');
-            List<string> @newItems = new List<string> ();
-            for (int i = 0; i < items.Length; i++) {
-                string node = getBetween (items[i], "label = \"", "\" ]");
-                string toParseIntoNumber = getBetween (items[i], "node", " [").Replace (" ", string.Empty);
-                int count1 = int.Parse (toParseIntoNumber);
-                toParseIntoNumber = getBetween (items[i + 1], "node", " [").Replace (" ", string.Empty);
-                if (toParseIntoNumber == string.Empty) {
-                    newItems.Add (items[i]);
-                    break;
-                }
-                int count2 = int.Parse (toParseIntoNumber);
-
-                if (node == "+" || node == "-" || node == "*" || node == "/" || node == "^") {
-                    newItems.Add (items[i]); // print (insert) current node
-                    newItems.Add (string.Format ("node{0} -- node{1}", count1, count2)); // print node(currentNumber) -- nextNode(nextNumber)
-                    newItems.Add (items[i + 1]);
-                    int count3 = int.Parse (getBetween (items[i + 2], "node", " [").Replace (" ", string.Empty));
-                    newItems.Add (string.Format ("node{0} -- node{1}", count1, count3));
-                    i++; 
-                } else {
-                    newItems.Add (items[i]); // print (insert) current node
-                    newItems.Add (string.Format ("node{0} -- node{1}", count1, count2)); // print node(currentNumber) -- nextNode(nextNumber)
-                }
-            }
-
-            foreach (var item in newItems) output += item + "\n";
+            PrintNodeConnections (head);
+            output += transitional_output;
+            output += nodeConnections;
 
             output += "}";
 
-            return transitional_output;
+            return output;
         }
 
         public void PreOrderTraverse (BaseNode node) {
@@ -93,7 +75,8 @@ node6 [ label = "x"]
 
             counterForInorderTraversal++;
             /* first print data of node */
-            transitional_output += "node" + counterForInorderTraversal + " [ label = \"" + node.ToString () + "\" ]\n";
+            
+            transitional_output += "node" + node.number + " [ label = \"" + node.ToString () + "\" ]\n";
 
             /* then recur on left sutree */
             PreOrderTraverse (node.left);
