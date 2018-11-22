@@ -23,7 +23,7 @@ namespace CPP_GraphPlotting
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
-            string input = inputTextbox.Text;
+            string input = inputTextbox.Text.Replace(" ", string.Empty);
 
             List<DataPoint> points = new List<DataPoint>();
             FunctionSeries series = new FunctionSeries ();

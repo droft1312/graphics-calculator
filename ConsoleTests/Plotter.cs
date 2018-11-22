@@ -83,7 +83,7 @@ node6 [ label = "x"]
 
             output += "}";
 
-            return output;
+            return transitional_output;
         }
 
         public void PreOrderTraverse (BaseNode node) {

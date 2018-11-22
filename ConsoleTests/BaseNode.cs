@@ -37,6 +37,10 @@ namespace ConsoleTests
         public virtual double Calculate (double number) {
             return -1;
         }
+
+        public virtual string Print () {
+            return "";
+        }
     }
 
     class SubstractionNode : BaseNode
@@ -52,6 +56,10 @@ namespace ConsoleTests
 
         public override string ToString () {
             return "-";
+        }
+
+        public override string Print () {
+            return base.Print ();
         }
     }
 
