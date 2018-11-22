@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace CPP_GraphPlotting
 {
+    static class NodeCounter
+    {
+        public static int Count = 0;
+    }
+
     class BaseNode
     {
         /// <summary>
@@ -17,7 +22,15 @@ namespace CPP_GraphPlotting
         /// </summary>
         public BaseNode left, right, parent;
 
-        public void Insert(BaseNode node) {
+        public bool visited = false;
+
+        public int number;
+
+        public BaseNode () {
+            number = ++NodeCounter.Count;
+        }
+
+        public void Insert (BaseNode node) {
             if (left == null) {
                 left = node;
             } else if (right == null) {
@@ -35,6 +48,10 @@ namespace CPP_GraphPlotting
         public virtual double Calculate (double number) {
             return -1;
         }
+
+        public virtual string Print () {
+            return "";
+        }
     }
 
     class SubstractionNode : BaseNode
@@ -51,8 +68,12 @@ namespace CPP_GraphPlotting
         public override string ToString () {
             return "-";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
     }
-    
+
     class MultiplicationNode : BaseNode
     {
         public MultiplicationNode (string input, BaseNode parentNode) {
@@ -67,6 +88,10 @@ namespace CPP_GraphPlotting
         public override string ToString () {
             return "*";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
     }
 
     class SumNode : BaseNode
@@ -76,13 +101,17 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        
+
         public override double Calculate (double number) {
             return left.Calculate (number) + right.Calculate (number);
         }
 
         public override string ToString () {
             return "+";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
     }
 
@@ -100,13 +129,17 @@ namespace CPP_GraphPlotting
         public override string ToString () {
             return "/";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
     }
 
     class NumberNode : BaseNode
     {
         double realValue;
 
-        public NumberNode(string input, BaseNode parentNode, string realValue) {
+        public NumberNode (string input, BaseNode parentNode, string realValue) {
             value = input;
             parent = parentNode;
 
@@ -127,6 +160,7 @@ namespace CPP_GraphPlotting
         public override double Calculate (double number) {
             return realValue;
         }
+
     }
 
     class BasicFunctionXNode : BaseNode
@@ -158,6 +192,10 @@ namespace CPP_GraphPlotting
         public override string ToString () {
             return "sin";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}", number, left.number);
+        }
     }
 
 
@@ -175,6 +213,10 @@ namespace CPP_GraphPlotting
         public override string ToString () {
             return "cos";
         }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}", number, left.number);
+        }
     }
 
     class PowerNode : BaseNode
@@ -190,6 +232,9 @@ namespace CPP_GraphPlotting
 
         public override string ToString () {
             return "^";
+        }
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
     }
 }

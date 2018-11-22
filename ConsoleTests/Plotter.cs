@@ -53,8 +53,10 @@ namespace ConsoleTests
 
         public string GenerateGraphVIZTEXT () {
             // -------------------------------------------------------------------
+            // resetting all variables
             output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
             transitional_output = string.Empty;
+            nodeConnections = string.Empty;
             counterForInorderTraversal = 0;
             PreOrderTraverse (head);
             // -------------------------------------------------------------------

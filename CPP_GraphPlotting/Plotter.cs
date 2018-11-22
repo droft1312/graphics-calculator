@@ -6,28 +6,81 @@ namespace CPP_GraphPlotting
     {
         BaseNode head;
 
+        string transitional_output = string.Empty;
         string output = string.Empty;
         int counterForInorderTraversal = 0;
 
-        public string GenerateGraphVIZTEXT() {
+        /* Algorithm for generateGraphVIZTEXT()
+         * Input:
+            node1 [ label = "+" ]
+            node2 [ label = "-" ]
+            node3 [ label = "x" ]
+            node4 [ label = "3" ]
+            node5 [ label = "x" ]
+
+            Output:
+            node1 [ label = "+" ]
+            node2 [ label = "-" ]
+            node3 [ label = "x" ]
+            node4 [ label = "3" ]
+            node5 [ label = "x" ]
+            node1 -- node2
+            node2 -- node3
+            node2 -- node4
+            node1 -- node5 */
+
+        private string nodeConnections = "";
+
+        private void PrintNodeConnections (BaseNode root) {
+            if (root == null) {
+                return;
+            }
+
+            /* first print data of node */
+
+            nodeConnections += root.Print ();
+
+            /* then recur on left sutree */
+            PrintNodeConnections (root.left);
+
+            /* now recur on right subtree */
+            PrintNodeConnections (root.right);
+        }
+
+        public string GenerateGraphVIZTEXT () {
+            // -------------------------------------------------------------------
+            // resetting all variables
             output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
-            InorderTraverse (head);
+            transitional_output = string.Empty;
+            nodeConnections = string.Empty;
+            counterForInorderTraversal = 0;
+            PreOrderTraverse (head);
+            // -------------------------------------------------------------------
+
+            PrintNodeConnections (head);
+            output += transitional_output;
+            output += nodeConnections;
+
+            output += "}";
+
             return output;
         }
 
-        public void InorderTraverse (BaseNode node) {
-            if (node == null)
+        public void PreOrderTraverse (BaseNode node) {
+            if (node == null) {
                 return;
+            }
 
             counterForInorderTraversal++;
-            /* first recur on left child */
-            InorderTraverse (node.left);
+            /* first print data of node */
 
-            /* then print the data of node */
-            output += "node" + counterForInorderTraversal + " [ label = \"" + node.ToString () + "\"]\n";
+            transitional_output += "node" + node.number + " [ label = \"" + node.ToString () + "\" ]\n";
 
-            /* now recur on right child */
-            InorderTraverse (node.right);
+            /* then recur on left sutree */
+            PreOrderTraverse (node.left);
+
+            /* now recur on right subtree */
+            PreOrderTraverse (node.right);
         }
 
         public double ProcessTree (double input) {
@@ -192,6 +245,24 @@ namespace CPP_GraphPlotting
                 @return += s[j];
 
             return @return;
+        }
+
+        /// <summary>
+        /// Returns a substring of a string that is in between 2 other substrings
+        /// </summary>
+        /// <param name="strSource">Input text</param>
+        /// <param name="strStart">Left border</param>
+        /// <param name="strEnd">Right border</param>
+        /// <returns></returns>
+        public static string getBetween (string strSource, string strStart, string strEnd) {
+            int Start, End;
+            if (strSource.Contains (strStart) && strSource.Contains (strEnd)) {
+                Start = strSource.IndexOf (strStart, 0) + strStart.Length;
+                End = strSource.IndexOf (strEnd, Start);
+                return strSource.Substring (Start, End - Start);
+            } else {
+                return "";
+            }
         }
     }
 }
