@@ -6,6 +6,9 @@ namespace CPP_GraphPlotting
     {
         BaseNode head;
 
+        // -------------------------------------------------
+        // VARIABLES FOR OUTPUTTING GRAPHVIZ
+        // DON'T MIND THEM
         string transitional_output = string.Empty;
         string output = string.Empty;
         int counterForInorderTraversal = 0;
@@ -30,7 +33,28 @@ namespace CPP_GraphPlotting
             node1 -- node5 */
 
         private string nodeConnections = "";
+        // -------------------------------------------------
 
+        /// <summary>
+        /// Returns a complete image of graphviz
+        /// </summary>
+        /// <returns></returns>
+        public dynamic GetGraphImage() {
+
+            return null;
+        }
+
+        /// <summary>
+        /// Writes output of <see cref="GenerateGraphVIZTEXT"/>() to a specific file
+        /// </summary>
+        private void WriteFileGRAPHVIZ() {
+
+        }
+
+        /// <summary>
+        /// Adds to the transitional_output relations between nodes. To be called ONLY AFTER <see cref="PreOrderTraverse"/>()
+        /// </summary>
+        /// <param name="root"></param>
         private void PrintNodeConnections (BaseNode root) {
             if (root == null) {
                 return;
@@ -47,6 +71,10 @@ namespace CPP_GraphPlotting
             PrintNodeConnections (root.right);
         }
 
+        /// <summary>
+        /// Generates text that would be inputted to GraphVIZ
+        /// </summary>
+        /// <returns>Input string for graphviz</returns>
         public string GenerateGraphVIZTEXT () {
             // -------------------------------------------------------------------
             // resetting all variables
@@ -66,6 +94,10 @@ namespace CPP_GraphPlotting
             return output;
         }
 
+        /// <summary>
+        /// Does the pre-order traversal of the tree and prints it to the transitional_output
+        /// </summary>
+        /// <param name="node">Root node</param>
         public void PreOrderTraverse (BaseNode node) {
             if (node == null) {
                 return;
@@ -83,11 +115,20 @@ namespace CPP_GraphPlotting
             PreOrderTraverse (node.right);
         }
 
+        /// <summary>
+        /// Returns the y-value for x-value based on a previously built binary tree. To be called only after ProcessString() func
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public double ProcessTree (double input) {
             BaseNode @base = head;
             return @base.Calculate (input);
         }
 
+        /// <summary>
+        /// To be called when a tree needs to be built upon an input string
+        /// </summary>
+        /// <param name="s"></param>
         public void ProcessString (string s) {
 
             if (s[0] == 's') {
@@ -113,6 +154,11 @@ namespace CPP_GraphPlotting
 
         }
 
+        /// <summary>
+        /// Creates tree based on an input string and root node
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="baseNode"></param>
         public void CreateTree (string s, BaseNode baseNode) {
 
             // if the string is empty, we don't do anything. This is the base case to leave the recursion

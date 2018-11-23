@@ -31,8 +31,6 @@ namespace CPP_GraphPlotting
             try {
                 plotter.ProcessString (input);
 
-                MessageBox.Show (plotter.GenerateGraphVIZTEXT ());
-
                 for (int i = -100; i < 100; i++) {
                     points.Add(new DataPoint (i, plotter.ProcessTree (i)));
                 }
