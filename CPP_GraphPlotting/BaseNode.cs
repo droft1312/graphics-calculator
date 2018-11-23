@@ -194,7 +194,7 @@ namespace CPP_GraphPlotting
         }
 
         public override string Print () {
-            return string.Format ("node{0} -- node{1}", number, left.number);
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
         }
     }
 
@@ -215,7 +215,7 @@ namespace CPP_GraphPlotting
         }
 
         public override string Print () {
-            return string.Format ("node{0} -- node{1}", number, left.number);
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
         }
     }
 
