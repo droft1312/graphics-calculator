@@ -32,6 +32,8 @@
             this.plotGraph = new System.Windows.Forms.Button();
             this.plot = new OxyPlot.WindowsForms.PlotView();
             this.button1 = new System.Windows.Forms.Button();
+            this.graphPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // inputTextbox
@@ -83,11 +85,20 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // graphPictureBox
+            // 
+            this.graphPictureBox.Location = new System.Drawing.Point(15, 444);
+            this.graphPictureBox.Name = "graphPictureBox";
+            this.graphPictureBox.Size = new System.Drawing.Size(773, 318);
+            this.graphPictureBox.TabIndex = 5;
+            this.graphPictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 774);
+            this.Controls.Add(this.graphPictureBox);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.plot);
             this.Controls.Add(this.plotGraph);
@@ -95,6 +106,7 @@
             this.Controls.Add(this.inputTextbox);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -107,6 +119,7 @@
         private System.Windows.Forms.Button plotGraph;
         private OxyPlot.WindowsForms.PlotView plot;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox graphPictureBox;
     }
 }
 

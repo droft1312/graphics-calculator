@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
 
 namespace CPP_GraphPlotting
 {
@@ -39,16 +42,25 @@ namespace CPP_GraphPlotting
         /// Returns a complete image of graphviz
         /// </summary>
         /// <returns></returns>
-        public dynamic GetGraphImage() {
-
-            return null;
+        public void GetGraphImage(PictureBox pictureBox) {
+            WriteFileGRAPHVIZ ();
+            Process dot = new Process ();
+            dot.StartInfo.FileName = "dot.exe";
+            dot.StartInfo.Arguments = "-Tpng -oabc.png abc.dot";
+            dot.Start ();
+            dot.WaitForExit ();
+            pictureBox.ImageLocation = "abc.png";
         }
 
         /// <summary>
         /// Writes output of <see cref="GenerateGraphVIZTEXT"/>() to a specific file
         /// </summary>
         private void WriteFileGRAPHVIZ() {
-
+            try {
+                File.WriteAllText ("abc.dot", GenerateGraphVIZTEXT ());
+            } catch (Exception e) {
+                MessageBox.Show (e.Message);
+            }
         }
 
         /// <summary>
@@ -75,7 +87,7 @@ namespace CPP_GraphPlotting
         /// Generates text that would be inputted to GraphVIZ
         /// </summary>
         /// <returns>Input string for graphviz</returns>
-        public string GenerateGraphVIZTEXT () {
+        private string GenerateGraphVIZTEXT () {
             // -------------------------------------------------------------------
             // resetting all variables
             output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
@@ -98,7 +110,7 @@ namespace CPP_GraphPlotting
         /// Does the pre-order traversal of the tree and prints it to the transitional_output
         /// </summary>
         /// <param name="node">Root node</param>
-        public void PreOrderTraverse (BaseNode node) {
+        private void PreOrderTraverse (BaseNode node) {
             if (node == null) {
                 return;
             }

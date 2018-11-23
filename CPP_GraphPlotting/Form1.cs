@@ -40,13 +40,14 @@ namespace CPP_GraphPlotting
                 myModel.Series.Add (series);
                 plot.Model = myModel;
 
+                plotter.GetGraphImage (graphPictureBox);
+
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
             }
         }
 
         private void button1_Click (object sender, EventArgs e) {
-            MessageBox.Show (plotter.GenerateGraphVIZTEXT ());
         }
     }
 }
