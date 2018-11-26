@@ -159,6 +159,27 @@ namespace CPP_GraphPlotting
                 head = new PowerNode (s, null);
             } else if (s[0] == 'x') {
                 head = new BasicFunctionXNode (s, null);
+            } else if (s[0] >= '0' && s[0] <= '9') {
+                string toParseIntoNumber = string.Empty;
+                int counter = 0;
+
+                if (s[0] == 'p') {
+                    toParseIntoNumber = "p";
+                } else {
+                    while (s[counter] >= '0' && s[counter] <= '9') {
+                        toParseIntoNumber += s[counter];
+                        counter++;
+                    }
+                }
+
+                string @newS = string.Empty;
+
+                for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
+                    newS += s[i];
+                }
+
+                // same stuff as in the first 'if'
+                head = new NumberNode (newS, null, toParseIntoNumber);
             }
 
 
