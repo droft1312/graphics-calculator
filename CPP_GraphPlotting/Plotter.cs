@@ -8,6 +8,7 @@ namespace CPP_GraphPlotting
     class Plotter
     {
         BaseNode head;
+        const double h = 0.001;
 
         // -------------------------------------------------
         // VARIABLES FOR OUTPUTTING GRAPHVIZ
@@ -37,6 +38,8 @@ namespace CPP_GraphPlotting
 
         private string nodeConnections = "";
         // -------------------------------------------------
+
+        #region GraphVizRepresentation
 
         /// <summary>
         /// Returns a complete image of graphviz
@@ -125,6 +128,22 @@ namespace CPP_GraphPlotting
 
             /* now recur on right subtree */
             PreOrderTraverse (node.right);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Gives the value of the derivative using the quotient formula
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public double ProcessDerivative_Quotient(double input) {
+            BaseNode @base = head;
+            double x1 = input - h;
+            double x2 = input + h;
+            double y1 = @base.Calculate (x1);
+            double y2 = @base.Calculate (x2);
+            return (y2 - y1) / (x2 - x1);
         }
 
         /// <summary>

@@ -17,6 +17,8 @@ namespace CPP_GraphPlotting
     {
         Plotter plotter;
 
+        bool plotGraph_called = false;
+
         public Form1 () {
             InitializeComponent ();
             plotter = new Plotter ();
@@ -42,12 +44,42 @@ namespace CPP_GraphPlotting
 
                 plotter.GetGraphImage (graphPictureBox);
 
+                plotGraph_called = true;
+
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
             }
         }
 
-        private void button1_Click (object sender, EventArgs e) {
+        private void findDerivativeButton_Click (object sender, EventArgs e) {
+            if (plotGraph_called) {
+
+                List<DataPoint> points = new List<DataPoint> ();
+                FunctionSeries series = new FunctionSeries ();
+
+                try {
+
+                    for (int i = -100; i < 100; i++) {
+                        points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i)));
+                    }
+
+                    series.Points.AddRange (points);
+                    PlotModel myModel = new PlotModel () { Title = "Plot (derivative)" };
+                    myModel.Series.Add (series);
+                    plot.Model = myModel;
+
+                    plotter.GetGraphImage (graphPictureBox);
+
+                    plotGraph_called = true;
+
+                } catch (Exception ex) {
+                    MessageBox.Show (ex.Message);
+                }
+
+
+            } else {
+                MessageBox.Show ("Please input and plot function first");
+            }
         }
     }
 }
