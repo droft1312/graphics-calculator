@@ -81,5 +81,9 @@ namespace CPP_GraphPlotting
                 MessageBox.Show ("Please input and plot function first");
             }
         }
+
+        private void trueDerivativeButton_Click (object sender, EventArgs e) {
+
+        }
     }
 }

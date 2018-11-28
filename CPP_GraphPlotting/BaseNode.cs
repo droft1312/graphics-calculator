@@ -163,6 +163,18 @@ namespace CPP_GraphPlotting
         public override string Print () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            SumNode node = new SumNode (this.left, this.right, parent);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+            node.left.CreateDerivativeTree (this);
+            node.right.CreateDerivativeTree (this, false);
+        }
     }
 
     class DivisionNode : BaseNode
@@ -199,10 +211,10 @@ namespace CPP_GraphPlotting
             }
         }
 
-        public NumberNode (bool zero, BaseNode parent) {
+        public NumberNode (BaseNode parent, double realValue) {
             value = string.Empty;
             this.parent = parent;
-            realValue = 0;
+            this.realValue = realValue;
         }
 
         public double RealValue { get { return realValue; } }
@@ -214,8 +226,13 @@ namespace CPP_GraphPlotting
         public override double Calculate (double number) => realValue;
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            NumberNode node = new NumberNode (true, parent);
-            node.realValue = 0;
+            NumberNode node = new NumberNode (parent, 0);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
             return;
         }
 
@@ -238,7 +255,14 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            // do nothing
+            NumberNode node = new NumberNode (parent, 1);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+            return;
         }
 
         public override BaseNode ReturnDerivative () {

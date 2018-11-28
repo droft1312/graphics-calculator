@@ -33,6 +33,7 @@
             this.plot = new OxyPlot.WindowsForms.PlotView();
             this.graphPictureBox = new System.Windows.Forms.PictureBox();
             this.findDerivativeButton = new System.Windows.Forms.Button();
+            this.trueDerivativeButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,7 +80,7 @@
             // 
             this.graphPictureBox.Location = new System.Drawing.Point(15, 444);
             this.graphPictureBox.Name = "graphPictureBox";
-            this.graphPictureBox.Size = new System.Drawing.Size(773, 318);
+            this.graphPictureBox.Size = new System.Drawing.Size(773, 531);
             this.graphPictureBox.TabIndex = 5;
             this.graphPictureBox.TabStop = false;
             // 
@@ -87,17 +88,28 @@
             // 
             this.findDerivativeButton.Location = new System.Drawing.Point(411, 13);
             this.findDerivativeButton.Name = "findDerivativeButton";
-            this.findDerivativeButton.Size = new System.Drawing.Size(75, 23);
+            this.findDerivativeButton.Size = new System.Drawing.Size(112, 23);
             this.findDerivativeButton.TabIndex = 6;
-            this.findDerivativeButton.Text = "Derivative";
+            this.findDerivativeButton.Text = "Derivative Quotient";
             this.findDerivativeButton.UseVisualStyleBackColor = true;
             this.findDerivativeButton.Click += new System.EventHandler(this.findDerivativeButton_Click);
+            // 
+            // trueDerivativeButton
+            // 
+            this.trueDerivativeButton.Location = new System.Drawing.Point(529, 13);
+            this.trueDerivativeButton.Name = "trueDerivativeButton";
+            this.trueDerivativeButton.Size = new System.Drawing.Size(75, 23);
+            this.trueDerivativeButton.TabIndex = 7;
+            this.trueDerivativeButton.Text = "Derivative";
+            this.trueDerivativeButton.UseVisualStyleBackColor = true;
+            this.trueDerivativeButton.Click += new System.EventHandler(this.trueDerivativeButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 774);
+            this.ClientSize = new System.Drawing.Size(800, 987);
+            this.Controls.Add(this.trueDerivativeButton);
             this.Controls.Add(this.findDerivativeButton);
             this.Controls.Add(this.graphPictureBox);
             this.Controls.Add(this.plot);
@@ -120,6 +132,7 @@
         private OxyPlot.WindowsForms.PlotView plot;
         private System.Windows.Forms.PictureBox graphPictureBox;
         private System.Windows.Forms.Button findDerivativeButton;
+        private System.Windows.Forms.Button trueDerivativeButton;
     }
 }
 

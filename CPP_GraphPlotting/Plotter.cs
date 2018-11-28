@@ -135,9 +135,8 @@ namespace CPP_GraphPlotting
 
         
         public void CreateDerivativeTree() {
-            if (derivativeRoot == null) {
-
-            }
+            derivativeRoot = root;
+            derivativeRoot.CreateDerivativeTree (null);
         }
 
         /// <summary>
