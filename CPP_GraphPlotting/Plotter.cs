@@ -7,7 +7,8 @@ namespace CPP_GraphPlotting
 {
     class Plotter
     {
-        BaseNode head;
+        BaseNode root;
+        BaseNode derivativeRoot;
         const double h = 0.001;
 
         // -------------------------------------------------
@@ -97,10 +98,10 @@ namespace CPP_GraphPlotting
             transitional_output = string.Empty;
             nodeConnections = string.Empty;
             counterForInorderTraversal = 0;
-            PreOrderTraverse (head);
+            PreOrderTraverse (root);
             // -------------------------------------------------------------------
 
-            PrintNodeConnections (head);
+            PrintNodeConnections (root);
             output += transitional_output;
             output += nodeConnections;
 
@@ -132,13 +133,20 @@ namespace CPP_GraphPlotting
 
         #endregion
 
+        
+        public void CreateDerivativeTree() {
+            if (derivativeRoot == null) {
+
+            }
+        }
+
         /// <summary>
         /// Gives the value of the derivative using the quotient formula
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public double ProcessDerivative_Quotient(double input) {
-            BaseNode @base = head;
+            BaseNode @base = root;
             double x1 = input - h;
             double x2 = input + h;
             double y1 = @base.Calculate (x1);
@@ -152,7 +160,7 @@ namespace CPP_GraphPlotting
         /// <param name="input"></param>
         /// <returns></returns>
         public double ProcessTree (double input) {
-            BaseNode @base = head;
+            BaseNode @base = root;
             return @base.Calculate (input);
         }
 
@@ -163,21 +171,21 @@ namespace CPP_GraphPlotting
         public void ProcessString (string s) {
 
             if (s[0] == 's') {
-                head = new SinNode (s, null);
+                root = new SinNode (s, null);
             } else if (s[0] == '*') {
-                head = new MultiplicationNode (s, null);
+                root = new MultiplicationNode (s, null);
             } else if (s[0] == '+') {
-                head = new SumNode (s, null);
+                root = new SumNode (s, null);
             } else if (s[0] == '/') {
-                head = new DivisionNode (s, null);
+                root = new DivisionNode (s, null);
             } else if (s[0] == '-') {
-                head = new SubstractionNode (s, null);
+                root = new SubstractionNode (s, null);
             } else if (s[0] == 'c') {
-                head = new CosNode (s, null);
+                root = new CosNode (s, null);
             } else if (s[0] == '^') {
-                head = new PowerNode (s, null);
+                root = new PowerNode (s, null);
             } else if (s[0] == 'x') {
-                head = new BasicFunctionXNode (s, null);
+                root = new BasicFunctionXNode (s, null);
             } else if (s[0] >= '0' && s[0] <= '9') {
                 string toParseIntoNumber = string.Empty;
                 int counter = 0;
@@ -198,11 +206,11 @@ namespace CPP_GraphPlotting
                 }
 
                 // same stuff as in the first 'if'
-                head = new NumberNode (newS, null, toParseIntoNumber);
+                root = new NumberNode (newS, null, toParseIntoNumber);
             }
 
 
-            CreateTree (head.value, head);
+            CreateTree (root.value, root);
 
         }
 

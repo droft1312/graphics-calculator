@@ -49,8 +49,19 @@ namespace CPP_GraphPlotting
             return -1;
         }
 
+        /// <summary>
+        /// For printing out node-connections (graphviz)
+        /// </summary>
+        /// <returns></returns>
         public virtual string Print () {
             return "";
+        }
+
+        public virtual BaseNode ReturnDerivative() {
+            return null;
+        }
+
+        public virtual void CreateDerivativeTree(BaseNode parent, bool isLeft = true) {
         }
     }
 
@@ -61,9 +72,14 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return left.Calculate (number) - right.Calculate (number);
+        public SubstractionNode (BaseNode left, BaseNode right, BaseNode parent) {
+            value = string.Empty;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
         }
+
+        public override double Calculate (double number) => left.Calculate (number) - right.Calculate (number);
 
         public override string ToString () {
             return "-";
@@ -71,6 +87,18 @@ namespace CPP_GraphPlotting
 
         public override string Print () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            SubstractionNode node = new SubstractionNode (this.left, this.right, parent);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+            node.left.CreateDerivativeTree (node);
+            node.right.CreateDerivativeTree (node, false);
         }
     }
 
@@ -81,9 +109,14 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return left.Calculate (number) * right.Calculate (number);
+        public MultiplicationNode (BaseNode left, BaseNode right, BaseNode parent) {
+            value = string.Empty;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
         }
+
+        public override double Calculate (double number) => left.Calculate (number) * right.Calculate (number);
 
         public override string ToString () {
             return "*";
@@ -91,6 +124,20 @@ namespace CPP_GraphPlotting
 
         public override string Print () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            SumNode sum = new SumNode (this, this, this.parent);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = sum;
+                else
+                    parent.right = sum;
+            }
+
+            sum.left.left.CreateDerivativeTree (sum.left);
+            sum.right.right.CreateDerivativeTree (sum.right, false);
         }
     }
 
@@ -100,11 +147,14 @@ namespace CPP_GraphPlotting
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
-
-
-        public override double Calculate (double number) {
-            return left.Calculate (number) + right.Calculate (number);
+        public SumNode (BaseNode left, BaseNode right, BaseNode parent) {
+            value = string.Empty;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
         }
+
+        public override double Calculate (double number) => left.Calculate (number) + right.Calculate (number);
 
         public override string ToString () {
             return "+";
@@ -122,9 +172,7 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return left.Calculate (number) / right.Calculate (number);
-        }
+        public override double Calculate (double number) => left.Calculate (number) / right.Calculate (number);
 
         public override string ToString () {
             return "/";
@@ -151,16 +199,29 @@ namespace CPP_GraphPlotting
             }
         }
 
+        public NumberNode (bool zero, BaseNode parent) {
+            value = string.Empty;
+            this.parent = parent;
+            realValue = 0;
+        }
+
         public double RealValue { get { return realValue; } }
 
         public override string ToString () {
             return realValue.ToString ();
         }
 
-        public override double Calculate (double number) {
-            return realValue;
+        public override double Calculate (double number) => realValue;
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            NumberNode node = new NumberNode (true, parent);
+            node.realValue = 0;
+            return;
         }
 
+        public override BaseNode ReturnDerivative () {
+            return null;
+        }
     }
 
     class BasicFunctionXNode : BaseNode
@@ -170,12 +231,18 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return number;
-        }
+        public override double Calculate (double number) => number;
 
         public override string ToString () {
             return "x";
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            // do nothing
+        }
+
+        public override BaseNode ReturnDerivative () {
+            return null;
         }
     }
 
@@ -186,15 +253,27 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return Math.Sin (left.Calculate (number));
-        }
+        public override double Calculate (double number) => Math.Sin (left.Calculate (number));
+
         public override string ToString () {
             return "sin";
         }
 
         public override string Print () {
             return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            if (!(this.left is BasicFunctionXNode || this.left is NumberNode)) {
+                MultiplicationNode multiplication = new MultiplicationNode (this.left, this.ReturnDerivative (), this.parent);
+                multiplication.left.CreateDerivativeTree (multiplication);
+            }
+        }
+
+        public override BaseNode ReturnDerivative () {
+            CosNode cosNode = new CosNode (left, parent);
+            //this.parent = null; // NOT SURE ABOUT THIS
+            return cosNode;
         }
     }
 
@@ -206,9 +285,12 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return Math.Cos (left.Calculate (number));
+        public CosNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
         }
+
+        public override double Calculate (double number) => Math.Cos (left.Calculate (number));
 
         public override string ToString () {
             return "cos";
@@ -226,9 +308,7 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
-        public override double Calculate (double number) {
-            return Math.Pow (left.Calculate (number), right.Calculate (number));
-        }
+        public override double Calculate (double number) => Math.Pow (left.Calculate (number), right.Calculate (number));
 
         public override string ToString () {
             return "^";
