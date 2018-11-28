@@ -42,7 +42,7 @@ namespace CPP_GraphPlotting
                 myModel.Series.Add (series);
                 plot.Model = myModel;
 
-                plotter.GetGraphImage (graphPictureBox);
+                plotter.GetGraphImage (graphPictureBox, plotter.Root);
 
                 plotGraph_called = true;
 
@@ -68,7 +68,7 @@ namespace CPP_GraphPlotting
                     myModel.Series.Add (series);
                     plot.Model = myModel;
 
-                    plotter.GetGraphImage (graphPictureBox);
+                    plotter.GetGraphImage (graphPictureBox, plotter.Root);
 
                     plotGraph_called = true;
 

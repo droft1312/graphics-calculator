@@ -11,31 +11,14 @@ namespace CPP_GraphPlotting
         BaseNode derivativeRoot;
         const double h = 0.001;
 
+        public BaseNode Root { get { return root; } }
+
         // -------------------------------------------------
         // VARIABLES FOR OUTPUTTING GRAPHVIZ
         // DON'T MIND THEM
         string transitional_output = string.Empty;
         string output = string.Empty;
         int counterForInorderTraversal = 0;
-
-        /* Algorithm for generateGraphVIZTEXT()
-         * Input:
-            node1 [ label = "+" ]
-            node2 [ label = "-" ]
-            node3 [ label = "x" ]
-            node4 [ label = "3" ]
-            node5 [ label = "x" ]
-
-            Output:
-            node1 [ label = "+" ]
-            node2 [ label = "-" ]
-            node3 [ label = "x" ]
-            node4 [ label = "3" ]
-            node5 [ label = "x" ]
-            node1 -- node2
-            node2 -- node3
-            node2 -- node4
-            node1 -- node5 */
 
         private string nodeConnections = "";
         // -------------------------------------------------
@@ -46,8 +29,8 @@ namespace CPP_GraphPlotting
         /// Returns a complete image of graphviz
         /// </summary>
         /// <returns></returns>
-        public void GetGraphImage(PictureBox pictureBox) {
-            WriteFileGRAPHVIZ ();
+        public void GetGraphImage(PictureBox pictureBox, BaseNode baseNode) {
+            WriteFileGRAPHVIZ (baseNode);
             Process dot = new Process ();
             dot.StartInfo.FileName = "dot.exe";
             dot.StartInfo.Arguments = "-Tpng -oabc.png abc.dot";
@@ -59,9 +42,9 @@ namespace CPP_GraphPlotting
         /// <summary>
         /// Writes output of <see cref="GenerateGraphVIZTEXT"/>() to a specific file
         /// </summary>
-        private void WriteFileGRAPHVIZ() {
+        private void WriteFileGRAPHVIZ(BaseNode baseNode) {
             try {
-                File.WriteAllText ("abc.dot", GenerateGraphVIZTEXT ());
+                File.WriteAllText ("abc.dot", GenerateGraphVIZTEXT (baseNode));
             } catch (Exception e) {
                 MessageBox.Show (e.Message);
             }
@@ -91,17 +74,17 @@ namespace CPP_GraphPlotting
         /// Generates text that would be inputted to GraphVIZ
         /// </summary>
         /// <returns>Input string for graphviz</returns>
-        private string GenerateGraphVIZTEXT () {
+        private string GenerateGraphVIZTEXT (BaseNode baseNode) {
             // -------------------------------------------------------------------
             // resetting all variables
             output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
             transitional_output = string.Empty;
             nodeConnections = string.Empty;
             counterForInorderTraversal = 0;
-            PreOrderTraverse (root);
+            PreOrderTraverse (baseNode);
             // -------------------------------------------------------------------
 
-            PrintNodeConnections (root);
+            PrintNodeConnections (baseNode);
             output += transitional_output;
             output += nodeConnections;
 
