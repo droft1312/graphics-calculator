@@ -30,7 +30,7 @@ namespace CPP_GraphPlotting
             number = ++NodeCounter.Count;
         }
 
-        public BaseNode(string value) {
+        public BaseNode(string value) : this() {
             this.value = value;
             left = right = null;
         }

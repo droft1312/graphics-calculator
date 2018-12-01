@@ -83,6 +83,8 @@ namespace CPP_GraphPlotting
         }
 
         private void trueDerivativeButton_Click (object sender, EventArgs e) {
+            var v = plotter.CloneTree (plotter.Root);
+            MessageBox.Show ("");
         }
     }
 }
