@@ -320,7 +320,12 @@ namespace CPP_GraphPlotting
             }
         }
 
-        public BaseNode CloneTree(BaseNode root) {
+        /// <summary>
+        /// Clones a specified tree based on a given node 'root'
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static BaseNode CloneTree(BaseNode root) {
             if (root == null) return null;
 
             BaseNode newNode = null;

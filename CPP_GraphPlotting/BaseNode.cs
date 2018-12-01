@@ -30,7 +30,7 @@ namespace CPP_GraphPlotting
             number = ++NodeCounter.Count;
         }
 
-        public BaseNode(string value) : this() {
+        public BaseNode (string value) : this () {
             this.value = value;
             left = right = null;
         }
@@ -98,7 +98,7 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            SubstractionNode node = new SubstractionNode (this.left, this.right, parent);
+            SubstractionNode node = new SubstractionNode (Plotter.CloneTree(this.left), Plotter.CloneTree(this.right), parent);
             if (parent != null) {
                 if (isLeft)
                     parent.left = node;
@@ -138,7 +138,7 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            SumNode sum = new SumNode (this, this, this.parent);
+            SumNode sum = new SumNode (Plotter.CloneTree(this), Plotter.CloneTree(this), this.parent);
 
             if (parent != null) {
                 if (isLeft)
