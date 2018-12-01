@@ -324,6 +324,10 @@ namespace CPP_GraphPlotting
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
         }
+        public SinNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
+        }
 
         public SinNode (string value) : base (value) {
         }
@@ -339,10 +343,17 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            if (!(this.left is BasicFunctionXNode || this.left is NumberNode)) {
-                MultiplicationNode multiplication = new MultiplicationNode (this.left, this.ReturnDerivative (), this.parent);
-                multiplication.left.CreateDerivativeTree (multiplication);
+            CosNode cosNode = new CosNode (Plotter.CloneTree (this.left), null);
+            MultiplicationNode node = new MultiplicationNode (Plotter.CloneTree (this.left), cosNode, null);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
             }
+
+            node.left.CreateDerivativeTree (node);
         }
 
         public override BaseNode ReturnDerivative () {
@@ -376,6 +387,21 @@ namespace CPP_GraphPlotting
 
         public override string Print () {
             return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            SinNode sinNode = new SinNode (Plotter.CloneTree (this.left), null);
+            MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, -1), sinNode, null);
+            MultiplicationNode node = new MultiplicationNode (Plotter.CloneTree (this.left), multiplication, null);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+
+            node.left.CreateDerivativeTree (node);
         }
     }
 
