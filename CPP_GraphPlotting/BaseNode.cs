@@ -107,6 +107,8 @@ namespace CPP_GraphPlotting
             }
             node.left.CreateDerivativeTree (node);
             node.right.CreateDerivativeTree (node, false);
+
+            Plotter.SetDerivativeRoot (node);
         }
     }
 
@@ -149,6 +151,8 @@ namespace CPP_GraphPlotting
 
             sum.left.left.CreateDerivativeTree (sum.left);
             sum.right.right.CreateDerivativeTree (sum.right, false);
+
+            Plotter.SetDerivativeRoot (sum);
         }
     }
 
@@ -188,6 +192,8 @@ namespace CPP_GraphPlotting
             }
             node.left.CreateDerivativeTree (node);
             node.right.CreateDerivativeTree (node, false);
+
+            Plotter.SetDerivativeRoot (node);
         }
     }
 
@@ -234,6 +240,8 @@ namespace CPP_GraphPlotting
 
             node.left.left.left.CreateDerivativeTree (node.left.left);
             node.left.right.right.CreateDerivativeTree (node.left.right, false);
+
+            Plotter.SetDerivativeRoot (node);
         }
     }
 
@@ -278,6 +286,9 @@ namespace CPP_GraphPlotting
                 else
                     parent.right = node;
             }
+
+            Plotter.SetDerivativeRoot (node);
+
             return;
         }
 
@@ -310,6 +321,9 @@ namespace CPP_GraphPlotting
                 else
                     parent.right = node;
             }
+
+            Plotter.SetDerivativeRoot (node);
+
             return;
         }
 
@@ -354,6 +368,8 @@ namespace CPP_GraphPlotting
             }
 
             node.left.CreateDerivativeTree (node);
+
+            Plotter.SetDerivativeRoot (node);
         }
 
         public override BaseNode ReturnDerivative () {
@@ -402,6 +418,8 @@ namespace CPP_GraphPlotting
             }
 
             node.left.CreateDerivativeTree (node);
+
+            Plotter.SetDerivativeRoot (node);
         }
     }
 
@@ -429,6 +447,10 @@ namespace CPP_GraphPlotting
         }
         public override string Print () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            base.CreateDerivativeTree (parent, isLeft);
         }
     }
 }

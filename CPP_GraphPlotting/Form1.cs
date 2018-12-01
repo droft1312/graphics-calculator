@@ -83,7 +83,8 @@ namespace CPP_GraphPlotting
         }
 
         private void trueDerivativeButton_Click (object sender, EventArgs e) {
-            plotter.Root.CreateDerivativeTree (null);
+            plotter.CreateDerivativeTree ();
+            plotter.GetGraphImage (graphPictureBox, plotter.DerivativeRoot);
         }
     }
 }

@@ -7,11 +7,12 @@ namespace CPP_GraphPlotting
 {
     class Plotter
     {
-        BaseNode root;
-        BaseNode derivativeRoot;
+        private BaseNode root;
+        private static BaseNode derivativeRoot = null;
         const double h = 0.001;
 
         public BaseNode Root { get { return root; } }
+        public BaseNode DerivativeRoot { get { return derivativeRoot; } }
 
         // -------------------------------------------------
         // VARIABLES FOR OUTPUTTING GRAPHVIZ
@@ -115,12 +116,6 @@ namespace CPP_GraphPlotting
         }
 
         #endregion
-
-        
-        public void CreateDerivativeTree() {
-            derivativeRoot = root;
-            derivativeRoot.CreateDerivativeTree (null);
-        }
 
         /// <summary>
         /// Gives the value of the derivative using the quotient formula
@@ -318,6 +313,15 @@ namespace CPP_GraphPlotting
                 s = GetStringFromIndex (s, 1);
                 CreateTree (s, baseNode);
             }
+        }
+
+        public void CreateDerivativeTree () {
+            derivativeRoot = root;
+            derivativeRoot.CreateDerivativeTree (null);
+        }
+
+        public static void SetDerivativeRoot (BaseNode node) {
+            derivativeRoot = node;
         }
 
         /// <summary>
