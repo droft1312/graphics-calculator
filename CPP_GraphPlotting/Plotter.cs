@@ -320,6 +320,35 @@ namespace CPP_GraphPlotting
             }
         }
 
+        public BaseNode CloneTree(BaseNode root) {
+            if (root == null) return null;
+
+            BaseNode newNode = null;
+            if (root is SubstractionNode) {
+                newNode = new SubstractionNode (root.value);
+            } else if (root is MultiplicationNode) {
+                newNode = new MultiplicationNode (root.value);
+            } else if (root is SumNode) {
+                newNode = new SumNode (root.value);
+            } else if (root is DivisionNode) {
+                newNode = new DivisionNode (root.value);
+            } else if (root is NumberNode) {
+                newNode = new NumberNode (null, (root as NumberNode).RealValue);
+            } else if (root is BasicFunctionXNode) {
+                newNode = new BasicFunctionXNode (root.value);
+            } else if (root is SinNode) {
+                newNode = new SinNode (root.value);
+            } else if (root is CosNode) {
+                newNode = new CosNode (root.value);
+            } else if (root is PowerNode) {
+                newNode = new PowerNode (root.value);
+            }
+
+            newNode.left = CloneTree (root.left);
+            newNode.right = CloneTree (root.right);
+            return newNode;
+        }
+
         /// <summary>
         /// Returns a new string that starts from a specified index
         /// </summary>

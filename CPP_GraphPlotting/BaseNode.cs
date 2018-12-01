@@ -30,6 +30,11 @@ namespace CPP_GraphPlotting
             number = ++NodeCounter.Count;
         }
 
+        public BaseNode(string value) {
+            this.value = value;
+            left = right = null;
+        }
+
         public void Insert (BaseNode node) {
             if (left == null) {
                 left = node;
@@ -79,6 +84,9 @@ namespace CPP_GraphPlotting
             this.parent = parent;
         }
 
+        public SubstractionNode (string value) : base (value) {
+        }
+
         public override double Calculate (double number) => left.Calculate (number) - right.Calculate (number);
 
         public override string ToString () {
@@ -114,6 +122,9 @@ namespace CPP_GraphPlotting
             this.left = left;
             this.right = right;
             this.parent = parent;
+        }
+
+        public MultiplicationNode (string value) : base (value) {
         }
 
         public override double Calculate (double number) => left.Calculate (number) * right.Calculate (number);
@@ -154,6 +165,9 @@ namespace CPP_GraphPlotting
             this.parent = parent;
         }
 
+        public SumNode (string value) : base (value) {
+        }
+
         public override double Calculate (double number) => left.Calculate (number) + right.Calculate (number);
 
         public override string ToString () {
@@ -182,6 +196,9 @@ namespace CPP_GraphPlotting
         public DivisionNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public DivisionNode (string value) : base (value) {
         }
 
         public override double Calculate (double number) => left.Calculate (number) / right.Calculate (number);
@@ -217,6 +234,9 @@ namespace CPP_GraphPlotting
             this.realValue = realValue;
         }
 
+        public NumberNode (string value) : base (value) {
+        }
+
         public double RealValue { get { return realValue; } }
 
         public override string ToString () {
@@ -248,6 +268,9 @@ namespace CPP_GraphPlotting
             parent = parentNode;
         }
 
+        public BasicFunctionXNode (string value) : base (value) {
+        }
+
         public override double Calculate (double number) => number;
 
         public override string ToString () {
@@ -275,6 +298,9 @@ namespace CPP_GraphPlotting
         public SinNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public SinNode (string value) : base (value) {
         }
 
         public override double Calculate (double number) => Math.Sin (left.Calculate (number));
@@ -314,6 +340,9 @@ namespace CPP_GraphPlotting
             this.parent = parent;
         }
 
+        public CosNode (string value) : base (value) {
+        }
+
         public override double Calculate (double number) => Math.Cos (left.Calculate (number));
 
         public override string ToString () {
@@ -330,6 +359,9 @@ namespace CPP_GraphPlotting
         public PowerNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public PowerNode (string value) : base (value) {
         }
 
         public override double Calculate (double number) => Math.Pow (left.Calculate (number), right.Calculate (number));
