@@ -179,15 +179,15 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            SumNode node = new SumNode (this.left, this.right, parent);
+            SumNode node = new SumNode (Plotter.CloneTree(this.left), Plotter.CloneTree(this.right), parent);
             if (parent != null) {
                 if (isLeft)
                     parent.left = node;
                 else
                     parent.right = node;
             }
-            node.left.CreateDerivativeTree (this);
-            node.right.CreateDerivativeTree (this, false);
+            node.left.CreateDerivativeTree (node);
+            node.right.CreateDerivativeTree (node, false);
         }
     }
 
@@ -201,6 +201,13 @@ namespace CPP_GraphPlotting
         public DivisionNode (string value) : base (value) {
         }
 
+        public DivisionNode (BaseNode left, BaseNode right, BaseNode parent, string value = "") {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
+        }
+
         public override double Calculate (double number) => left.Calculate (number) / right.Calculate (number);
 
         public override string ToString () {
@@ -209,6 +216,24 @@ namespace CPP_GraphPlotting
 
         public override string Print () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+        }
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            MultiplicationNode multiplicationNode1 = new MultiplicationNode (Plotter.CloneTree (this.left), Plotter.CloneTree (this.right), null);
+            MultiplicationNode multiplicationNode2 = new MultiplicationNode (Plotter.CloneTree (this.left), Plotter.CloneTree (this.right), null);
+            SubstractionNode substraction = new SubstractionNode (multiplicationNode1, multiplicationNode2, null);
+            PowerNode power = new PowerNode (Plotter.CloneTree (this.right), new NumberNode (null, 2), null);
+            DivisionNode node = new DivisionNode (substraction, power, null);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+
+            node.left.left.left.CreateDerivativeTree (node.left.left);
+            node.left.right.right.CreateDerivativeTree (node.left.right, false);
         }
     }
 
@@ -359,6 +384,13 @@ namespace CPP_GraphPlotting
         public PowerNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
             parent = parentNode;
+        }
+
+        public PowerNode (BaseNode left, BaseNode right, BaseNode parent, string value = "") {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
         }
 
         public PowerNode (string value) : base (value) {
