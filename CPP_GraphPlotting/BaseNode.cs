@@ -22,8 +22,6 @@ namespace CPP_GraphPlotting
         /// </summary>
         public BaseNode left, right, parent;
 
-        public bool visited = false;
-
         public int number;
 
         public BaseNode () {
