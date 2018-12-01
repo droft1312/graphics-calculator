@@ -315,11 +315,18 @@ namespace CPP_GraphPlotting
             }
         }
 
+        /// <summary>
+        /// Sets the derivateRoot to the root of a last inputted function and gets its derivative
+        /// </summary>
         public void CreateDerivativeTree () {
             derivativeRoot = root;
             derivativeRoot.CreateDerivativeTree (null);
         }
 
+        /// <summary>
+        /// Used for tracking the derivative root. Is used in Nodes
+        /// </summary>
+        /// <param name="node"></param>
         public static void SetDerivativeRoot (BaseNode node) {
             derivativeRoot = node;
         }

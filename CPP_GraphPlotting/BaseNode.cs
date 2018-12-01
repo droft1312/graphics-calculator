@@ -62,10 +62,11 @@ namespace CPP_GraphPlotting
             return "";
         }
 
-        public virtual BaseNode ReturnDerivative() {
-            return null;
-        }
-
+        /// <summary>
+        /// Calculates the derivative of a tree based on a parent node
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="isLeft"></param>
         public virtual void CreateDerivativeTree(BaseNode parent, bool isLeft = true) {
         }
     }
@@ -291,10 +292,6 @@ namespace CPP_GraphPlotting
 
             return;
         }
-
-        public override BaseNode ReturnDerivative () {
-            return null;
-        }
     }
 
     class BasicFunctionXNode : BaseNode
@@ -325,10 +322,6 @@ namespace CPP_GraphPlotting
             Plotter.SetDerivativeRoot (node);
 
             return;
-        }
-
-        public override BaseNode ReturnDerivative () {
-            return null;
         }
     }
 
@@ -370,12 +363,6 @@ namespace CPP_GraphPlotting
             node.left.CreateDerivativeTree (node);
 
             Plotter.SetDerivativeRoot (node);
-        }
-
-        public override BaseNode ReturnDerivative () {
-            CosNode cosNode = new CosNode (left, parent);
-            //this.parent = null; // NOT SURE ABOUT THIS
-            return cosNode;
         }
     }
 
