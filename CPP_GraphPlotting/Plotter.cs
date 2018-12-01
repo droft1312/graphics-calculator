@@ -122,7 +122,7 @@ namespace CPP_GraphPlotting
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public double ProcessDerivative_Quotient(double input) {
+        public double ProcessDerivative_Quotient(double input, BaseNode root) {
             BaseNode @base = root;
             double x1 = input - h;
             double x2 = input + h;
@@ -136,7 +136,7 @@ namespace CPP_GraphPlotting
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public double ProcessTree (double input) {
+        public double ProcessTree (double input, BaseNode root) {
             BaseNode @base = root;
             return @base.Calculate (input);
         }

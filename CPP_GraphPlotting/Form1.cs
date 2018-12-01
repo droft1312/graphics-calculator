@@ -34,7 +34,7 @@ namespace CPP_GraphPlotting
                 plotter.ProcessString (input);
 
                 for (int i = -100; i < 100; i++) {
-                    points.Add(new DataPoint (i, plotter.ProcessTree (i)));
+                    points.Add(new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
                 series.Points.AddRange (points);
@@ -60,7 +60,7 @@ namespace CPP_GraphPlotting
                 try {
 
                     for (int i = -100; i < 100; i++) {
-                        points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i)));
+                        points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i, plotter.Root)));
                     }
 
                     series.Points.AddRange (points);
@@ -85,6 +85,26 @@ namespace CPP_GraphPlotting
         private void trueDerivativeButton_Click (object sender, EventArgs e) {
             plotter.CreateDerivativeTree ();
             plotter.GetGraphImage (graphPictureBox, plotter.DerivativeRoot);
+
+            List<DataPoint> points = new List<DataPoint> ();
+            FunctionSeries series = new FunctionSeries ();
+
+            try {
+
+                for (int i = -100; i < 100; i++) {
+                    points.Add (new DataPoint (i, plotter.ProcessTree(i, plotter.DerivativeRoot)));
+                }
+
+                series.Points.AddRange (points);
+                PlotModel myModel = new PlotModel () { Title = "Plot (derivative)" };
+                myModel.Series.Add (series);
+                plot.Model = myModel;
+
+                plotGraph_called = true;
+
+            } catch (Exception ex) {
+                MessageBox.Show (ex.Message);
+            }
         }
     }
 }
