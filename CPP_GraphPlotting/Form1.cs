@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using OxyPlot;
 using OxyPlot.Series;
 
+using MathNet;
+using MathNet.Numerics;
+
 namespace CPP_GraphPlotting
 {
     public partial class Form1 : Form

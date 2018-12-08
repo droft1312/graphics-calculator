@@ -409,6 +409,47 @@ namespace CPP_GraphPlotting
         }
     }
 
+    class FactorialNode : BaseNode
+    {
+        public FactorialNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+
+        public FactorialNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
+        }
+
+        public FactorialNode (string value) : base(value) {
+
+        }
+
+        public override double Calculate (double number) => MathNet.Numerics.SpecialFunctions.Factorial ((int)left.Calculate(number));
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            NumberNode node = new NumberNode (parent, 0);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+
+            Plotter.SetDerivativeRoot (node);
+
+            return;
+        }
+
+        public override string ToString () {
+            return "!";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+    }
+
     class PowerNode : BaseNode
     {
         public PowerNode (string input, BaseNode parentNode) {

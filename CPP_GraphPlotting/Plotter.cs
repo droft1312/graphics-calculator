@@ -161,6 +161,8 @@ namespace CPP_GraphPlotting
                 root = new CosNode (s, null);
             } else if (s[0] == '^') {
                 root = new PowerNode (s, null);
+            } else if (s[0] == '!') {
+                root = new FactorialNode (s, null);
             } else if (s[0] == 'x') {
                 root = new BasicFunctionXNode (s, null);
             } else if (s[0] >= '0' && s[0] <= '9') {
@@ -207,7 +209,7 @@ namespace CPP_GraphPlotting
                 }
 
                 // same stuff as in the first 'if'
-                root = new NumberNode (newS, null, "-"+toParseIntoNumber);
+                root = new NumberNode (newS, null, "-" + toParseIntoNumber);
             }
 
 
@@ -270,6 +272,12 @@ namespace CPP_GraphPlotting
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
+            } else if (s[0] == '!') {
+
+                FactorialNode node = new FactorialNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
             } else if (s[0] == 'p' || (s[0] >= '0' && s[0] <= '9')) {
 
                 // stuff below just parses number
@@ -318,7 +326,7 @@ namespace CPP_GraphPlotting
                     newS += s[i];
                 }
 
-                NumberNode node = new NumberNode (newS, baseNode, "-"+toParseIntoNumber);
+                NumberNode node = new NumberNode (newS, baseNode, "-" + toParseIntoNumber);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
