@@ -22,6 +22,10 @@ namespace CPP_GraphPlotting
         public Form1 () {
             InitializeComponent ();
             plotter = new Plotter ();
+
+            //this.FormBorderStyle = FormBorderStyle.None;
+            // fill the screen
+            this.Bounds = Screen.PrimaryScreen.Bounds;
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -33,7 +37,9 @@ namespace CPP_GraphPlotting
             try {
                 plotter.ProcessString (input);
 
-                for (int i = -100; i < 100; i++) {
+                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
+
+                for (int i = (xValue == -1 ? -100 : -1*xValue); i < (xValue == -1 ? 100 : xValue); i++) {
                     points.Add(new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
@@ -59,7 +65,9 @@ namespace CPP_GraphPlotting
 
                 try {
 
-                    for (int i = -100; i < 100; i++) {
+                    int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
+
+                    for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
                         points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i, plotter.Root)));
                     }
 
@@ -91,8 +99,10 @@ namespace CPP_GraphPlotting
 
             try {
 
-                for (int i = -100; i < 100; i++) {
-                    points.Add (new DataPoint (i, plotter.ProcessTree(i, plotter.DerivativeRoot)));
+                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
+
+                for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                    points.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.DerivativeRoot)));
                 }
 
                 series.Points.AddRange (points);
@@ -105,6 +115,24 @@ namespace CPP_GraphPlotting
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
             }
+        }
+
+        private void derivativeButton_Click (object sender, EventArgs e) {
+            if (quotientRadioButton.Checked) {
+                findDerivativeButton_Click (sender, e);
+            } else if (newtonRadioButton.Checked) {
+                trueDerivativeButton_Click (sender, e);
+            } else {
+                MessageBox.Show ("Please choose the method!", "Error");
+            }
+        }
+
+        private void graphPictureBox_Resize (object sender, EventArgs e) {
+            MessageBox.Show ("");
+        }
+
+        private void Form1_Load (object sender, EventArgs e) {
+
         }
     }
 }
