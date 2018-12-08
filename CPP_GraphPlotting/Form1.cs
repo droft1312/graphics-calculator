@@ -18,6 +18,7 @@ namespace CPP_GraphPlotting
         Plotter plotter;
 
         bool plotGraph_called = false;
+        bool lightThemeOn = true;
 
         public Form1 () {
             InitializeComponent ();
@@ -26,6 +27,7 @@ namespace CPP_GraphPlotting
             //this.FormBorderStyle = FormBorderStyle.None;
             // fill the screen
             this.Bounds = Screen.PrimaryScreen.Bounds;
+            //this.BackColor = Color.FromArgb (54, 57, 63);
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -122,7 +124,7 @@ namespace CPP_GraphPlotting
                 findDerivativeButton_Click (sender, e);
             } else if (newtonRadioButton.Checked) {
                 trueDerivativeButton_Click (sender, e);
-            } else {
+            } else if (!quotientRadioButton.Checked && !newtonRadioButton.Checked) {
                 MessageBox.Show ("Please choose the method!", "Error");
             }
         }
@@ -133,6 +135,24 @@ namespace CPP_GraphPlotting
 
         private void Form1_Load (object sender, EventArgs e) {
 
+        }
+
+        private void lightRadiobutton_CheckedChanged (object sender, EventArgs e) {
+            if (lightRadiobutton.Checked) {
+                lightThemeOn = true;
+                PutTheme ();
+            } else {
+                lightThemeOn = false;
+                PutTheme ();
+            }
+        }
+
+        private void PutTheme() {
+            if (lightThemeOn) {
+                this.BackColor = Color.White;
+            } else {
+                this.BackColor = Color.FromArgb (54, 57, 63);
+            }
         }
     }
 }
