@@ -106,5 +106,15 @@ namespace CPP_GraphPlotting
                 MessageBox.Show (ex.Message);
             }
         }
+
+        private void derivativeButton_Click (object sender, EventArgs e) {
+            if (quotientRadioButton.Checked) {
+                findDerivativeButton_Click (sender, e);
+            } else if (newtonRadioButton.Checked) {
+                trueDerivativeButton_Click (sender, e);
+            } else {
+                MessageBox.Show ("Please choose the method!", "Error");
+            }
+        }
     }
 }
