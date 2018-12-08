@@ -22,6 +22,10 @@ namespace CPP_GraphPlotting
         public Form1 () {
             InitializeComponent ();
             plotter = new Plotter ();
+
+            //this.FormBorderStyle = FormBorderStyle.None;
+            // fill the screen
+            this.Bounds = Screen.PrimaryScreen.Bounds;
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -115,6 +119,10 @@ namespace CPP_GraphPlotting
             } else {
                 MessageBox.Show ("Please choose the method!", "Error");
             }
+        }
+
+        private void graphPictureBox_Resize (object sender, EventArgs e) {
+            MessageBox.Show ("");
         }
     }
 }

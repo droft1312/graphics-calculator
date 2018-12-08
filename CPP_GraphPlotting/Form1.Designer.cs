@@ -27,7 +27,6 @@
         /// </summary>
         private void InitializeComponent ()
         {
-            this.inputTextbox = new System.Windows.Forms.TextBox();
             this.plot = new OxyPlot.WindowsForms.PlotView();
             this.graphPictureBox = new System.Windows.Forms.PictureBox();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
@@ -35,15 +34,9 @@
             this.derivativeButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.quotientRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
             this.newtonRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
+            this.inputTextbox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // inputTextbox
-            // 
-            this.inputTextbox.Location = new System.Drawing.Point(79, 15);
-            this.inputTextbox.Name = "inputTextbox";
-            this.inputTextbox.Size = new System.Drawing.Size(245, 20);
-            this.inputTextbox.TabIndex = 0;
             // 
             // plot
             // 
@@ -64,6 +57,7 @@
             this.graphPictureBox.Size = new System.Drawing.Size(773, 531);
             this.graphPictureBox.TabIndex = 5;
             this.graphPictureBox.TabStop = false;
+            this.graphPictureBox.Resize += new System.EventHandler(this.graphPictureBox_Resize);
             // 
             // materialLabel1
             // 
@@ -148,12 +142,30 @@
             this.newtonRadioButton.Text = "By Newton";
             this.newtonRadioButton.UseVisualStyleBackColor = true;
             // 
+            // inputTextbox
+            // 
+            this.inputTextbox.Depth = 0;
+            this.inputTextbox.Hint = "";
+            this.inputTextbox.Location = new System.Drawing.Point(85, 15);
+            this.inputTextbox.MaxLength = 32767;
+            this.inputTextbox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.inputTextbox.Name = "inputTextbox";
+            this.inputTextbox.PasswordChar = '\0';
+            this.inputTextbox.SelectedText = "";
+            this.inputTextbox.SelectionLength = 0;
+            this.inputTextbox.SelectionStart = 0;
+            this.inputTextbox.Size = new System.Drawing.Size(247, 23);
+            this.inputTextbox.TabIndex = 13;
+            this.inputTextbox.TabStop = false;
+            this.inputTextbox.UseSystemPasswordChar = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(800, 987);
+            this.ClientSize = new System.Drawing.Size(1537, 987);
+            this.Controls.Add(this.inputTextbox);
             this.Controls.Add(this.newtonRadioButton);
             this.Controls.Add(this.quotientRadioButton);
             this.Controls.Add(this.derivativeButton);
@@ -161,7 +173,6 @@
             this.Controls.Add(this.materialLabel1);
             this.Controls.Add(this.graphPictureBox);
             this.Controls.Add(this.plot);
-            this.Controls.Add(this.inputTextbox);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
@@ -171,8 +182,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox inputTextbox;
         private OxyPlot.WindowsForms.PlotView plot;
         private System.Windows.Forms.PictureBox graphPictureBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
@@ -180,6 +189,7 @@
         private MaterialSkin.Controls.MaterialFlatButton derivativeButton;
         private MaterialSkin.Controls.MaterialRadioButton quotientRadioButton;
         private MaterialSkin.Controls.MaterialRadioButton newtonRadioButton;
+        private MaterialSkin.Controls.MaterialSingleLineTextField inputTextbox;
     }
 }
 
