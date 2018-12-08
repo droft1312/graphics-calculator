@@ -155,7 +155,7 @@ namespace CPP_GraphPlotting
                 root = new SumNode (s, null);
             } else if (s[0] == '/') {
                 root = new DivisionNode (s, null);
-            } else if (s[0] == '-') {
+            } else if (s[0] == '-' && !(s[1] >= '0' && s[1] <= '9')) {
                 root = new SubstractionNode (s, null);
             } else if (s[0] == 'c') {
                 root = new CosNode (s, null);
@@ -184,6 +184,30 @@ namespace CPP_GraphPlotting
 
                 // same stuff as in the first 'if'
                 root = new NumberNode (newS, null, toParseIntoNumber);
+            } else if (s[0] == '-' && (s[1] >= '0' && s[1] <= '9')) {
+                // negative number
+                s = Plotter.GetStringFromIndex (s, 1);
+
+                string toParseIntoNumber = string.Empty;
+                int counter = 0;
+
+                if (s[0] == 'p') {
+                    toParseIntoNumber = "p";
+                } else {
+                    do {
+                        toParseIntoNumber += s[counter];
+                        counter++;
+                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                }
+
+                string @newS = string.Empty;
+
+                for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
+                    newS += s[i];
+                }
+
+                // same stuff as in the first 'if'
+                root = new NumberNode (newS, null, "-"+toParseIntoNumber);
             }
 
 
@@ -234,7 +258,7 @@ namespace CPP_GraphPlotting
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
-            } else if (s[0] == '-') {
+            } else if (s[0] == '-' && !(s[1] >= '0' && s[1] <= '9')) {
 
                 SubstractionNode node = new SubstractionNode (s, baseNode);
                 baseNode.Insert (node);
@@ -269,6 +293,32 @@ namespace CPP_GraphPlotting
 
                 // same stuff as in the first 'if'
                 NumberNode node = new NumberNode (newS, baseNode, toParseIntoNumber);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == '-' && (s[1] >= '0' && s[1] <= '9')) {
+                // negative number
+                s = Plotter.GetStringFromIndex (s, 1);
+
+                string toParseIntoNumber = string.Empty;
+                int counter = 0;
+
+                if (s[0] == 'p') {
+                    toParseIntoNumber = "p";
+                } else {
+                    do {
+                        toParseIntoNumber += s[counter];
+                        counter++;
+                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                }
+
+                string @newS = string.Empty;
+
+                for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
+                    newS += s[i];
+                }
+
+                NumberNode node = new NumberNode (newS, baseNode, "-"+toParseIntoNumber);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 

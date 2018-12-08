@@ -293,7 +293,7 @@ namespace CPP_GraphPlotting
             return;
         }
     }
-
+    
     class BasicFunctionXNode : BaseNode
     {
         public BasicFunctionXNode (string input, BaseNode parentNode) {
@@ -365,7 +365,6 @@ namespace CPP_GraphPlotting
             Plotter.SetDerivativeRoot (node);
         }
     }
-
 
     class CosNode : BaseNode
     {
