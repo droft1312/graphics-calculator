@@ -170,10 +170,10 @@ namespace CPP_GraphPlotting
                 if (s[0] == 'p') {
                     toParseIntoNumber = "p";
                 } else {
-                    while (s[counter] >= '0' && s[counter] <= '9') {
+                    do {
                         toParseIntoNumber += s[counter];
                         counter++;
-                    }
+                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
                 }
 
                 string @newS = string.Empty;
