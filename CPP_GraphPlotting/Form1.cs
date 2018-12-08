@@ -41,10 +41,10 @@ namespace CPP_GraphPlotting
 
             try {
                 plotter.ProcessString (input);
+                
+                var boundaries = Boundaries (xValueTextbox.Text);
 
-                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
-
-                for (int i = (xValue == -1 ? -100 : -1*xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
                     points.Add(new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
@@ -69,10 +69,10 @@ namespace CPP_GraphPlotting
                 FunctionSeries series = new FunctionSeries ();
 
                 try {
+                    
+                    var boundaries = Boundaries (xValueTextbox.Text);
 
-                    int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
-
-                    for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                    for (int i = boundaries[0]; i < boundaries[1]; i++) {
                         points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i, plotter.Root)));
                     }
 
@@ -103,10 +103,10 @@ namespace CPP_GraphPlotting
             FunctionSeries series = new FunctionSeries ();
 
             try {
+                
+                var boundaries = Boundaries (xValueTextbox.Text);
 
-                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
-
-                for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
                     points.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.DerivativeRoot)));
                 }
 
@@ -148,6 +148,30 @@ namespace CPP_GraphPlotting
                 lightThemeOn = false;
                 PutTheme ();
             }
+        }
+
+        private int[] Boundaries (string input) {
+            string acceptables = ";,-";
+            char c = '0';
+
+            foreach (char acceptable in acceptables) {
+                if (input.Contains(acceptable)) {
+                    c = acceptable;
+                    break;
+                }
+            }
+
+            if (c == '0') throw new Exception ("Please correct your string");
+
+            string[] split = input.Split (c);
+            List<int> boundaries = new List<int> ();
+            for (int i = 0; i < split.Length; i++) {
+                boundaries.Add (int.Parse (split[i]));
+            }
+
+            if (boundaries.Count != 2) throw new Exception ("Please correct your string");
+
+            return boundaries.ToArray ();
         }
 
         private void PutTheme() {
