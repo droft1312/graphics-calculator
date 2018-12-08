@@ -409,6 +409,50 @@ namespace CPP_GraphPlotting
         }
     }
 
+    class LnNode : BaseNode
+    {
+        public LnNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+
+        public LnNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
+        }
+
+        public LnNode (string value) : base (value) {
+        }
+
+        public override string ToString () {
+            return "ln";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+
+        public override double Calculate (double number) => Math.Log (this.left.Calculate(number));
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            // derivative of ln(x) = 1/x
+
+            DivisionNode division = new DivisionNode (new NumberNode (null, 1), Plotter.CloneTree (this.left), null);
+            MultiplicationNode multiplication = new MultiplicationNode (division, Plotter.CloneTree (this.left), null);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = multiplication;
+                else
+                    parent.right = multiplication;
+            }
+
+            multiplication.right.CreateDerivativeTree (multiplication, false);
+
+            Plotter.SetDerivativeRoot (multiplication);
+        }
+    }
+
     class FactorialNode : BaseNode
     {
         public FactorialNode (string input, BaseNode parentNode) {

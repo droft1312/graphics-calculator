@@ -159,6 +159,8 @@ namespace CPP_GraphPlotting
                 root = new SubstractionNode (s, null);
             } else if (s[0] == 'c') {
                 root = new CosNode (s, null);
+            } else if (s[0] == 'l') {
+                root = new LnNode (s, null);
             } else if (s[0] == '^') {
                 root = new PowerNode (s, null);
             } else if (s[0] == '!') {
@@ -263,6 +265,12 @@ namespace CPP_GraphPlotting
             } else if (s[0] == '-' && !(s[1] >= '0' && s[1] <= '9')) {
 
                 SubstractionNode node = new SubstractionNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == 'l') {
+
+                LnNode node = new LnNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
@@ -416,6 +424,8 @@ namespace CPP_GraphPlotting
                 newNode = new CosNode (root.value);
             } else if (root is PowerNode) {
                 newNode = new PowerNode (root.value);
+            } else if (root is LnNode) {
+                newNode = new LnNode (root.value);
             }
 
             newNode.left = CloneTree (root.left);
