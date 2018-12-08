@@ -37,7 +37,9 @@ namespace CPP_GraphPlotting
             try {
                 plotter.ProcessString (input);
 
-                for (int i = -100; i < 100; i++) {
+                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
+
+                for (int i = (xValue == -1 ? -100 : -1*xValue); i < (xValue == -1 ? 100 : xValue); i++) {
                     points.Add(new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
@@ -63,7 +65,9 @@ namespace CPP_GraphPlotting
 
                 try {
 
-                    for (int i = -100; i < 100; i++) {
+                    int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
+
+                    for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
                         points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i, plotter.Root)));
                     }
 
@@ -95,8 +99,10 @@ namespace CPP_GraphPlotting
 
             try {
 
-                for (int i = -100; i < 100; i++) {
-                    points.Add (new DataPoint (i, plotter.ProcessTree(i, plotter.DerivativeRoot)));
+                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
+
+                for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                    points.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.DerivativeRoot)));
                 }
 
                 series.Points.AddRange (points);
@@ -123,6 +129,10 @@ namespace CPP_GraphPlotting
 
         private void graphPictureBox_Resize (object sender, EventArgs e) {
             MessageBox.Show ("");
+        }
+
+        private void Form1_Load (object sender, EventArgs e) {
+
         }
     }
 }
