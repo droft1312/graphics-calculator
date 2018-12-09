@@ -58,7 +58,6 @@ namespace CPP_GraphPlotting
         // -------------------------------------------------
 
 
-
         #region GraphVizRepresentation
 
         /// <summary>
@@ -151,6 +150,22 @@ namespace CPP_GraphPlotting
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns an area of the definite integral
+        /// </summary>
+        /// <param name="lowerBoundary">Lower boundary (start from this x-value)</param>
+        /// <param name="upperBoundary">Upper boundary (end at this x-value)</param>
+        /// <returns></returns>
+        public double ProcessIntegral(int lowerBoundary, int upperBoundary) {
+            double total = 0;
+            double current = lowerBoundary;
+            for (double i = lowerBoundary+0.01; i <= upperBoundary; i += 0.01) {
+                total += Math.Abs (CalculateRectangleArea (i - current, ProcessTree (i, Root)));
+                current = i;
+            }
+            return total;
+        }
 
         /// <summary>
         /// Gives the value of the derivative using the quotient formula
@@ -566,5 +581,7 @@ namespace CPP_GraphPlotting
             }
             return reverse.ToArray ();
         }
+
+        private double CalculateRectangleArea (double x, double y) => x * y;
     }
 }
