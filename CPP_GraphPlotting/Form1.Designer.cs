@@ -40,6 +40,7 @@
             this.lightRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
             this.darkRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.infixFunctionLabel = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -200,7 +201,7 @@
             // 
             this.lightRadiobutton.AutoSize = true;
             this.lightRadiobutton.Depth = 0;
-            this.lightRadiobutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lightRadiobutton.Font = new System.Drawing.Font("Roboto", 10F);
             this.lightRadiobutton.Location = new System.Drawing.Point(3, 29);
             this.lightRadiobutton.Margin = new System.Windows.Forms.Padding(0);
             this.lightRadiobutton.MouseLocation = new System.Drawing.Point(-1, -1);
@@ -242,12 +243,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "App Theme";
             // 
+            // infixFunctionLabel
+            // 
+            this.infixFunctionLabel.AutoSize = true;
+            this.infixFunctionLabel.Depth = 0;
+            this.infixFunctionLabel.Font = new System.Drawing.Font("Roboto", 11F);
+            this.infixFunctionLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.infixFunctionLabel.Location = new System.Drawing.Point(367, 16);
+            this.infixFunctionLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.infixFunctionLabel.Name = "infixFunctionLabel";
+            this.infixFunctionLabel.Size = new System.Drawing.Size(103, 19);
+            this.infixFunctionLabel.TabIndex = 19;
+            this.infixFunctionLabel.Text = "Your function:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.infixFunctionLabel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.materialLabel2);
             this.Controls.Add(this.xValueTextbox);
@@ -284,6 +299,7 @@
         private MaterialSkin.Controls.MaterialRadioButton lightRadiobutton;
         private MaterialSkin.Controls.MaterialRadioButton darkRadiobutton;
         private System.Windows.Forms.GroupBox groupBox1;
+        private MaterialSkin.Controls.MaterialLabel infixFunctionLabel;
     }
 }
 

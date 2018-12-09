@@ -15,7 +15,7 @@ namespace ConsoleTests
             Plotter plotter = new Plotter ();
             plotter.ProcessString (input);
 
-            Console.WriteLine(plotter.PrefixToInfix ("5"));
+            Console.WriteLine(plotter.PrefixToInfix ("/(*(x,+(3,*(2,x))),+(x,*(5,x)))"));
 
             Console.ReadKey ();
         }

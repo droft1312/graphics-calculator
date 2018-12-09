@@ -57,6 +57,8 @@ namespace CPP_GraphPlotting
 
                 plotGraph_called = true;
 
+                infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
+
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
             }
