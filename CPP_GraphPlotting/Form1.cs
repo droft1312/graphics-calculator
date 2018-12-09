@@ -41,7 +41,7 @@ namespace CPP_GraphPlotting
 
             try {
                 plotter.ProcessString (input);
-                
+
                 var boundaries = Boundaries (xValueTextbox.Text);
 
                 for (int i = boundaries[0]; i < boundaries[1]; i++) {
@@ -71,7 +71,7 @@ namespace CPP_GraphPlotting
                 FunctionSeries series = new FunctionSeries ();
 
                 try {
-                    
+
                     var boundaries = Boundaries (xValueTextbox.Text);
 
                     for (int i = boundaries[0]; i < boundaries[1]; i++) {
@@ -105,7 +105,7 @@ namespace CPP_GraphPlotting
             FunctionSeries series = new FunctionSeries ();
 
             try {
-                
+
                 var boundaries = Boundaries (xValueTextbox.Text);
 
                 for (int i = boundaries[0]; i < boundaries[1]; i++) {
@@ -134,14 +134,6 @@ namespace CPP_GraphPlotting
             }
         }
 
-        private void graphPictureBox_Resize (object sender, EventArgs e) {
-            MessageBox.Show ("");
-        }
-
-        private void Form1_Load (object sender, EventArgs e) {
-
-        }
-
         private void lightRadiobutton_CheckedChanged (object sender, EventArgs e) {
             if (lightRadiobutton.Checked) {
                 lightThemeOn = true;
@@ -153,6 +145,14 @@ namespace CPP_GraphPlotting
         }
 
         private int[] Boundaries (string input) {
+
+            if (input == string.Empty) {
+                int[] arr = new int[2];
+                arr[0] = -100;
+                arr[1] = 100;
+                return arr;
+            }
+
             string acceptables = ";,-";
             char c = '0';
 
@@ -175,6 +175,46 @@ namespace CPP_GraphPlotting
 
             return boundaries.ToArray ();
         }
+        
+        private void integrateButton_Click (object sender, EventArgs e) {
+            string input = inputTextbox.Text.Replace (" ", string.Empty);
+            plotter.ProcessString (input);
+
+            try {
+                var model = new PlotModel { Title = "AreaSeries" };
+
+                var integralBoundaries = Boundaries (integralInput.Text);
+                var funcBoundaries = Boundaries (xValueTextbox.Text);
+
+                var area = new AreaSeries { Title = "Area = " + plotter.ProcessIntegral(integralBoundaries[0], integralBoundaries[1]) };
+                List<DataPoint> areaPoints = new List<DataPoint> ();
+                var function = new FunctionSeries { Title = "function" };
+                List<DataPoint> funcPoints = new List<DataPoint> ();
+
+
+                // function itself
+                for (int i = funcBoundaries[0]; i < funcBoundaries[1]; i++) {
+                    funcPoints.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
+                    if (i >= integralBoundaries[0] && i <= integralBoundaries[1]) {
+                        areaPoints.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
+                        area.Points2.Add (new DataPoint (i, 0));
+                    }
+                }
+
+                area.Points.AddRange (areaPoints);
+                function.Points.AddRange (funcPoints);
+
+                area.Color2 = OxyColors.Transparent;
+
+                model.Series.Add (area);
+                model.Series.Add (function);
+
+                plot.Model = model;
+            } catch (Exception ex) {
+                MessageBox.Show (ex.Message);
+            }
+        }
+
 
         private void PutTheme() {
             if (lightThemeOn) {
@@ -182,6 +222,13 @@ namespace CPP_GraphPlotting
             } else {
                 this.BackColor = Color.FromArgb (54, 57, 63);
             }
+        }
+
+        private void AssignDefaultBoundaries(ref int[] boundaries) {
+            int[] arr = new int[2];
+            arr[0] = -100;
+            arr[1] = 100;
+            boundaries = arr;
         }
     }
 }

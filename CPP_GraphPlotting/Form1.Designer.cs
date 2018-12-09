@@ -41,6 +41,8 @@
             this.darkRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.infixFunctionLabel = new MaterialSkin.Controls.MaterialLabel();
+            this.integralInput = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.integrateButton = new MaterialSkin.Controls.MaterialFlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -64,7 +66,6 @@
             this.graphPictureBox.Size = new System.Drawing.Size(773, 442);
             this.graphPictureBox.TabIndex = 5;
             this.graphPictureBox.TabStop = false;
-            this.graphPictureBox.Resize += new System.EventHandler(this.graphPictureBox_Resize);
             // 
             // materialLabel1
             // 
@@ -256,12 +257,48 @@
             this.infixFunctionLabel.TabIndex = 19;
             this.infixFunctionLabel.Text = "Your function:";
             // 
+            // integralInput
+            // 
+            this.integralInput.Depth = 0;
+            this.integralInput.Hint = "";
+            this.integralInput.Location = new System.Drawing.Point(1470, 139);
+            this.integralInput.MaxLength = 32767;
+            this.integralInput.MouseState = MaterialSkin.MouseState.HOVER;
+            this.integralInput.Name = "integralInput";
+            this.integralInput.PasswordChar = '\0';
+            this.integralInput.SelectedText = "";
+            this.integralInput.SelectionLength = 0;
+            this.integralInput.SelectionStart = 0;
+            this.integralInput.Size = new System.Drawing.Size(195, 23);
+            this.integralInput.TabIndex = 20;
+            this.integralInput.TabStop = false;
+            this.integralInput.UseSystemPasswordChar = false;
+            // 
+            // integrateButton
+            // 
+            this.integrateButton.AutoSize = true;
+            this.integrateButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.integrateButton.Depth = 0;
+            this.integrateButton.Icon = null;
+            this.integrateButton.Location = new System.Drawing.Point(1678, 126);
+            this.integrateButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.integrateButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.integrateButton.Name = "integrateButton";
+            this.integrateButton.Primary = false;
+            this.integrateButton.Size = new System.Drawing.Size(94, 36);
+            this.integrateButton.TabIndex = 21;
+            this.integrateButton.Text = "Integrate";
+            this.integrateButton.UseVisualStyleBackColor = true;
+            this.integrateButton.Click += new System.EventHandler(this.integrateButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.integrateButton);
+            this.Controls.Add(this.integralInput);
             this.Controls.Add(this.infixFunctionLabel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.materialLabel2);
@@ -276,7 +313,6 @@
             this.Controls.Add(this.plot);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -300,6 +336,8 @@
         private MaterialSkin.Controls.MaterialRadioButton darkRadiobutton;
         private System.Windows.Forms.GroupBox groupBox1;
         private MaterialSkin.Controls.MaterialLabel infixFunctionLabel;
+        private MaterialSkin.Controls.MaterialSingleLineTextField integralInput;
+        private MaterialSkin.Controls.MaterialFlatButton integrateButton;
     }
 }
 
