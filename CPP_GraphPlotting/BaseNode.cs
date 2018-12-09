@@ -291,7 +291,7 @@ namespace CPP_GraphPlotting
             return;
         }
     }
-
+    
     class BasicFunctionXNode : BaseNode
     {
         public BasicFunctionXNode (string input, BaseNode parentNode) {
@@ -364,7 +364,6 @@ namespace CPP_GraphPlotting
         }
     }
 
-
     class CosNode : BaseNode
     {
         public CosNode (string input, BaseNode parentNode) {
@@ -405,6 +404,91 @@ namespace CPP_GraphPlotting
             node.left.CreateDerivativeTree (node);
 
             Plotter.SetDerivativeRoot (node);
+        }
+    }
+
+    class LnNode : BaseNode
+    {
+        public LnNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+
+        public LnNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
+        }
+
+        public LnNode (string value) : base (value) {
+        }
+
+        public override string ToString () {
+            return "ln";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+
+        public override double Calculate (double number) => Math.Log (this.left.Calculate(number));
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            // derivative of ln(x) = 1/x
+
+            DivisionNode division = new DivisionNode (new NumberNode (null, 1), Plotter.CloneTree (this.left), null);
+            MultiplicationNode multiplication = new MultiplicationNode (division, Plotter.CloneTree (this.left), null);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = multiplication;
+                else
+                    parent.right = multiplication;
+            }
+
+            multiplication.right.CreateDerivativeTree (multiplication, false);
+
+            Plotter.SetDerivativeRoot (multiplication);
+        }
+    }
+
+    class FactorialNode : BaseNode
+    {
+        public FactorialNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+
+        public FactorialNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
+        }
+
+        public FactorialNode (string value) : base(value) {
+
+        }
+
+        public override double Calculate (double number) => MathNet.Numerics.SpecialFunctions.Factorial ((int)left.Calculate(number));
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            NumberNode node = new NumberNode (parent, 0);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+
+            Plotter.SetDerivativeRoot (node);
+
+            return;
+        }
+
+        public override string ToString () {
+            return "!";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
         }
     }
 

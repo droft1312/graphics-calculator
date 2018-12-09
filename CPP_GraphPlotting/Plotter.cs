@@ -1,10 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CPP_GraphPlotting
 {
+    enum TypeOfChar
+    {
+        Operand,
+        TwoValueOperation,
+        OneValueOperation
+    }
+
+    class ReverseElement
+    {
+        public string Value { get; protected set; }
+        public TypeOfChar Type { get; protected set; }
+
+        public ReverseElement (string value) {
+            this.Value = value;
+
+            if (value == "+" || value == "-" || value == "*" || value == "/" || value == "^") {
+                Type = TypeOfChar.TwoValueOperation;
+            } else if (value == "s" || value == "c" || value == "!" || value == "l") {
+                Type = TypeOfChar.OneValueOperation;
+            } else {
+                Type = TypeOfChar.Operand;
+            }
+        }
+    }
+
+    class Element : ReverseElement
+    {
+        public Element (string value) : base (value) {
+        }
+    }
+
     class Plotter
     {
         private BaseNode root;
@@ -24,13 +57,15 @@ namespace CPP_GraphPlotting
         private string nodeConnections = "";
         // -------------------------------------------------
 
+
+
         #region GraphVizRepresentation
 
         /// <summary>
         /// Returns a complete image of graphviz
         /// </summary>
         /// <returns></returns>
-        public void GetGraphImage(PictureBox pictureBox, BaseNode baseNode) {
+        public void GetGraphImage (PictureBox pictureBox, BaseNode baseNode) {
             WriteFileGRAPHVIZ (baseNode);
             Process dot = new Process ();
             dot.StartInfo.FileName = "dot.exe";
@@ -43,7 +78,7 @@ namespace CPP_GraphPlotting
         /// <summary>
         /// Writes output of <see cref="GenerateGraphVIZTEXT"/>() to a specific file
         /// </summary>
-        private void WriteFileGRAPHVIZ(BaseNode baseNode) {
+        private void WriteFileGRAPHVIZ (BaseNode baseNode) {
             try {
                 File.WriteAllText ("abc.dot", GenerateGraphVIZTEXT (baseNode));
             } catch (Exception e) {
@@ -122,7 +157,7 @@ namespace CPP_GraphPlotting
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public double ProcessDerivative_Quotient(double input, BaseNode root) {
+        public double ProcessDerivative_Quotient (double input, BaseNode root) {
             BaseNode @base = root;
             double x1 = input - h;
             double x2 = input + h;
@@ -155,12 +190,16 @@ namespace CPP_GraphPlotting
                 root = new SumNode (s, null);
             } else if (s[0] == '/') {
                 root = new DivisionNode (s, null);
-            } else if (s[0] == '-') {
+            } else if (s[0] == '-' && !(s[1] >= '0' && s[1] <= '9')) {
                 root = new SubstractionNode (s, null);
             } else if (s[0] == 'c') {
                 root = new CosNode (s, null);
+            } else if (s[0] == 'l') {
+                root = new LnNode (s, null);
             } else if (s[0] == '^') {
                 root = new PowerNode (s, null);
+            } else if (s[0] == '!') {
+                root = new FactorialNode (s, null);
             } else if (s[0] == 'x') {
                 root = new BasicFunctionXNode (s, null);
             } else if (s[0] >= '0' && s[0] <= '9') {
@@ -170,10 +209,10 @@ namespace CPP_GraphPlotting
                 if (s[0] == 'p') {
                     toParseIntoNumber = "p";
                 } else {
-                    while (s[counter] >= '0' && s[counter] <= '9') {
+                    do {
                         toParseIntoNumber += s[counter];
                         counter++;
-                    }
+                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
                 }
 
                 string @newS = string.Empty;
@@ -184,6 +223,30 @@ namespace CPP_GraphPlotting
 
                 // same stuff as in the first 'if'
                 root = new NumberNode (newS, null, toParseIntoNumber);
+            } else if (s[0] == '-' && (s[1] >= '0' && s[1] <= '9')) {
+                // negative number
+                s = Plotter.GetStringFromIndex (s, 1);
+
+                string toParseIntoNumber = string.Empty;
+                int counter = 0;
+
+                if (s[0] == 'p') {
+                    toParseIntoNumber = "p";
+                } else {
+                    do {
+                        toParseIntoNumber += s[counter];
+                        counter++;
+                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                }
+
+                string @newS = string.Empty;
+
+                for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
+                    newS += s[i];
+                }
+
+                // same stuff as in the first 'if'
+                root = new NumberNode (newS, null, "-" + toParseIntoNumber);
             }
 
 
@@ -234,15 +297,27 @@ namespace CPP_GraphPlotting
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
-            } else if (s[0] == '-') {
+            } else if (s[0] == '-' && !(s[1] >= '0' && s[1] <= '9')) {
 
                 SubstractionNode node = new SubstractionNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == 'l') {
+
+                LnNode node = new LnNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
             } else if (s[0] == '^') {
 
                 PowerNode node = new PowerNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == '!') {
+
+                FactorialNode node = new FactorialNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
@@ -269,6 +344,32 @@ namespace CPP_GraphPlotting
 
                 // same stuff as in the first 'if'
                 NumberNode node = new NumberNode (newS, baseNode, toParseIntoNumber);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == '-' && (s[1] >= '0' && s[1] <= '9')) {
+                // negative number
+                s = Plotter.GetStringFromIndex (s, 1);
+
+                string toParseIntoNumber = string.Empty;
+                int counter = 0;
+
+                if (s[0] == 'p') {
+                    toParseIntoNumber = "p";
+                } else {
+                    do {
+                        toParseIntoNumber += s[counter];
+                        counter++;
+                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                }
+
+                string @newS = string.Empty;
+
+                for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
+                    newS += s[i];
+                }
+
+                NumberNode node = new NumberNode (newS, baseNode, "-" + toParseIntoNumber);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
@@ -336,7 +437,7 @@ namespace CPP_GraphPlotting
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public static BaseNode CloneTree(BaseNode root) {
+        public static BaseNode CloneTree (BaseNode root) {
             if (root == null) return null;
 
             BaseNode newNode = null;
@@ -358,6 +459,8 @@ namespace CPP_GraphPlotting
                 newNode = new CosNode (root.value);
             } else if (root is PowerNode) {
                 newNode = new PowerNode (root.value);
+            } else if (root is LnNode) {
+                newNode = new LnNode (root.value);
             }
 
             newNode.left = CloneTree (root.left);
@@ -381,21 +484,87 @@ namespace CPP_GraphPlotting
         }
 
         /// <summary>
-        /// Returns a substring of a string that is in between 2 other substrings
+        /// Converts a string written in prefix-notation into a string written in an infix-notation
         /// </summary>
-        /// <param name="strSource">Input text</param>
-        /// <param name="strStart">Left border</param>
-        /// <param name="strEnd">Right border</param>
+        /// <param name="input">Prefix-notated input string</param>
         /// <returns></returns>
-        public static string getBetween (string strSource, string strStart, string strEnd) {
-            int Start, End;
-            if (strSource.Contains (strStart) && strSource.Contains (strEnd)) {
-                Start = strSource.IndexOf (strStart, 0) + strStart.Length;
-                End = strSource.IndexOf (strEnd, Start);
-                return strSource.Substring (Start, End - Start);
-            } else {
-                return "";
+        public string PrefixToInfix (string input) {
+            var reversed = InputReverse (input);
+            var inreversed = new List<Element> ();
+            string infix = string.Empty;
+
+            // input: s(/(+(x,3),435))
+            // reversed: 435/(x+3), s
+
+            for (int i = 0; i < reversed.Length; i++) {
+                if (reversed[i].Type == TypeOfChar.Operand) {
+                    continue;
+                } else if (reversed[i].Type == TypeOfChar.OneValueOperation) {
+                    string temp = $"{reversed[i].Value}({reversed[i - 1].Value})";
+                    if (reversed[i].Value == "!") temp = $"({reversed[i - 1].Value}){reversed[i].Value}";
+                    Element element = new Element (temp);
+                    reversed[i - 1] = element;
+                    reversed[i] = null;
+                    UpdateElementsArray (ref reversed);
+                    i = -1;
+                } else if (reversed[i].Type == TypeOfChar.TwoValueOperation) {
+                    string temp = $"({reversed[i - 1].Value} {reversed[i].Value} {reversed[i - 2].Value})";
+                    if (reversed[i].Value == "^") temp = $"(({reversed[i - 1].Value}){reversed[i].Value}({reversed[i - 2].Value}))";
+                    Element element = new Element (temp);
+                    reversed[i - 2] = element;
+                    reversed[i - 1] = null;
+                    reversed[i] = null;
+                    UpdateElementsArray (ref reversed);
+                    i = -1;
+                }
             }
+            infix = reversed[0].Value;
+            return infix.Replace ("s", "sin").Replace ("c", "cos").Replace ("l", "ln");
+        }
+
+        /// <summary>
+        /// Deletes all null elements an input array and returns a new one
+        /// </summary>
+        /// <param name="arr"></param>
+        private void UpdateElementsArray (ref ReverseElement[] arr) {
+            List<ReverseElement> elements = new List<ReverseElement> ();
+            foreach (var item in arr) if (item != null) elements.Add (item);
+            arr = elements.ToArray ();
+        }
+
+        /// <summary>
+        /// Returns an array that is a reverse string input
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private ReverseElement[] InputReverse (string input) {
+            List<ReverseElement> reverse = new List<ReverseElement> ();
+            string temp = string.Empty;
+            for (int i = input.Length - 1; i >= 0; i--) {
+                if (input[i] == '(' || input[i] == ')' || input[i] == ',') {
+                    continue;
+                } else if (input[i] >= '0' && input[i] <= '9') {
+                    int counter = i;
+
+                    do {
+                        temp += input[counter];
+                        counter--;
+                    } while (counter >= 0 && input[counter] >= '0' && input[counter] <= '9');
+
+                    var normalOrderNumber = temp.Reverse ();
+                    string toAdd = "";
+
+                    foreach (var digit in normalOrderNumber) toAdd += digit;
+
+                    i = counter;
+                    temp = string.Empty;
+
+                    reverse.Add (new ReverseElement (toAdd));
+                } else {
+                    reverse.Add (new ReverseElement (input[i].ToString ()));
+                }
+            }
+            return reverse.ToArray ();
         }
     }
 }

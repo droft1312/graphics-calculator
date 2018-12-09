@@ -37,12 +37,17 @@
             this.inputTextbox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.xValueTextbox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            this.lightRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
+            this.darkRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.infixFunctionLabel = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // plot
             // 
-            this.plot.Location = new System.Drawing.Point(15, 50);
+            this.plot.Location = new System.Drawing.Point(12, 139);
             this.plot.Name = "plot";
             this.plot.PanCursor = System.Windows.Forms.Cursors.Hand;
             this.plot.Size = new System.Drawing.Size(776, 388);
@@ -54,9 +59,9 @@
             // 
             // graphPictureBox
             // 
-            this.graphPictureBox.Location = new System.Drawing.Point(15, 444);
+            this.graphPictureBox.Location = new System.Drawing.Point(15, 533);
             this.graphPictureBox.Name = "graphPictureBox";
-            this.graphPictureBox.Size = new System.Drawing.Size(773, 531);
+            this.graphPictureBox.Size = new System.Drawing.Size(773, 442);
             this.graphPictureBox.TabIndex = 5;
             this.graphPictureBox.TabStop = false;
             this.graphPictureBox.Resize += new System.EventHandler(this.graphPictureBox_Resize);
@@ -164,6 +169,7 @@
             // xValueTextbox
             // 
             this.xValueTextbox.Depth = 0;
+            this.xValueTextbox.ForeColor = System.Drawing.Color.LimeGreen;
             this.xValueTextbox.Hint = "";
             this.xValueTextbox.Location = new System.Drawing.Point(58, 12);
             this.xValueTextbox.MaxLength = 32767;
@@ -191,12 +197,73 @@
             this.materialLabel2.TabIndex = 15;
             this.materialLabel2.Text = "X:";
             // 
+            // lightRadiobutton
+            // 
+            this.lightRadiobutton.AutoSize = true;
+            this.lightRadiobutton.Depth = 0;
+            this.lightRadiobutton.Font = new System.Drawing.Font("Roboto", 10F);
+            this.lightRadiobutton.Location = new System.Drawing.Point(3, 29);
+            this.lightRadiobutton.Margin = new System.Windows.Forms.Padding(0);
+            this.lightRadiobutton.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.lightRadiobutton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lightRadiobutton.Name = "lightRadiobutton";
+            this.lightRadiobutton.Ripple = true;
+            this.lightRadiobutton.Size = new System.Drawing.Size(60, 30);
+            this.lightRadiobutton.TabIndex = 16;
+            this.lightRadiobutton.TabStop = true;
+            this.lightRadiobutton.Text = "Light";
+            this.lightRadiobutton.UseVisualStyleBackColor = true;
+            this.lightRadiobutton.CheckedChanged += new System.EventHandler(this.lightRadiobutton_CheckedChanged);
+            // 
+            // darkRadiobutton
+            // 
+            this.darkRadiobutton.AutoSize = true;
+            this.darkRadiobutton.Depth = 0;
+            this.darkRadiobutton.Font = new System.Drawing.Font("Roboto", 10F);
+            this.darkRadiobutton.Location = new System.Drawing.Point(82, 29);
+            this.darkRadiobutton.Margin = new System.Windows.Forms.Padding(0);
+            this.darkRadiobutton.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.darkRadiobutton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.darkRadiobutton.Name = "darkRadiobutton";
+            this.darkRadiobutton.Ripple = true;
+            this.darkRadiobutton.Size = new System.Drawing.Size(57, 30);
+            this.darkRadiobutton.TabIndex = 17;
+            this.darkRadiobutton.TabStop = true;
+            this.darkRadiobutton.Text = "Dark";
+            this.darkRadiobutton.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lightRadiobutton);
+            this.groupBox1.Controls.Add(this.darkRadiobutton);
+            this.groupBox1.Location = new System.Drawing.Point(149, 5);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 58);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "App Theme";
+            // 
+            // infixFunctionLabel
+            // 
+            this.infixFunctionLabel.AutoSize = true;
+            this.infixFunctionLabel.Depth = 0;
+            this.infixFunctionLabel.Font = new System.Drawing.Font("Roboto", 11F);
+            this.infixFunctionLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.infixFunctionLabel.Location = new System.Drawing.Point(367, 16);
+            this.infixFunctionLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.infixFunctionLabel.Name = "infixFunctionLabel";
+            this.infixFunctionLabel.Size = new System.Drawing.Size(103, 19);
+            this.infixFunctionLabel.TabIndex = 19;
+            this.infixFunctionLabel.Text = "Your function:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.infixFunctionLabel);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.materialLabel2);
             this.Controls.Add(this.xValueTextbox);
             this.Controls.Add(this.inputTextbox);
@@ -211,6 +278,8 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,6 +296,10 @@
         private MaterialSkin.Controls.MaterialSingleLineTextField inputTextbox;
         private MaterialSkin.Controls.MaterialSingleLineTextField xValueTextbox;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialRadioButton lightRadiobutton;
+        private MaterialSkin.Controls.MaterialRadioButton darkRadiobutton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private MaterialSkin.Controls.MaterialLabel infixFunctionLabel;
     }
 }
 

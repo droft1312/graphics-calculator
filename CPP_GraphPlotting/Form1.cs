@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using OxyPlot;
 using OxyPlot.Series;
 
+using MathNet;
+using MathNet.Numerics;
+
 namespace CPP_GraphPlotting
 {
     public partial class Form1 : Form
@@ -18,6 +21,7 @@ namespace CPP_GraphPlotting
         Plotter plotter;
 
         bool plotGraph_called = false;
+        bool lightThemeOn = true;
 
         public Form1 () {
             InitializeComponent ();
@@ -26,6 +30,7 @@ namespace CPP_GraphPlotting
             //this.FormBorderStyle = FormBorderStyle.None;
             // fill the screen
             this.Bounds = Screen.PrimaryScreen.Bounds;
+            //this.BackColor = Color.FromArgb (54, 57, 63);
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -36,10 +41,10 @@ namespace CPP_GraphPlotting
 
             try {
                 plotter.ProcessString (input);
+                
+                var boundaries = Boundaries (xValueTextbox.Text);
 
-                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
-
-                for (int i = (xValue == -1 ? -100 : -1*xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
                     points.Add(new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
@@ -51,6 +56,8 @@ namespace CPP_GraphPlotting
                 plotter.GetGraphImage (graphPictureBox, plotter.Root);
 
                 plotGraph_called = true;
+
+                infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
 
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
@@ -64,10 +71,10 @@ namespace CPP_GraphPlotting
                 FunctionSeries series = new FunctionSeries ();
 
                 try {
+                    
+                    var boundaries = Boundaries (xValueTextbox.Text);
 
-                    int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
-
-                    for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                    for (int i = boundaries[0]; i < boundaries[1]; i++) {
                         points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i, plotter.Root)));
                     }
 
@@ -98,10 +105,10 @@ namespace CPP_GraphPlotting
             FunctionSeries series = new FunctionSeries ();
 
             try {
+                
+                var boundaries = Boundaries (xValueTextbox.Text);
 
-                int xValue = xValueTextbox.Text == string.Empty ? -1 : int.Parse (xValueTextbox.Text);
-
-                for (int i = (xValue == -1 ? -100 : -1 * xValue); i < (xValue == -1 ? 100 : xValue); i++) {
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
                     points.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.DerivativeRoot)));
                 }
 
@@ -122,7 +129,7 @@ namespace CPP_GraphPlotting
                 findDerivativeButton_Click (sender, e);
             } else if (newtonRadioButton.Checked) {
                 trueDerivativeButton_Click (sender, e);
-            } else {
+            } else if (!quotientRadioButton.Checked && !newtonRadioButton.Checked) {
                 MessageBox.Show ("Please choose the method!", "Error");
             }
         }
@@ -133,6 +140,48 @@ namespace CPP_GraphPlotting
 
         private void Form1_Load (object sender, EventArgs e) {
 
+        }
+
+        private void lightRadiobutton_CheckedChanged (object sender, EventArgs e) {
+            if (lightRadiobutton.Checked) {
+                lightThemeOn = true;
+                PutTheme ();
+            } else {
+                lightThemeOn = false;
+                PutTheme ();
+            }
+        }
+
+        private int[] Boundaries (string input) {
+            string acceptables = ";,-";
+            char c = '0';
+
+            foreach (char acceptable in acceptables) {
+                if (input.Contains(acceptable)) {
+                    c = acceptable;
+                    break;
+                }
+            }
+
+            if (c == '0') throw new Exception ("Please correct your string");
+
+            string[] split = input.Split (c);
+            List<int> boundaries = new List<int> ();
+            for (int i = 0; i < split.Length; i++) {
+                boundaries.Add (int.Parse (split[i]));
+            }
+
+            if (boundaries.Count != 2) throw new Exception ("Please correct your string");
+
+            return boundaries.ToArray ();
+        }
+
+        private void PutTheme() {
+            if (lightThemeOn) {
+                this.BackColor = Color.White;
+            } else {
+                this.BackColor = Color.FromArgb (54, 57, 63);
+            }
         }
     }
 }
