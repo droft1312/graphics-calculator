@@ -485,6 +485,11 @@ namespace ConsoleTests
             return @return;
         }
 
+        /// <summary>
+        /// Converts a string written in prefix-notation into a string written in an infix-notation
+        /// </summary>
+        /// <param name="input">Prefix-notated input string</param>
+        /// <returns></returns>
         public string PrefixToInfix (string input) {
             var reversed = InputReverse (input);
             var inreversed = new List<Element> ();
@@ -515,27 +520,21 @@ namespace ConsoleTests
             return infix.Replace ("s", "sin").Replace ("c", "cos");
         }
 
+        /// <summary>
+        /// Deletes all null elements an input array and returns a new one
+        /// </summary>
+        /// <param name="arr"></param>
         private void UpdateElementsArray(ref ReverseElement[] arr) {
             List<ReverseElement> elements = new List<ReverseElement> ();
             foreach (var item in arr) if (item != null) elements.Add (item);
             arr = elements.ToArray ();
         }
 
-        private ReverseElement[] GetLastTwoOperands (int i, ReverseElement[] arr) {
-            List<ReverseElement> list = new List<ReverseElement> ();
-            int counter = i;
-            while (counter >= 0 && arr[counter].Type != TypeOfChar.Operand) {
-                counter--;
-            }
-            list.Add (new ReverseElement (arr[counter].Value));
-            counter--;
-            while (counter >= 0 && arr[counter].Type != TypeOfChar.Operand) {
-                counter--;
-            }
-            list.Add (new ReverseElement (arr[counter].Value));
-            return list.ToArray ();
-        }
-
+        /// <summary>
+        /// Returns an array that is a reverse string input
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private ReverseElement[] InputReverse (string input) {
             List<ReverseElement> reverse = new List<ReverseElement> ();
             string temp = string.Empty;
