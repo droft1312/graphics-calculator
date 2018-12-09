@@ -15,7 +15,6 @@ namespace ConsoleTests
             Plotter plotter = new Plotter ();
             plotter.ProcessString (input);
 
-            Console.WriteLine (plotter.GenerateGraphVIZTEXT ());
 
             Console.ReadKey ();
         }
