@@ -10,11 +10,12 @@ namespace ConsoleTests
     {
         static void Main (string[] args) {
             //string input = "/(*(x,+(3,*(2,x))),+(x,*(5,x)))";
-            string input = "/(s(+(x, 3)), *(c(x), x))";
+            string input = "s(/(+(x,3),5))";
 
             Plotter plotter = new Plotter ();
             plotter.ProcessString (input);
 
+            Console.WriteLine(plotter.PrefixToInfix ("/(*(x,+(3,*(2,x))),+(x,*(5,x)))"));
 
             Console.ReadKey ();
         }

@@ -9,6 +9,37 @@ using System.Windows.Forms;
 
 namespace ConsoleTests
 {
+    enum TypeOfChar
+    {
+        Operand,
+        TwoValueOperation,
+        OneValueOperation
+    }
+
+    class ReverseElement
+    {
+        public string Value { get; protected set; }
+        public TypeOfChar Type { get; protected set; }
+
+        public ReverseElement (string value) {
+            this.Value = value;
+
+            if (value == "+" || value == "-" || value == "*" || value == "/" || value == "^") {
+                Type = TypeOfChar.TwoValueOperation;
+            } else if (value == "s" || value == "c") {
+                Type = TypeOfChar.OneValueOperation;
+            } else {
+                Type = TypeOfChar.Operand;
+            }
+        }
+    }
+
+    class Element : ReverseElement
+    {
+        public Element (string value) : base(value) {
+        }
+    }
+
     class Plotter
     {
         private BaseNode root;
@@ -27,6 +58,8 @@ namespace ConsoleTests
 
         private string nodeConnections = "";
         // -------------------------------------------------
+
+
 
         #region GraphVizRepresentation
 
@@ -452,22 +485,85 @@ namespace ConsoleTests
             return @return;
         }
 
-        /// <summary>
-        /// Returns a substring of a string that is in between 2 other substrings
-        /// </summary>
-        /// <param name="strSource">Input text</param>
-        /// <param name="strStart">Left border</param>
-        /// <param name="strEnd">Right border</param>
-        /// <returns></returns>
-        public static string getBetween (string strSource, string strStart, string strEnd) {
-            int Start, End;
-            if (strSource.Contains (strStart) && strSource.Contains (strEnd)) {
-                Start = strSource.IndexOf (strStart, 0) + strStart.Length;
-                End = strSource.IndexOf (strEnd, Start);
-                return strSource.Substring (Start, End - Start);
-            } else {
-                return "";
+        public string PrefixToInfix (string input) {
+            var reversed = InputReverse (input);
+            var inreversed = new List<Element> ();
+            string infix = string.Empty;
+
+            // input: s(/(+(x,3),435))
+            // reversed: 435/(x+3), s
+
+            for (int i = 0; i < reversed.Length; i++) {
+                if (reversed[i].Type == TypeOfChar.Operand) {
+                    continue;
+                } else if (reversed[i].Type == TypeOfChar.OneValueOperation) {
+                    Element element = new Element ($"{reversed[i].Value}({reversed[i-1].Value})");
+                    reversed[i - 1] = element;
+                    reversed[i] = null;
+                    UpdateElementsArray (ref reversed);
+                    i = -1;
+                } else if (reversed[i].Type == TypeOfChar.TwoValueOperation) {
+                    Element element = new Element ($"({reversed[i - 1].Value} {reversed[i].Value} {reversed[i - 2].Value})");
+                    reversed[i - 2] = element;
+                    reversed[i - 1] = null;
+                    reversed[i] = null;
+                    UpdateElementsArray (ref reversed);
+                    i = -1;
+                }
             }
+            infix = reversed[0].Value;
+            return infix.Replace ("s", "sin").Replace ("c", "cos");
+        }
+
+        private void UpdateElementsArray(ref ReverseElement[] arr) {
+            List<ReverseElement> elements = new List<ReverseElement> ();
+            foreach (var item in arr) if (item != null) elements.Add (item);
+            arr = elements.ToArray ();
+        }
+
+        private ReverseElement[] GetLastTwoOperands (int i, ReverseElement[] arr) {
+            List<ReverseElement> list = new List<ReverseElement> ();
+            int counter = i;
+            while (counter >= 0 && arr[counter].Type != TypeOfChar.Operand) {
+                counter--;
+            }
+            list.Add (new ReverseElement (arr[counter].Value));
+            counter--;
+            while (counter >= 0 && arr[counter].Type != TypeOfChar.Operand) {
+                counter--;
+            }
+            list.Add (new ReverseElement (arr[counter].Value));
+            return list.ToArray ();
+        }
+
+        private ReverseElement[] InputReverse (string input) {
+            List<ReverseElement> reverse = new List<ReverseElement> ();
+            string temp = string.Empty;
+            for (int i = input.Length - 1; i >= 0; i--) {
+                if (input[i] == '(' || input[i] == ')' || input[i] == ',') {
+                    continue;
+                } else if (input[i] >= '0' && input[i] <= '9') {
+                    int counter = i;
+
+                    do {
+                        temp += input[counter];
+                        counter--;
+                    } while (input[counter] >= '0' && input[counter] <= '9');
+
+                    var normalOrderNumber = temp.Reverse ();
+                    string toAdd = "";
+
+                    foreach (var digit in normalOrderNumber) toAdd += digit;
+
+                    i = counter;
+                    temp = string.Empty;
+
+                    reverse.Add (new ReverseElement (toAdd));
+                } else {
+                    reverse.Add (new ReverseElement (input[i].ToString ()));
+                }
+            }
+            return reverse.ToArray ();
         }
     }
 }
