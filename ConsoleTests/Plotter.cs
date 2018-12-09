@@ -26,7 +26,7 @@ namespace ConsoleTests
 
             if (value == "+" || value == "-" || value == "*" || value == "/" || value == "^") {
                 Type = TypeOfChar.TwoValueOperation;
-            } else if (value == "s" || value == "c") {
+            } else if (value == "s" || value == "c" || value == "!" || value == "l") {
                 Type = TypeOfChar.OneValueOperation;
             } else {
                 Type = TypeOfChar.Operand;
@@ -502,13 +502,17 @@ namespace ConsoleTests
                 if (reversed[i].Type == TypeOfChar.Operand) {
                     continue;
                 } else if (reversed[i].Type == TypeOfChar.OneValueOperation) {
-                    Element element = new Element ($"{reversed[i].Value}({reversed[i-1].Value})");
+                    string temp = $"{reversed[i].Value}({reversed[i - 1].Value})";
+                    if (reversed[i].Value == "!") temp = $"({reversed[i-1].Value}){reversed[i].Value}";
+                    Element element = new Element (temp);
                     reversed[i - 1] = element;
                     reversed[i] = null;
                     UpdateElementsArray (ref reversed);
                     i = -1;
                 } else if (reversed[i].Type == TypeOfChar.TwoValueOperation) {
-                    Element element = new Element ($"({reversed[i - 1].Value} {reversed[i].Value} {reversed[i - 2].Value})");
+                    string temp = $"({reversed[i - 1].Value} {reversed[i].Value} {reversed[i - 2].Value})";
+                    if (reversed[i].Value == "^") temp = $"(({reversed[i - 1].Value}){reversed[i].Value}({reversed[i - 2].Value}))";
+                    Element element = new Element (temp);
                     reversed[i - 2] = element;
                     reversed[i - 1] = null;
                     reversed[i] = null;
@@ -517,7 +521,7 @@ namespace ConsoleTests
                 }
             }
             infix = reversed[0].Value;
-            return infix.Replace ("s", "sin").Replace ("c", "cos");
+            return infix.Replace ("s", "sin").Replace ("c", "cos").Replace("l", "ln");
         }
 
         /// <summary>
@@ -547,7 +551,7 @@ namespace ConsoleTests
                     do {
                         temp += input[counter];
                         counter--;
-                    } while (input[counter] >= '0' && input[counter] <= '9');
+                    } while (counter >= 0 && input[counter] >= '0' && input[counter] <= '9');
 
                     var normalOrderNumber = temp.Reverse ();
                     string toAdd = "";
