@@ -27,6 +27,11 @@ namespace CPP_GraphPlotting
         bool plotGraph_called = false;
         bool lightThemeOn = true;
 
+        private const string wolframInput = "Input";
+        private const string wolframDerivative = "Derivative";
+        private const string wolframIntegral = "Indefinite integral";
+
+
         public Form1 () {
             InitializeComponent ();
             plotter = new Plotter ();
@@ -60,7 +65,7 @@ namespace CPP_GraphPlotting
                 plotGraph_called = true;
 
                 //infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
-                var x = Task.Run(() => GetImageFromWolfram (plotter.PrefixToInfix (input), functionPictureBox));
+                var x = Task.Run(() => GetInputImageFromWolfram (plotter.PrefixToInfix (input), functionPictureBox));
 
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
@@ -89,6 +94,11 @@ namespace CPP_GraphPlotting
                     plotter.GetGraphImage (graphPictureBox, plotter.Root);
 
                     plotGraph_called = true;
+
+                    var x = Task.Run (() => GetInputImageFromWolfram ( 
+                        plotter.PrefixToInfix (inputTextbox.Text.Replace (" ", string.Empty)), 
+                        derivativePictureBox,
+                        wolframDerivative));
 
                 } catch (Exception ex) {
                     MessageBox.Show (ex.Message);
@@ -212,6 +222,10 @@ namespace CPP_GraphPlotting
                 model.Series.Add (area);
                 model.Series.Add (function);
 
+                var x = Task.Run (() => GetInputImageFromWolfram (plotter.PrefixToInfix (inputTextbox.Text.Replace (" ", string.Empty)),
+                        integralPictureBox,
+                        wolframIntegral));
+
                 plot.Model = model;
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
@@ -233,12 +247,12 @@ namespace CPP_GraphPlotting
         /// <param name="input">Input that wolfram will parse</param>
         /// <param name="picture">PictureBox to put a picture in</param>
         /// <returns></returns>
-        private Task<int> GetImageFromWolfram (string input, PictureBox picture) {
+        private Task<int> GetInputImageFromWolfram (string input, PictureBox picture, string podTitle = "Input") {
             QueryResult results = wolfram.Query (input);
 
             if (results != null) {
                 foreach (Pod pod in results.Pods) {
-                    if (pod.Title == "Input") {
+                    if (pod.Title == podTitle) {
                         foreach (SubPod subPod in pod.SubPods) {
                             var image_src = subPod.Image.Src;
                             picture.LoadAsync (image_src);

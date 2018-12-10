@@ -44,9 +44,15 @@
             this.integralInput = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.integrateButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.functionPictureBox = new System.Windows.Forms.PictureBox();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.derivativePictureBox = new System.Windows.Forms.PictureBox();
+            this.integralPictureBox = new System.Windows.Forms.PictureBox();
+            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // plot
@@ -301,12 +307,58 @@
             this.functionPictureBox.TabIndex = 22;
             this.functionPictureBox.TabStop = false;
             // 
+            // materialLabel3
+            // 
+            this.materialLabel3.AutoSize = true;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel3.Location = new System.Drawing.Point(818, 923);
+            this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(79, 19);
+            this.materialLabel3.TabIndex = 23;
+            this.materialLabel3.Text = "Derivative:";
+            // 
+            // derivativePictureBox
+            // 
+            this.derivativePictureBox.Location = new System.Drawing.Point(903, 886);
+            this.derivativePictureBox.Name = "derivativePictureBox";
+            this.derivativePictureBox.Size = new System.Drawing.Size(231, 89);
+            this.derivativePictureBox.TabIndex = 24;
+            this.derivativePictureBox.TabStop = false;
+            // 
+            // integralPictureBox
+            // 
+            this.integralPictureBox.Location = new System.Drawing.Point(1289, 886);
+            this.integralPictureBox.Name = "integralPictureBox";
+            this.integralPictureBox.Size = new System.Drawing.Size(212, 89);
+            this.integralPictureBox.TabIndex = 25;
+            this.integralPictureBox.TabStop = false;
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.AutoSize = true;
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel4.Location = new System.Drawing.Point(1220, 923);
+            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(63, 19);
+            this.materialLabel4.TabIndex = 26;
+            this.materialLabel4.Text = "Integral:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.materialLabel4);
+            this.Controls.Add(this.integralPictureBox);
+            this.Controls.Add(this.derivativePictureBox);
+            this.Controls.Add(this.materialLabel3);
             this.Controls.Add(this.functionPictureBox);
             this.Controls.Add(this.integrateButton);
             this.Controls.Add(this.integralInput);
@@ -328,6 +380,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,6 +405,10 @@
         private MaterialSkin.Controls.MaterialSingleLineTextField integralInput;
         private MaterialSkin.Controls.MaterialFlatButton integrateButton;
         private System.Windows.Forms.PictureBox functionPictureBox;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
+        private System.Windows.Forms.PictureBox derivativePictureBox;
+        private System.Windows.Forms.PictureBox integralPictureBox;
+        private MaterialSkin.Controls.MaterialLabel materialLabel4;
     }
 }
 
