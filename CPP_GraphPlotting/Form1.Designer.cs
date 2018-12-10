@@ -43,8 +43,10 @@
             this.infixFunctionLabel = new MaterialSkin.Controls.MaterialLabel();
             this.integralInput = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.integrateButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.functionPictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // plot
@@ -291,12 +293,21 @@
             this.integrateButton.UseVisualStyleBackColor = true;
             this.integrateButton.Click += new System.EventHandler(this.integrateButton_Click);
             // 
+            // functionPictureBox
+            // 
+            this.functionPictureBox.Location = new System.Drawing.Point(476, 4);
+            this.functionPictureBox.Name = "functionPictureBox";
+            this.functionPictureBox.Size = new System.Drawing.Size(185, 60);
+            this.functionPictureBox.TabIndex = 22;
+            this.functionPictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.functionPictureBox);
             this.Controls.Add(this.integrateButton);
             this.Controls.Add(this.integralInput);
             this.Controls.Add(this.infixFunctionLabel);
@@ -316,6 +327,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -338,6 +350,7 @@
         private MaterialSkin.Controls.MaterialLabel infixFunctionLabel;
         private MaterialSkin.Controls.MaterialSingleLineTextField integralInput;
         private MaterialSkin.Controls.MaterialFlatButton integrateButton;
+        private System.Windows.Forms.PictureBox functionPictureBox;
     }
 }
 

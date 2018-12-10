@@ -14,11 +14,15 @@ using OxyPlot.Series;
 using MathNet;
 using MathNet.Numerics;
 
+using WolframAlphaNET;
+using WolframAlphaNET.Objects;
+
 namespace CPP_GraphPlotting
 {
     public partial class Form1 : Form
     {
         Plotter plotter;
+        WolframAlpha wolfram;
 
         bool plotGraph_called = false;
         bool lightThemeOn = true;
@@ -26,11 +30,9 @@ namespace CPP_GraphPlotting
         public Form1 () {
             InitializeComponent ();
             plotter = new Plotter ();
-
-            //this.FormBorderStyle = FormBorderStyle.None;
-            // fill the screen
+            wolfram = new WolframAlpha ("HVTG5G-R85WWR978J");
+            
             this.Bounds = Screen.PrimaryScreen.Bounds;
-            //this.BackColor = Color.FromArgb (54, 57, 63);
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -57,7 +59,8 @@ namespace CPP_GraphPlotting
 
                 plotGraph_called = true;
 
-                infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
+                //infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
+                GetImageFromWolfram (plotter.PrefixToInfix (input), functionPictureBox);
 
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
@@ -224,11 +227,23 @@ namespace CPP_GraphPlotting
             }
         }
 
-        private void AssignDefaultBoundaries(ref int[] boundaries) {
-            int[] arr = new int[2];
-            arr[0] = -100;
-            arr[1] = 100;
-            boundaries = arr;
+        private void GetImageFromWolfram(string input, PictureBox picture) {
+           QueryResult results = wolfram.Query (input);
+
+            if (results != null) {
+                foreach (Pod pod in results.Pods) {
+                    if (pod.Title == "Input") {
+                        foreach (SubPod subPod in pod.SubPods) {
+                            var image_src = subPod.Image.Src;
+                            picture.LoadAsync (image_src);
+                            break;
+                        }
+                        break;
+                    }
+                }
+            } else {
+                MessageBox.Show ("Something went wrong");
+            }
         }
     }
 }
