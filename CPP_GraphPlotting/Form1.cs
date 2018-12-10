@@ -60,7 +60,7 @@ namespace CPP_GraphPlotting
                 plotGraph_called = true;
 
                 //infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
-                GetImageFromWolfram (plotter.PrefixToInfix (input), functionPictureBox);
+                var x = Task.Run(() => GetImageFromWolfram (plotter.PrefixToInfix (input), functionPictureBox));
 
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
@@ -227,8 +227,14 @@ namespace CPP_GraphPlotting
             }
         }
 
-        private void GetImageFromWolfram(string input, PictureBox picture) {
-           QueryResult results = wolfram.Query (input);
+        /// <summary>
+        /// Assign image from WolframAlpha to a PictureBox
+        /// </summary>
+        /// <param name="input">Input that wolfram will parse</param>
+        /// <param name="picture">PictureBox to put a picture in</param>
+        /// <returns></returns>
+        private Task<int> GetImageFromWolfram (string input, PictureBox picture) {
+            QueryResult results = wolfram.Query (input);
 
             if (results != null) {
                 foreach (Pod pod in results.Pods) {
@@ -236,13 +242,14 @@ namespace CPP_GraphPlotting
                         foreach (SubPod subPod in pod.SubPods) {
                             var image_src = subPod.Image.Src;
                             picture.LoadAsync (image_src);
-                            break;
+                            return new Task<int> (() => 1);
                         }
-                        break;
                     }
                 }
+                return new Task<int> (() => -1);
             } else {
                 MessageBox.Show ("Something went wrong");
+                return new Task<int> (() => -1);
             }
         }
     }
