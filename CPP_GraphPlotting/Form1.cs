@@ -38,6 +38,7 @@ namespace CPP_GraphPlotting
             wolfram = new WolframAlpha ("HVTG5G-R85WWR978J");
             
             this.Bounds = Screen.PrimaryScreen.Bounds;
+            graphPictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {

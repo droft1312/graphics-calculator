@@ -28,7 +28,6 @@
         private void InitializeComponent ()
         {
             this.plot = new OxyPlot.WindowsForms.PlotView();
-            this.graphPictureBox = new System.Windows.Forms.PictureBox();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.plotButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.derivativeButton = new MaterialSkin.Controls.MaterialFlatButton();
@@ -48,11 +47,14 @@
             this.derivativePictureBox = new System.Windows.Forms.PictureBox();
             this.integralPictureBox = new System.Windows.Forms.PictureBox();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
+            this.panelPictureBox = new System.Windows.Forms.Panel();
+            this.graphPictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).BeginInit();
+            this.panelPictureBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // plot
@@ -66,14 +68,6 @@
             this.plot.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plot.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plot.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
-            // 
-            // graphPictureBox
-            // 
-            this.graphPictureBox.Location = new System.Drawing.Point(15, 533);
-            this.graphPictureBox.Name = "graphPictureBox";
-            this.graphPictureBox.Size = new System.Drawing.Size(773, 442);
-            this.graphPictureBox.TabIndex = 5;
-            this.graphPictureBox.TabStop = false;
             // 
             // materialLabel1
             // 
@@ -349,12 +343,30 @@
             this.materialLabel4.TabIndex = 26;
             this.materialLabel4.Text = "Integral:";
             // 
+            // panelPictureBox
+            // 
+            this.panelPictureBox.AutoScroll = true;
+            this.panelPictureBox.Controls.Add(this.graphPictureBox);
+            this.panelPictureBox.Location = new System.Drawing.Point(12, 547);
+            this.panelPictureBox.Name = "panelPictureBox";
+            this.panelPictureBox.Size = new System.Drawing.Size(776, 428);
+            this.panelPictureBox.TabIndex = 27;
+            // 
+            // graphPictureBox
+            // 
+            this.graphPictureBox.Location = new System.Drawing.Point(13, 15);
+            this.graphPictureBox.Name = "graphPictureBox";
+            this.graphPictureBox.Size = new System.Drawing.Size(749, 400);
+            this.graphPictureBox.TabIndex = 0;
+            this.graphPictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.panelPictureBox);
             this.Controls.Add(this.materialLabel4);
             this.Controls.Add(this.integralPictureBox);
             this.Controls.Add(this.derivativePictureBox);
@@ -372,16 +384,16 @@
             this.Controls.Add(this.derivativeButton);
             this.Controls.Add(this.plotButton);
             this.Controls.Add(this.materialLabel1);
-            this.Controls.Add(this.graphPictureBox);
             this.Controls.Add(this.plot);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).EndInit();
+            this.panelPictureBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -389,7 +401,6 @@
 
         #endregion
         private OxyPlot.WindowsForms.PlotView plot;
-        private System.Windows.Forms.PictureBox graphPictureBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         private MaterialSkin.Controls.MaterialFlatButton plotButton;
         private MaterialSkin.Controls.MaterialFlatButton derivativeButton;
@@ -409,6 +420,8 @@
         private System.Windows.Forms.PictureBox derivativePictureBox;
         private System.Windows.Forms.PictureBox integralPictureBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
+        private System.Windows.Forms.Panel panelPictureBox;
+        private System.Windows.Forms.PictureBox graphPictureBox;
     }
 }
 
