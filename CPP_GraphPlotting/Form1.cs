@@ -269,7 +269,14 @@ namespace CPP_GraphPlotting
         }
 
         private void calculateMcLaurinSeriesButton_Click (object sender, EventArgs e) {
-            
+            int order = int.Parse (mcLaurienOrderTextBox.Text); // get the order for the maclaurien
+
+            if (!(order >= 1 && order <= 8)) { // check for the right input
+                MessageBox.Show ("Please input a number that is bigger than 1 and less than 8!");
+                return;
+            }
+
+
         }
 
         private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {
