@@ -16,7 +16,7 @@ namespace CPP_GraphPlotting
         TwoValueOperation,
         OneValueOperation
     }
-
+   
     /// <summary>
     /// Is used in prefix-to-infix methods
     /// </summary>
@@ -46,23 +46,21 @@ namespace CPP_GraphPlotting
 
     class Plotter
     {
-        private BaseNode root;
-        private static BaseNode derivativeRoot = null;
         const double h = 0.001;
 
+        private BaseNode root;
         public BaseNode Root { get { return root; } }
+        private static BaseNode derivativeRoot = null;
         public BaseNode DerivativeRoot { get { return derivativeRoot; } }
+        private BaseNode mcLaurienRoot = null;
 
-        // -------------------------------------------------
-        // VARIABLES FOR OUTPUTTING GRAPHVIZ
-        // DON'T MIND THEM
+        #region GraphViz
+        #region GraphViz variables
         string transitional_output = string.Empty;
         string output = string.Empty;
         int counterForInorderTraversal = 0;
-
         private string nodeConnections = "";
-        // -------------------------------------------------
-
+        #endregion
 
         #region GraphVizRepresentation
 
@@ -156,6 +154,23 @@ namespace CPP_GraphPlotting
         }
 
         #endregion
+        #endregion
+
+        public void CreateMcLaurienSeries(int order = 5) {
+            BaseNode nThDerivative = null;
+            BaseNode initialRoot = Plotter.CloneTree (root);
+
+            for (int i = 0; i < order; i++) {
+                CreateDerivativeTree ();
+                nThDerivative = Plotter.CloneTree (derivativeRoot);
+                root = Plotter.CloneTree (nThDerivative);
+            }
+
+            root = initialRoot; // reset the value
+            
+            // everything's still good
+            
+        }
 
         /// <summary>
         /// Returns an area of the definite integral
@@ -443,6 +458,12 @@ namespace CPP_GraphPlotting
         public void CreateDerivativeTree () {
             derivativeRoot = root;
             derivativeRoot.CreateDerivativeTree (null);
+        }
+
+        public BaseNode CreateDerivativeTree(BaseNode root) {
+            var derivativeNode = root;
+            derivativeNode.CreateDerivativeTree (null);
+            return derivativeNode;
         }
 
         /// <summary>
