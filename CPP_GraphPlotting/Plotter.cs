@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace CPP_GraphPlotting
 {
+    /// <summary>
+    /// Describes the type of the char (is used in prefix-to-infix methods)
+    /// </summary>
     enum TypeOfChar
     {
         Operand,
@@ -14,6 +17,9 @@ namespace CPP_GraphPlotting
         OneValueOperation
     }
 
+    /// <summary>
+    /// Is used in prefix-to-infix methods
+    /// </summary>
     class ReverseElement
     {
         public string Value { get; protected set; }
