@@ -155,7 +155,7 @@ namespace CPP_GraphPlotting
         #endregion
         #endregion
 
-        public void CreateMcLaurienSeries(BaseNode mcLaurienRoot, int order = 5) {
+        public void CreateMcLaurienSeries(out BaseNode mcLaurienRoot, int order = 5) {
             BaseNode nThDerivative = null; // self-explanatory
             BaseNode initialRoot = Plotter.CloneTree (root); // we save up the root because it'll be altered
             double[] valuesOfDerivatives = new double[order]; // set of values that will be used to build up a mclaurien series
@@ -174,7 +174,29 @@ namespace CPP_GraphPlotting
             // get rid of these to free up some space
             initialRoot = null;
             nThDerivative = null;
-            
+
+
+            // really unsure about the code down below (TO BE TESTED)
+            List<BaseNode> mcLaurienItems = new List<BaseNode> ();
+
+            SumNode result = new SumNode (null, null, null);
+            result.left = new NumberNode (null, valueOfFunction);
+
+            for (int i = 0; i < order; i++) {
+                DivisionNode item = new DivisionNode (null, null, null);
+                FactorialNode denominator = new FactorialNode (new NumberNode (null, (i == 0 ? 1 : i)), null); // not sure about this line
+                MultiplicationNode numerator = new MultiplicationNode (
+                    new NumberNode (null, valuesOfDerivatives[i]),
+                    new PowerNode (new BasicFunctionXNode ("", null), new NumberNode (null, i), null), null
+                );
+                item.left = numerator;
+                item.right = denominator;
+                mcLaurienItems.Add (item);
+            }
+
+            foreach (var item in mcLaurienItems) result.McLaurienPutToRightNode (item);
+
+            mcLaurienRoot = result;
         }
 
         /// <summary>
