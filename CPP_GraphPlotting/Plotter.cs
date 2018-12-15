@@ -52,7 +52,6 @@ namespace CPP_GraphPlotting
         public BaseNode Root { get { return root; } }
         private static BaseNode derivativeRoot = null;
         public BaseNode DerivativeRoot { get { return derivativeRoot; } }
-        private BaseNode mcLaurienRoot = null;
 
         #region GraphViz
         #region GraphViz variables
@@ -156,11 +155,11 @@ namespace CPP_GraphPlotting
         #endregion
         #endregion
 
-        public void CreateMcLaurienSeries(int order = 5) {
-            BaseNode nThDerivative = null;
-            BaseNode initialRoot = Plotter.CloneTree (root);
-            double[] valuesOfDerivatives = new double[order];
-            double valueOfFunction = root.Calculate (0);
+        public void CreateMcLaurienSeries(BaseNode mcLaurienRoot, int order = 5) {
+            BaseNode nThDerivative = null; // self-explanatory
+            BaseNode initialRoot = Plotter.CloneTree (root); // we save up the root because it'll be altered
+            double[] valuesOfDerivatives = new double[order]; // set of values that will be used to build up a mclaurien series
+            double valueOfFunction = root.Calculate (0); // value of the initial (non-derivative) function
            
 
             for (int i = 0; i < order; i++) {

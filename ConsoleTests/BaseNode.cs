@@ -192,6 +192,15 @@ namespace ConsoleTests
 
             Plotter.SetDerivativeRoot (node);
         }
+
+        public void McLaurienPutToRightNode (BaseNode node) {
+            if (this.right == null) {
+                this.right = node;
+            } else {
+                SumNode sum = new SumNode (this.right, node, null);
+                this.right = sum;
+            }
+        }
     }
 
     class DivisionNode : BaseNode
