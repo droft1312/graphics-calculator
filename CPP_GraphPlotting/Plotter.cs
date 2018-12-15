@@ -159,16 +159,22 @@ namespace CPP_GraphPlotting
         public void CreateMcLaurienSeries(int order = 5) {
             BaseNode nThDerivative = null;
             BaseNode initialRoot = Plotter.CloneTree (root);
+            double[] valuesOfDerivatives = new double[order];
+            double valueOfFunction = root.Calculate (0);
+           
 
             for (int i = 0; i < order; i++) {
                 CreateDerivativeTree ();
                 nThDerivative = Plotter.CloneTree (derivativeRoot);
                 root = Plotter.CloneTree (nThDerivative);
+
+                valuesOfDerivatives[i] = nThDerivative.Calculate (0); // calculating the value around 0 for a corresponding derivative
             }
 
             root = initialRoot; // reset the value
-            
-            // everything's still good
+            // get rid of these to free up some space
+            initialRoot = null;
+            nThDerivative = null;
             
         }
 
