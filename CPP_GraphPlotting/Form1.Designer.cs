@@ -49,6 +49,8 @@
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.graphPictureBox = new System.Windows.Forms.PictureBox();
+            this.calculateMcLaurinSeriesButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mcLaurienOrderTextBox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).BeginInit();
@@ -107,7 +109,7 @@
             this.derivativeButton.BackColor = System.Drawing.SystemColors.ControlDark;
             this.derivativeButton.Depth = 0;
             this.derivativeButton.Icon = null;
-            this.derivativeButton.Location = new System.Drawing.Point(1678, 92);
+            this.derivativeButton.Location = new System.Drawing.Point(1677, 130);
             this.derivativeButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.derivativeButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.derivativeButton.Name = "derivativeButton";
@@ -123,7 +125,7 @@
             this.quotientRadioButton.AutoSize = true;
             this.quotientRadioButton.Depth = 0;
             this.quotientRadioButton.Font = new System.Drawing.Font("Roboto", 10F);
-            this.quotientRadioButton.Location = new System.Drawing.Point(1565, 92);
+            this.quotientRadioButton.Location = new System.Drawing.Point(1564, 130);
             this.quotientRadioButton.Margin = new System.Windows.Forms.Padding(0);
             this.quotientRadioButton.MouseLocation = new System.Drawing.Point(-1, -1);
             this.quotientRadioButton.MouseState = MaterialSkin.MouseState.HOVER;
@@ -140,7 +142,7 @@
             this.newtonRadioButton.AutoSize = true;
             this.newtonRadioButton.Depth = 0;
             this.newtonRadioButton.Font = new System.Drawing.Font("Roboto", 10F);
-            this.newtonRadioButton.Location = new System.Drawing.Point(1470, 92);
+            this.newtonRadioButton.Location = new System.Drawing.Point(1469, 130);
             this.newtonRadioButton.Margin = new System.Windows.Forms.Padding(0);
             this.newtonRadioButton.MouseLocation = new System.Drawing.Point(-1, -1);
             this.newtonRadioButton.MouseState = MaterialSkin.MouseState.HOVER;
@@ -263,7 +265,7 @@
             // 
             this.integralInput.Depth = 0;
             this.integralInput.Hint = "";
-            this.integralInput.Location = new System.Drawing.Point(1470, 139);
+            this.integralInput.Location = new System.Drawing.Point(1473, 233);
             this.integralInput.MaxLength = 32767;
             this.integralInput.MouseState = MaterialSkin.MouseState.HOVER;
             this.integralInput.Name = "integralInput";
@@ -282,7 +284,7 @@
             this.integrateButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.integrateButton.Depth = 0;
             this.integrateButton.Icon = null;
-            this.integrateButton.Location = new System.Drawing.Point(1678, 126);
+            this.integrateButton.Location = new System.Drawing.Point(1681, 220);
             this.integrateButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.integrateButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.integrateButton.Name = "integrateButton";
@@ -360,12 +362,49 @@
             this.graphPictureBox.TabIndex = 0;
             this.graphPictureBox.TabStop = false;
             // 
+            // calculateMcLaurinSeriesButton
+            // 
+            this.calculateMcLaurinSeriesButton.AutoSize = true;
+            this.calculateMcLaurinSeriesButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.calculateMcLaurinSeriesButton.Depth = 0;
+            this.calculateMcLaurinSeriesButton.Icon = null;
+            this.calculateMcLaurinSeriesButton.Location = new System.Drawing.Point(1677, 329);
+            this.calculateMcLaurinSeriesButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.calculateMcLaurinSeriesButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.calculateMcLaurinSeriesButton.Name = "calculateMcLaurinSeriesButton";
+            this.calculateMcLaurinSeriesButton.Primary = false;
+            this.calculateMcLaurinSeriesButton.Size = new System.Drawing.Size(97, 36);
+            this.calculateMcLaurinSeriesButton.TabIndex = 28;
+            this.calculateMcLaurinSeriesButton.Text = "McLaurien";
+            this.calculateMcLaurinSeriesButton.UseVisualStyleBackColor = true;
+            this.calculateMcLaurinSeriesButton.Click += new System.EventHandler(this.calculateMcLaurinSeriesButton_Click);
+            // 
+            // mcLaurienOrderTextBox
+            // 
+            this.mcLaurienOrderTextBox.Depth = 0;
+            this.mcLaurienOrderTextBox.Hint = "";
+            this.mcLaurienOrderTextBox.Location = new System.Drawing.Point(1589, 342);
+            this.mcLaurienOrderTextBox.MaxLength = 32767;
+            this.mcLaurienOrderTextBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mcLaurienOrderTextBox.Name = "mcLaurienOrderTextBox";
+            this.mcLaurienOrderTextBox.PasswordChar = '\0';
+            this.mcLaurienOrderTextBox.SelectedText = "";
+            this.mcLaurienOrderTextBox.SelectionLength = 0;
+            this.mcLaurienOrderTextBox.SelectionStart = 0;
+            this.mcLaurienOrderTextBox.Size = new System.Drawing.Size(75, 23);
+            this.mcLaurienOrderTextBox.TabIndex = 29;
+            this.mcLaurienOrderTextBox.TabStop = false;
+            this.mcLaurienOrderTextBox.UseSystemPasswordChar = false;
+            this.mcLaurienOrderTextBox.TextChanged += new System.EventHandler(this.mcLaurienOrderTextBox_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.mcLaurienOrderTextBox);
+            this.Controls.Add(this.calculateMcLaurinSeriesButton);
             this.Controls.Add(this.panelPictureBox);
             this.Controls.Add(this.materialLabel4);
             this.Controls.Add(this.integralPictureBox);
@@ -422,6 +461,8 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private System.Windows.Forms.Panel panelPictureBox;
         private System.Windows.Forms.PictureBox graphPictureBox;
+        private MaterialSkin.Controls.MaterialFlatButton calculateMcLaurinSeriesButton;
+        private MaterialSkin.Controls.MaterialSingleLineTextField mcLaurienOrderTextBox;
     }
 }
 

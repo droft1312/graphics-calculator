@@ -267,5 +267,19 @@ namespace CPP_GraphPlotting
                 return new Task<int> (() => -1);
             }
         }
+
+        private void calculateMcLaurinSeriesButton_Click (object sender, EventArgs e) {
+            
+        }
+
+        private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {
+            string input = mcLaurienOrderTextBox.Text;
+            foreach (char c in input) {
+                if (!(c >= '0' && c <= '9')) {
+                    mcLaurienOrderTextBox.Text = string.Empty;
+                    return;
+                }
+            }
+        }
     }
 }
