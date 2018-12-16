@@ -155,6 +155,11 @@ namespace CPP_GraphPlotting
         #endregion
         #endregion
 
+        /// <summary>
+        /// Creates a MacLaurien series based off the function
+        /// </summary>
+        /// <param name="mcLaurienRoot">Where the McLaurien Series will be outputted</param>
+        /// <param name="order">Nth order of a series</param>
         public void CreateMcLaurienSeries(out BaseNode mcLaurienRoot, int order = 5) {
             BaseNode nThDerivative = null; // self-explanatory
             BaseNode initialRoot = Plotter.CloneTree (root); // we save up the root because it'll be altered
@@ -636,6 +641,12 @@ namespace CPP_GraphPlotting
             return reverse.ToArray ();
         }
 
+        /// <summary>
+        /// Calculates the area of rectangle
+        /// </summary>
+        /// <param name="x">Rectangle's width</param>
+        /// <param name="y">Rectangle's height</param>
+        /// <returns>x times y</returns>
         private double CalculateRectangleArea (double x, double y) => x * y;
     }
 }
