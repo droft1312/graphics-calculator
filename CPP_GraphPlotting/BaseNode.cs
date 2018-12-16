@@ -184,6 +184,35 @@ namespace CPP_GraphPlotting
 
             Plotter.SetDerivativeRoot (sum);
         }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                return this; // now that we are simple from both sides, we turn ourselves in
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode multiplication = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue * (right as NumberNode).RealValue)
+                    );
+                    return multiplication;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode(null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
+        }
     }
 
     class SumNode : BaseNode
@@ -310,6 +339,36 @@ namespace CPP_GraphPlotting
             node.left.right.right.CreateDerivativeTree (node.left.right, false);
 
             Plotter.SetDerivativeRoot (node);
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                return this; // now that we are simple from both sides, we turn ourselves in
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    if ((right as NumberNode).RealValue != 0) {
+                        NumberNode division = new NumberNode (
+                            null,
+                            ((left as NumberNode).RealValue / (right as NumberNode).RealValue)
+                        );
+                        return division;
+                    }
+                    return this;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
         }
     }
 
@@ -439,6 +498,11 @@ namespace CPP_GraphPlotting
 
             Plotter.SetDerivativeRoot (node);
         }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
+        }
     }
 
     class CosNode : BaseNode
@@ -481,6 +545,11 @@ namespace CPP_GraphPlotting
             node.left.CreateDerivativeTree (node);
 
             Plotter.SetDerivativeRoot (node);
+        }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
         }
     }
 
@@ -526,6 +595,11 @@ namespace CPP_GraphPlotting
 
             Plotter.SetDerivativeRoot (multiplication);
         }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
+        }
     }
 
     class FactorialNode : BaseNode
@@ -567,6 +641,11 @@ namespace CPP_GraphPlotting
         public override string Print () {
             return string.Format ("node{0} -- node{1}\n", number, left.number);
         }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
+        }
     }
 
     class PowerNode : BaseNode
@@ -597,6 +676,35 @@ namespace CPP_GraphPlotting
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
             base.CreateDerivativeTree (parent, isLeft);
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                return this; // now that we are simple from both sides, we turn ourselves in
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode power = new NumberNode (
+                        null,
+                        Math.Pow((left as NumberNode).RealValue, (right as NumberNode).RealValue)
+                    );
+                    return power;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 1); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
         }
     }
 }
