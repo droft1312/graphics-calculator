@@ -485,6 +485,36 @@ namespace CPP_GraphPlotting
         }
 
         /// <summary>
+        /// Simplifies a tree (gets rid of nodes like 1*x, 0*2 etc.)
+        /// </summary>
+        /// <param name="tree">Tree to simplify</param>
+        public void SimplifyTree(BaseNode tree) {
+
+            if (tree is SubstractionNode || tree is MultiplicationNode || tree is SumNode || tree is DivisionNode) {
+                // WE DO SOMETHING
+
+                var leftTree = tree.left;
+                var rightTree = tree.right;
+
+                if (leftTree is NumberNode) {
+                    var value = (leftTree as NumberNode).RealValue;
+
+                    if (value == 0) {
+                        if (tree is SubstractionNode || tree is SumNode) {
+
+                        } else {
+
+                        } 
+                    }
+                }
+
+            } else {
+                // WE DON'T DO ANYTHING
+
+            }
+        }
+
+        /// <summary>
         /// Sets the derivateRoot to the root of a last inputted function and gets its derivative
         /// </summary>
         public void CreateDerivativeTree () {
