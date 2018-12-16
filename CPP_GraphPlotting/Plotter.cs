@@ -184,7 +184,7 @@ namespace CPP_GraphPlotting
 
             for (int i = 0; i < order; i++) {
                 DivisionNode item = new DivisionNode (null, null, null);
-                FactorialNode denominator = new FactorialNode (new NumberNode (null, (i == 0 ? 1 : i)), null); // not sure about this line
+                FactorialNode denominator = new FactorialNode (new NumberNode (null, i), null); // not sure about this line
                 MultiplicationNode numerator = new MultiplicationNode (
                     new NumberNode (null, valuesOfDerivatives[i]),
                     new PowerNode (new BasicFunctionXNode ("", null), new NumberNode (null, i), null), null

@@ -276,7 +276,9 @@ namespace CPP_GraphPlotting
                 return;
             }
 
-            plotter.CreateMcLaurienSeries (order);
+            BaseNode mcLaurienRoot;
+
+            plotter.CreateMcLaurienSeries (out mcLaurienRoot, order);
         }
 
         private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {
