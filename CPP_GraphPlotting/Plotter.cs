@@ -51,7 +51,7 @@ namespace CPP_GraphPlotting
         private BaseNode root;
         public BaseNode Root { get { return root; } }
         private static BaseNode derivativeRoot = null;
-        public BaseNode DerivativeRoot { get { return derivativeRoot; } }
+        public BaseNode DerivativeRoot { get { return derivativeRoot; } set { derivativeRoot = value; } }
 
         #region GraphViz
         #region GraphViz variables
@@ -488,9 +488,11 @@ namespace CPP_GraphPlotting
         /// Simplifies a tree (gets rid of nodes like 1*x, 0*2 etc.)
         /// </summary>
         /// <param name="tree">Tree to simplify</param>
-        public void SimplifyTree(BaseNode tree) {
-            tree.left = tree.left.Simplify ();
-            tree.right = tree.right.Simplify ();
+        public BaseNode SimplifyTree(BaseNode tree) {
+            var simplifiedTree = CloneTree (tree);
+            simplifiedTree.left = tree.left.Simplify ();
+            simplifiedTree.right = tree.right.Simplify ();
+            return simplifiedTree;
         }
 
         /// <summary>

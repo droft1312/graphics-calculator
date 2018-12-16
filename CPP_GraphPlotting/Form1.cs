@@ -113,7 +113,7 @@ namespace CPP_GraphPlotting
 
         private void trueDerivativeButton_Click (object sender, EventArgs e) {
             plotter.CreateDerivativeTree ();
-            plotter.SimplifyTree (plotter.Root);
+            //plotter.DerivativeRoot = plotter.SimplifyTree (plotter.DerivativeRoot);
             plotter.GetGraphImage (graphPictureBox, plotter.DerivativeRoot);
 
             List<DataPoint> points = new List<DataPoint> ();
