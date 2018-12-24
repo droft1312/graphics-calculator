@@ -118,8 +118,27 @@ namespace CPP_GraphPlotting
             if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
                 this.left = this.left.Simplify (); // tell the left guy to get simple
                 this.right = this.right.Simplify (); // right guy also has to get simple
-                return this; // now that we are simple from both sides, we turn ourselves in
+
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode substraction = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue - (right as NumberNode).RealValue)
+                    );
+                    return substraction;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    this.left = this.left.Simplify ();
+                    if (value == 0) { return this.left; }
+                    return this;
+                } else {
+                    return this;
+                }
+                
             } else { // if one of them IS actually a number
+                // we go over all the possibilities
                 if (left is NumberNode && right is NumberNode) {
                     NumberNode substraction = new NumberNode (
                         null,
@@ -189,7 +208,25 @@ namespace CPP_GraphPlotting
             if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
                 this.left = this.left.Simplify (); // tell the left guy to get simple
                 this.right = this.right.Simplify (); // right guy also has to get simple
-                return this; // now that we are simple from both sides, we turn ourselves in
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode multiplication = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue * (right as NumberNode).RealValue)
+                    );
+                    return multiplication;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return this;
+                }
             } else { // if one of them IS actually a number
                 if (left is NumberNode && right is NumberNode) {
                     NumberNode multiplication = new NumberNode (
@@ -268,7 +305,25 @@ namespace CPP_GraphPlotting
             if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
                 this.left = this.left.Simplify (); // tell the left guy to get simple
                 this.right = this.right.Simplify (); // right guy also has to get simple
-                return this; // now that we are simple from both sides, we turn ourselves in
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode sum = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue + (right as NumberNode).RealValue)
+                    );
+                    return sum;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    this.right = this.right.Simplify ();
+                    if (value == 0) { return this.right; }
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    this.left = this.left.Simplify ();
+                    if (value == 0) { return this.left; }
+                    return this;
+                } else {
+                    return this;
+                }
             } else { // if one of them IS actually a number
                 if (left is NumberNode && right is NumberNode) {
                     NumberNode sum = new NumberNode (
@@ -345,7 +400,26 @@ namespace CPP_GraphPlotting
             if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
                 this.left = this.left.Simplify (); // tell the left guy to get simple
                 this.right = this.right.Simplify (); // right guy also has to get simple
-                return this; // now that we are simple from both sides, we turn ourselves in
+                if (left is NumberNode && right is NumberNode) {
+                    if ((right as NumberNode).RealValue != 0) {
+                        NumberNode division = new NumberNode (
+                            null,
+                            ((left as NumberNode).RealValue / (right as NumberNode).RealValue)
+                        );
+                        return division;
+                    }
+                    return this;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return this;
+                }
             } else { // if one of them IS actually a number
                 if (left is NumberNode && right is NumberNode) {
                     if ((right as NumberNode).RealValue != 0) {
@@ -682,7 +756,25 @@ namespace CPP_GraphPlotting
             if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
                 this.left = this.left.Simplify (); // tell the left guy to get simple
                 this.right = this.right.Simplify (); // right guy also has to get simple
-                return this; // now that we are simple from both sides, we turn ourselves in
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode power = new NumberNode (
+                        null,
+                        Math.Pow ((left as NumberNode).RealValue, (right as NumberNode).RealValue)
+                    );
+                    return power;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 1); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return this;
+                }
             } else { // if one of them IS actually a number
                 if (left is NumberNode && right is NumberNode) {
                     NumberNode power = new NumberNode (
