@@ -279,8 +279,32 @@ namespace CPP_GraphPlotting
             }
 
             BaseNode mcLaurienRoot;
+            plotter.CreateMcLaurienSeries (out mcLaurienRoot, order); // output mclaurien series
 
-            plotter.CreateMcLaurienSeries (out mcLaurienRoot, order);
+            mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
+            plotter.GetGraphImage (graphPictureBox, mcLaurienRoot);
+
+            List<DataPoint> points = new List<DataPoint> ();
+            FunctionSeries mcLaurienSeries = new FunctionSeries ();
+
+            try {
+
+                var boundaries = Boundaries (xValueTextbox.Text);
+
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
+                    points.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
+                }
+
+                mcLaurienSeries.Points.AddRange (points);
+                PlotModel myModel = new PlotModel () { Title = "McLaurien Series (order = " + order + ")" };
+                myModel.Series.Add (mcLaurienSeries);
+                plot.Model = myModel;
+
+                plotGraph_called = true;
+
+            } catch (Exception ex) {
+                MessageBox.Show (ex.Message);
+            }
         }
 
         private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {

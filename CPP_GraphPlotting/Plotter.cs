@@ -546,6 +546,8 @@ namespace CPP_GraphPlotting
                 newNode = new PowerNode (root.value);
             } else if (root is LnNode) {
                 newNode = new LnNode (root.value);
+            } else if (root is FactorialNode) {
+                newNode = new FactorialNode (root.value);
             }
 
             newNode.left = CloneTree (root.left);
