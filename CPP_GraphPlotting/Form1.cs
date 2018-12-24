@@ -23,6 +23,7 @@ namespace CPP_GraphPlotting
     {
         Plotter plotter;
         WolframAlpha wolfram;
+        PlotModel myModel;
 
         bool plotGraph_called = false;
         bool lightThemeOn = true;
@@ -37,8 +38,8 @@ namespace CPP_GraphPlotting
             plotter = new Plotter ();
             wolfram = new WolframAlpha ("HVTG5G-R85WWR978J");
             
-            this.Bounds = Screen.PrimaryScreen.Bounds;
-            graphPictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+            this.Bounds = Screen.PrimaryScreen.Bounds; // fill up the whole screen
+            graphPictureBox.SizeMode = PictureBoxSizeMode.AutoSize; // for being able to scroll the graph window
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -57,7 +58,7 @@ namespace CPP_GraphPlotting
                 }
 
                 series.Points.AddRange (points);
-                PlotModel myModel = new PlotModel () { Title = "Plot" };
+                myModel = new PlotModel () { Title = "Plot" };
                 myModel.Series.Add (series);
                 plot.Model = myModel;
 
@@ -88,7 +89,7 @@ namespace CPP_GraphPlotting
                     }
 
                     series.Points.AddRange (points);
-                    PlotModel myModel = new PlotModel () { Title = "Plot (derivative)" };
+                    myModel = new PlotModel () { Title = "Plot (derivative)" };
                     myModel.Series.Add (series);
                     plot.Model = myModel;
 
@@ -129,7 +130,7 @@ namespace CPP_GraphPlotting
                 }
 
                 series.Points.AddRange (points);
-                PlotModel myModel = new PlotModel () { Title = "Plot (derivative)" };
+                myModel = new PlotModel () { Title = "Plot (derivative)" };
                 myModel.Series.Add (series);
                 plot.Model = myModel;
 
@@ -284,20 +285,25 @@ namespace CPP_GraphPlotting
             mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
             plotter.GetGraphImage (graphPictureBox, mcLaurienRoot);
 
-            List<DataPoint> points = new List<DataPoint> ();
-            FunctionSeries mcLaurienSeries = new FunctionSeries ();
+            List<DataPoint> mcLaurienPoints = new List<DataPoint> ();
+            FunctionSeries mcLaurienSeries = new FunctionSeries { Title = "McLaurien" };
+            List<DataPoint> graphPoints = new List<DataPoint> ();
+            FunctionSeries graphSeries = new FunctionSeries { Title = "Graph" };
 
             try {
 
                 var boundaries = Boundaries (xValueTextbox.Text);
 
                 for (int i = boundaries[0]; i < boundaries[1]; i++) {
-                    points.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
+                    mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
+                    graphPoints.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
-                mcLaurienSeries.Points.AddRange (points);
-                PlotModel myModel = new PlotModel () { Title = "McLaurien Series (order = " + order + ")" };
+                mcLaurienSeries.Points.AddRange (mcLaurienPoints);
+                graphSeries.Points.AddRange (graphPoints);
+                myModel = new PlotModel () { Title = "McLaurien Series (order = " + order + ")" };
                 myModel.Series.Add (mcLaurienSeries);
+                myModel.Series.Add (graphSeries);
                 plot.Model = myModel;
 
                 plotGraph_called = true;
