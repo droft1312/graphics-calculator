@@ -136,6 +136,11 @@ namespace CPP_GraphPlotting
 
                 plotGraph_called = true;
 
+                var x = Task.Run (() => GetInputImageFromWolfram (
+                        plotter.PrefixToInfix (inputTextbox.Text.Replace (" ", string.Empty)),
+                        derivativePictureBox,
+                        wolframDerivative));
+
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
             }
@@ -282,7 +287,7 @@ namespace CPP_GraphPlotting
             BaseNode mcLaurienRoot;
             plotter.CreateMcLaurienSeries (out mcLaurienRoot, order); // output mclaurien series
 
-            //mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
+            mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
             plotter.GetGraphImage (graphPictureBox, mcLaurienRoot);
 
             List<DataPoint> mcLaurienPoints = new List<DataPoint> ();

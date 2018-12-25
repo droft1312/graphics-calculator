@@ -832,7 +832,7 @@ namespace CPP_GraphPlotting
                     return;
                 }
             } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
-                // neither are a number 
+                // neither is a number 
                 // CASE: f(x) ^ g(x)
                 // d(f(x) ^ g(x))/dx = e^(g(x)*ln(f(x)) * d((g(x)*f(x)))/dx )
                 // this.left = f(x), this.right = g(x)
