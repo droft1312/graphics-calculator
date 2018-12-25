@@ -829,12 +829,31 @@ namespace CPP_GraphPlotting
                     }
 
                     Plotter.SetDerivativeRoot (node);
+                    return;
                 }
             } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
                 // neither are a number 
                 // CASE: f(x) ^ g(x)
                 // d(f(x) ^ g(x))/dx = e^(g(x)*ln(f(x)) * d((g(x)*f(x)))/dx )
-                
+                // this.left = f(x), this.right = g(x)
+
+                LnNode lnFx = new LnNode (Plotter.CloneTree (this.left), null); // create ln(f(x))
+                MultiplicationNode multiplication = new MultiplicationNode (Plotter.CloneTree (this.right), lnFx, null); // create g(x)*ln(f(x))
+                PowerNode ePower = new PowerNode (new NumberNode (null, Math.E), multiplication, null); // create e^(g(x)*ln(f(x)))
+                MultiplicationNode derivativeOfMultiplication = new MultiplicationNode (Plotter.CloneTree (multiplication.left), Plotter.CloneTree (multiplication.right), null); // do the derivative of g(x)*ln(f(x))
+                MultiplicationNode node = new MultiplicationNode (ePower, derivativeOfMultiplication, parent); // put it all together
+
+                node.right.CreateDerivativeTree (node, false); // take a derivative
+
+                if (parent != null) {
+                    if (isLeft)
+                        parent.left = node;
+                    else
+                        parent.right = node;
+                }
+
+                Plotter.SetDerivativeRoot (node);
+                return;
             }
         }
 
