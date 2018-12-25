@@ -114,7 +114,7 @@ namespace CPP_GraphPlotting
 
         private void trueDerivativeButton_Click (object sender, EventArgs e) {
             plotter.CreateDerivativeTree ();
-            plotter.DerivativeRoot = plotter.SimplifyTree (plotter.DerivativeRoot);
+            //plotter.DerivativeRoot = plotter.SimplifyTree (plotter.DerivativeRoot);
             //plotter.DerivativeRoot = plotter.SimplifyTree (plotter.DerivativeRoot);
             plotter.GetGraphImage (graphPictureBox, plotter.DerivativeRoot);
 
@@ -282,7 +282,7 @@ namespace CPP_GraphPlotting
             BaseNode mcLaurienRoot;
             plotter.CreateMcLaurienSeries (out mcLaurienRoot, order); // output mclaurien series
 
-            mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
+            //mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
             plotter.GetGraphImage (graphPictureBox, mcLaurienRoot);
 
             List<DataPoint> mcLaurienPoints = new List<DataPoint> ();

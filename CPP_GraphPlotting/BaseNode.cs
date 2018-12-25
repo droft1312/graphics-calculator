@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CPP_GraphPlotting
 {
@@ -65,10 +61,10 @@ namespace CPP_GraphPlotting
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="isLeft"></param>
-        public virtual void CreateDerivativeTree(BaseNode parent, bool isLeft = true) {
+        public virtual void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
         }
 
-        public virtual BaseNode Simplify() {
+        public virtual BaseNode Simplify () {
             return null;
         }
     }
@@ -101,7 +97,7 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            SubstractionNode node = new SubstractionNode (Plotter.CloneTree(this.left), Plotter.CloneTree(this.right), parent);
+            SubstractionNode node = new SubstractionNode (Plotter.CloneTree (this.left), Plotter.CloneTree (this.right), parent);
             if (parent != null) {
                 if (isLeft)
                     parent.left = node;
@@ -136,7 +132,7 @@ namespace CPP_GraphPlotting
                 } else {
                     return this;
                 }
-                
+
             } else { // if one of them IS actually a number
                 // we go over all the possibilities
                 if (left is NumberNode && right is NumberNode) {
@@ -189,7 +185,7 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            SumNode sum = new SumNode (Plotter.CloneTree(this), Plotter.CloneTree(this), this.parent);
+            SumNode sum = new SumNode (Plotter.CloneTree (this), Plotter.CloneTree (this), this.parent);
 
             if (parent != null) {
                 if (isLeft)
@@ -236,7 +232,7 @@ namespace CPP_GraphPlotting
                     return multiplication;
                 } else if (left is NumberNode && !(right is NumberNode)) {
                     var value = (left as NumberNode).RealValue;
-                    if (value == 0) { return new NumberNode(null, 0); }
+                    if (value == 0) { return new NumberNode (null, 0); }
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
@@ -279,7 +275,7 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            SumNode node = new SumNode (Plotter.CloneTree(this.left), Plotter.CloneTree(this.right), parent);
+            SumNode node = new SumNode (Plotter.CloneTree (this.left), Plotter.CloneTree (this.right), parent);
             if (parent != null) {
                 if (isLeft)
                     parent.left = node;
@@ -497,7 +493,7 @@ namespace CPP_GraphPlotting
             return this;
         }
     }
-    
+
     class BasicFunctionXNode : BaseNode
     {
         public BasicFunctionXNode (string input, BaseNode parentNode) {
@@ -650,7 +646,7 @@ namespace CPP_GraphPlotting
             return string.Format ("node{0} -- node{1}\n", number, left.number);
         }
 
-        public override double Calculate (double number) => Math.Log (this.left.Calculate(number));
+        public override double Calculate (double number) => Math.Log (this.left.Calculate (number));
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
             // derivative of ln(x) = 1/x
@@ -688,11 +684,11 @@ namespace CPP_GraphPlotting
             this.parent = parent;
         }
 
-        public FactorialNode (string value) : base(value) {
+        public FactorialNode (string value) : base (value) {
 
         }
 
-        public override double Calculate (double number) => MathNet.Numerics.SpecialFunctions.Factorial ((int)left.Calculate(number));
+        public override double Calculate (double number) => MathNet.Numerics.SpecialFunctions.Factorial ((int)left.Calculate (number));
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
             NumberNode node = new NumberNode (parent, 0);
@@ -749,7 +745,92 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            base.CreateDerivativeTree (parent, isLeft);
+            if (this.right is NumberNode && this.left is NumberNode) {
+                // if both this.left and this.right are numbers, return 0 for its just a number and it's anyway gon be 0
+                NumberNode node = new NumberNode (parent, 0);
+
+                if (parent != null) {
+                    if (isLeft)
+                        parent.left = node;
+                    else
+                        parent.right = node;
+                }
+
+                Plotter.SetDerivativeRoot (node);
+                return;
+            } else if (this.right is NumberNode && !(this.left is NumberNode)) {
+                // f(x) ^ (some number)
+                // if left one some function
+                double nMinus1 = ((NumberNode)this.right).RealValue - 1;
+                var value = ((NumberNode)this.right).RealValue;
+                PowerNode power = new PowerNode (Plotter.CloneTree (this.left), new NumberNode (null, nMinus1), null);
+                MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, value), Plotter.CloneTree (this.left), null);
+
+                // if the f(x) is more complicated than just 'x', we do additional calculation
+                if (!(multiplication.right is BasicFunctionXNode)) {
+                    MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.left), parent);
+                    node.right.CreateDerivativeTree (multiplication, false);
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = node;
+                        else
+                            parent.right = node;
+                    }
+
+                    Plotter.SetDerivativeRoot (node);
+                    return;
+                }
+
+                multiplication.parent = parent;
+
+                if (parent != null) {
+                    if (isLeft)
+                        parent.left = multiplication;
+                    else
+                        parent.right = multiplication;
+                }
+
+                Plotter.SetDerivativeRoot (multiplication);
+                return;
+            } else if (!(this.right is NumberNode) && (this.left is NumberNode)) {
+                // (some number) ^ f(x)
+
+                var value = ((NumberNode)this.left).RealValue;
+
+                if (this.right is BasicFunctionXNode) {
+                    // simple function
+                    PowerNode power = new PowerNode (new NumberNode (null, value), new BasicFunctionXNode (""), null);
+                    LnNode ln = new LnNode (new NumberNode (null, value), null);
+                    MultiplicationNode node = new MultiplicationNode (power, ln, parent);
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = node;
+                        else
+                            parent.right = node;
+                    }
+
+                    Plotter.SetDerivativeRoot (node);
+                    return;
+                } else {
+                    // function is more complicated
+                    PowerNode power = new PowerNode (new NumberNode (null, value), this.right, null);
+                    LnNode ln = new LnNode (new NumberNode (null, value), null);
+                    MultiplicationNode multiplication = new MultiplicationNode (power, ln, parent);
+                    MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.right), parent);
+                    node.right.CreateDerivativeTree (node, false);
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = node;
+                        else
+                            parent.right = node;
+                    }
+
+                    Plotter.SetDerivativeRoot (node);
+                }
+            }
         }
 
         public override BaseNode Simplify () {
@@ -779,7 +860,7 @@ namespace CPP_GraphPlotting
                 if (left is NumberNode && right is NumberNode) {
                     NumberNode power = new NumberNode (
                         null,
-                        Math.Pow((left as NumberNode).RealValue, (right as NumberNode).RealValue)
+                        Math.Pow ((left as NumberNode).RealValue, (right as NumberNode).RealValue)
                     );
                     return power;
                 } else if (left is NumberNode && !(right is NumberNode)) {
