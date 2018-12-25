@@ -830,6 +830,11 @@ namespace CPP_GraphPlotting
 
                     Plotter.SetDerivativeRoot (node);
                 }
+            } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
+                // neither are a number 
+                // CASE: f(x) ^ g(x)
+                // d(f(x) ^ g(x))/dx = e^(g(x)*ln(f(x)) * d((g(x)*f(x)))/dx )
+                
             }
         }
 
