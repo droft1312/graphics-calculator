@@ -17,11 +17,13 @@ namespace CPP_GraphPlotting
         /// Left, right, and parent reference for binary tree
         /// </summary>
         public BaseNode left, right, parent;
+        public BaseNode derivativeRoot;
 
         public int number;
 
         public BaseNode () {
             number = ++NodeCounter.Count;
+            derivativeRoot = Plotter.derivativeRoot;
         }
 
         public BaseNode (string value) : this () {
@@ -62,6 +64,10 @@ namespace CPP_GraphPlotting
         /// <param name="parent"></param>
         /// <param name="isLeft"></param>
         public virtual void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+        }
+
+        protected void SetDerivativeRoot(BaseNode node) {
+            Plotter.SetDerivativeRoot (node, ref derivativeRoot);
         }
 
         public virtual BaseNode Simplify () {
@@ -107,7 +113,8 @@ namespace CPP_GraphPlotting
             node.left.CreateDerivativeTree (node);
             node.right.CreateDerivativeTree (node, false);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node, Plotter.derivativeRoot);
+            SetDerivativeRoot (node);
         }
 
         public override BaseNode Simplify () {
@@ -197,7 +204,8 @@ namespace CPP_GraphPlotting
             sum.left.left.CreateDerivativeTree (sum.left);
             sum.right.right.CreateDerivativeTree (sum.right, false);
 
-            Plotter.SetDerivativeRoot (sum);
+            //Plotter.SetDerivativeRoot (sum);
+            SetDerivativeRoot (sum);
         }
 
         public override BaseNode Simplify () {
@@ -285,7 +293,8 @@ namespace CPP_GraphPlotting
             node.left.CreateDerivativeTree (node);
             node.right.CreateDerivativeTree (node, false);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
         }
 
         public void McLaurienPutToRightNode (BaseNode node) {
@@ -389,7 +398,8 @@ namespace CPP_GraphPlotting
             node.left.left.left.CreateDerivativeTree (node.left.left);
             node.left.right.right.CreateDerivativeTree (node.left.right, false);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
         }
 
         public override BaseNode Simplify () {
@@ -484,7 +494,8 @@ namespace CPP_GraphPlotting
                     parent.right = node;
             }
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
 
             return;
         }
@@ -519,7 +530,8 @@ namespace CPP_GraphPlotting
                     parent.right = node;
             }
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
 
             return;
         }
@@ -566,7 +578,8 @@ namespace CPP_GraphPlotting
 
             node.left.CreateDerivativeTree (node);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
         }
 
         public override BaseNode Simplify () {
@@ -614,7 +627,8 @@ namespace CPP_GraphPlotting
 
             node.left.CreateDerivativeTree (node);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
         }
 
         public override BaseNode Simplify () {
@@ -663,7 +677,8 @@ namespace CPP_GraphPlotting
 
             multiplication.right.CreateDerivativeTree (multiplication, false);
 
-            Plotter.SetDerivativeRoot (multiplication);
+            //Plotter.SetDerivativeRoot (multiplication);
+            SetDerivativeRoot (multiplication);
         }
 
         public override BaseNode Simplify () {
@@ -699,7 +714,8 @@ namespace CPP_GraphPlotting
                     parent.right = node;
             }
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
 
             return;
         }
@@ -756,7 +772,8 @@ namespace CPP_GraphPlotting
                         parent.right = node;
                 }
 
-                Plotter.SetDerivativeRoot (node);
+                //Plotter.SetDerivativeRoot (node);
+                SetDerivativeRoot (node);
                 return;
             } else if (this.right is NumberNode && !(this.left is NumberNode)) {
                 // f(x) ^ (some number)
@@ -778,7 +795,8 @@ namespace CPP_GraphPlotting
                             parent.right = node;
                     }
 
-                    Plotter.SetDerivativeRoot (node);
+                    //Plotter.SetDerivativeRoot (node);
+                    SetDerivativeRoot (node);
                     return;
                 }
 
@@ -791,7 +809,8 @@ namespace CPP_GraphPlotting
                         parent.right = multiplication;
                 }
 
-                Plotter.SetDerivativeRoot (multiplication);
+                //Plotter.SetDerivativeRoot (multiplication);
+                SetDerivativeRoot (multiplication);
                 return;
             } else if (!(this.right is NumberNode) && (this.left is NumberNode)) {
                 // (some number) ^ f(x)
@@ -811,7 +830,8 @@ namespace CPP_GraphPlotting
                             parent.right = node;
                     }
 
-                    Plotter.SetDerivativeRoot (node);
+                    //Plotter.SetDerivativeRoot (node);
+                    SetDerivativeRoot (node);
                     return;
                 } else {
                     // function is more complicated
@@ -828,7 +848,8 @@ namespace CPP_GraphPlotting
                             parent.right = node;
                     }
 
-                    Plotter.SetDerivativeRoot (node);
+                    //Plotter.SetDerivativeRoot (node);
+                    SetDerivativeRoot (node);
                     return;
                 }
             } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
@@ -852,7 +873,8 @@ namespace CPP_GraphPlotting
                         parent.right = node;
                 }
 
-                Plotter.SetDerivativeRoot (node);
+                //Plotter.SetDerivativeRoot (node);
+                SetDerivativeRoot (node);
                 return;
             }
         }

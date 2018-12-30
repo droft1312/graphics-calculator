@@ -50,8 +50,7 @@ namespace CPP_GraphPlotting
 
         private BaseNode root;
         public BaseNode Root { get { return root; } }
-        private static BaseNode derivativeRoot = null;
-        public BaseNode DerivativeRoot { get { return derivativeRoot; } set { derivativeRoot = value; } }
+        public static BaseNode derivativeRoot = null;
 
         #region GraphViz
         #region GraphViz variables
@@ -165,10 +164,14 @@ namespace CPP_GraphPlotting
             BaseNode initialRoot = Plotter.CloneTree (root); // we save up the root because it'll be altered
             double[] valuesOfDerivatives = new double[order]; // set of values that will be used to build up a mclaurien series
             double valueOfFunction = root.Calculate (0); // value of the initial (non-derivative) function
-           
+
+            if (derivativeRoot == null) CreateDerivativeTree ();
+            BaseNode derivative = Plotter.CloneTree (derivativeRoot);
+            derivative.derivativeRoot = derivative;
 
             for (int i = 0; i < order; i++) {
-                CreateDerivativeTree ();
+                derivative.CreateDerivativeTree (null);
+                derivative = derivative.derivativeRoot;
                 nThDerivative = Plotter.CloneTree (derivativeRoot);
                 root = Plotter.CloneTree (nThDerivative);
 
@@ -501,6 +504,16 @@ namespace CPP_GraphPlotting
         public void CreateDerivativeTree () {
             derivativeRoot = root;
             derivativeRoot.CreateDerivativeTree (null);
+            derivativeRoot = derivativeRoot.derivativeRoot;
+            /* 
+             What happens here is I calculate the derivative of the derivativeRoot (which is initially equal to the root of the function)
+             Inside of the class BaseNode, which every other node derives from, there is a public field derivativeRoot which holds the value
+             for the derivative. This field is altered after the call of CreateDerivativeTree() so that's why we make our plotter.derivativeRoot 
+             equal to the one inside of a node.
+             
+             VERY BAD DESIGN
+
+             */
         }
 
         public BaseNode CreateDerivativeTree(BaseNode root) {
@@ -513,7 +526,7 @@ namespace CPP_GraphPlotting
         /// Used for tracking the derivative root. Is used in Nodes
         /// </summary>
         /// <param name="node"></param>
-        public static void SetDerivativeRoot (BaseNode node) {
+        public static void SetDerivativeRoot (BaseNode node, ref BaseNode derivativeRoot) {
             derivativeRoot = node;
         }
 

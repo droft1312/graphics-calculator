@@ -114,9 +114,8 @@ namespace CPP_GraphPlotting
 
         private void trueDerivativeButton_Click (object sender, EventArgs e) {
             plotter.CreateDerivativeTree ();
-            //plotter.DerivativeRoot = plotter.SimplifyTree (plotter.DerivativeRoot);
-            //plotter.DerivativeRoot = plotter.SimplifyTree (plotter.DerivativeRoot);
-            plotter.GetGraphImage (graphPictureBox, plotter.DerivativeRoot);
+            Plotter.derivativeRoot = plotter.SimplifyTree (Plotter.derivativeRoot);
+            plotter.GetGraphImage (graphPictureBox, Plotter.derivativeRoot);
 
             List<DataPoint> points = new List<DataPoint> ();
             FunctionSeries series = new FunctionSeries ();
@@ -126,7 +125,7 @@ namespace CPP_GraphPlotting
                 var boundaries = Boundaries (xValueTextbox.Text);
 
                 for (int i = boundaries[0]; i < boundaries[1]; i++) {
-                    points.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.DerivativeRoot)));
+                    points.Add (new DataPoint (i, plotter.ProcessTree (i, Plotter.derivativeRoot)));
                 }
 
                 series.Points.AddRange (points);
