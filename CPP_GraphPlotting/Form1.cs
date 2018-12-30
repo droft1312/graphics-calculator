@@ -283,6 +283,7 @@ namespace CPP_GraphPlotting
                 return;
             }
 
+            // CHANGE IT BACK HERE TO 'OUT' INSTEAD OF 'REF'
             BaseNode mcLaurienRoot;
             plotter.CreateMcLaurienSeries (out mcLaurienRoot, order); // output mclaurien series
 

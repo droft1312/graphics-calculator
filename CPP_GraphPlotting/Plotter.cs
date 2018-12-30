@@ -160,41 +160,38 @@ namespace CPP_GraphPlotting
         /// <param name="mcLaurienRoot">Where the McLaurien Series will be outputted</param>
         /// <param name="order">Nth order of a series</param>
         public void CreateMcLaurienSeries(out BaseNode mcLaurienRoot, int order = 5) {
-            BaseNode nThDerivative = null; // self-explanatory
-            BaseNode initialRoot = Plotter.CloneTree (root); // we save up the root because it'll be altered
-            double[] valuesOfDerivatives = new double[order]; // set of values that will be used to build up a mclaurien series
-            double valueOfFunction = root.Calculate (0); // value of the initial (non-derivative) function
 
-            if (derivativeRoot == null) CreateDerivativeTree ();
-            BaseNode derivative = Plotter.CloneTree (derivativeRoot);
-            derivative.derivativeRoot = derivative;
+            if (derivativeRoot == null) { CreateDerivativeTree (); derivativeRoot.Simplify (); }
 
-            for (int i = 0; i < order; i++) {
-                derivative.CreateDerivativeTree (null);
-                derivative = derivative.derivativeRoot;
-                nThDerivative = Plotter.CloneTree (derivativeRoot);
-                root = Plotter.CloneTree (nThDerivative);
+            // we made sure that there is a derivative
 
-                valuesOfDerivatives[i] = nThDerivative.Calculate (0); // calculating the value around 0 for a corresponding derivative
+            BaseNode myDerivative = Plotter.CloneTree (derivativeRoot);
+            myDerivative.derivativeRoot = myDerivative;
+            double[] values = new double[order + 1]; // values for functions (f(0), derivative of f(0), second derivative of f(0), etc..)
+
+            values[0] = root.Calculate (0); // set up a value for f(0)
+            if (values.Length >= 2) values[1] = derivativeRoot.Calculate (0); // set up a value of the first derivative of f(0)
+
+            if (values.Length >= 3) {
+                for (int i = 2; i < values.Length; i++) {
+                    myDerivative.CreateDerivativeTree (null);
+                    values[i] = myDerivative.derivativeRoot.Calculate (0);
+                    myDerivative = myDerivative.derivativeRoot;
+                }
             }
 
-            root = initialRoot; // reset the value
-            // get rid of these to free up some space
-            initialRoot = null;
-            nThDerivative = null;
-
-
+            
             // really unsure about the code down below (TO BE TESTED)
             List<BaseNode> mcLaurienItems = new List<BaseNode> ();
 
             SumNode result = new SumNode (null, null, null);
-            result.left = new NumberNode (null, valueOfFunction);
+            result.left = new NumberNode (null, values[0]);
 
-            for (int i = 0; i < order; i++) {
+            for (int i = 1; i < values.Length; i++) {
                 DivisionNode item = new DivisionNode (null, null, null);
                 FactorialNode denominator = new FactorialNode (new NumberNode (null, i), null); // not sure about this line
                 MultiplicationNode numerator = new MultiplicationNode (
-                    new NumberNode (null, valuesOfDerivatives[i]),
+                    new NumberNode (null, values[i]),
                     new PowerNode (new BasicFunctionXNode ("", null), new NumberNode (null, i), null), null
                 );
                 item.left = numerator;
