@@ -327,5 +327,34 @@ namespace CPP_GraphPlotting
                 }
             }
         }
+
+        private void plot_MouseDown (object sender, OxyMouseDownEventArgs e) {
+            OxyPlot.ElementCollection<OxyPlot.Axes.Axis> axisList = myModel.Axes;
+            OxyPlot.Axes.Axis X_Axis = null, Y_Axis = null;
+            
+
+            foreach (OxyPlot.Axes.Axis ax in axisList) {
+                if (ax.Position == OxyPlot.Axes.AxisPosition.Bottom)
+                    X_Axis = ax;
+                else if (ax.Position == OxyPlot.Axes.AxisPosition.Left)
+                    Y_Axis = ax;
+            }
+
+            DataPoint p = OxyPlot.Axes.Axis.InverseTransform (e.Position, X_Axis, Y_Axis);
+        }
+
+        private void polynomialButton_Click (object sender, EventArgs e) {
+            myModel = new PlotModel ();
+            myModel.Title = "Polynomial";
+
+            FunctionSeries series = new FunctionSeries ();
+            series.Points.Add (new DataPoint (0, 0));
+
+            myModel.Series.Add (series);
+
+            plot.Model = myModel;
+
+            myModel.MouseDown += plot_MouseDown;
+        }
     }
 }

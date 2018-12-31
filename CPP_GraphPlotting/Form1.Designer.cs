@@ -51,6 +51,7 @@
             this.graphPictureBox = new System.Windows.Forms.PictureBox();
             this.calculateMcLaurinSeriesButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.mcLaurienOrderTextBox = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.polynomialButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).BeginInit();
@@ -265,7 +266,7 @@
             // 
             this.integralInput.Depth = 0;
             this.integralInput.Hint = "";
-            this.integralInput.Location = new System.Drawing.Point(1473, 233);
+            this.integralInput.Location = new System.Drawing.Point(1127, 140);
             this.integralInput.MaxLength = 32767;
             this.integralInput.MouseState = MaterialSkin.MouseState.HOVER;
             this.integralInput.Name = "integralInput";
@@ -284,7 +285,7 @@
             this.integrateButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.integrateButton.Depth = 0;
             this.integrateButton.Icon = null;
-            this.integrateButton.Location = new System.Drawing.Point(1681, 220);
+            this.integrateButton.Location = new System.Drawing.Point(1335, 127);
             this.integrateButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.integrateButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.integrateButton.Name = "integrateButton";
@@ -368,7 +369,7 @@
             this.calculateMcLaurinSeriesButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.calculateMcLaurinSeriesButton.Depth = 0;
             this.calculateMcLaurinSeriesButton.Icon = null;
-            this.calculateMcLaurinSeriesButton.Location = new System.Drawing.Point(1677, 329);
+            this.calculateMcLaurinSeriesButton.Location = new System.Drawing.Point(1678, 178);
             this.calculateMcLaurinSeriesButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.calculateMcLaurinSeriesButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.calculateMcLaurinSeriesButton.Name = "calculateMcLaurinSeriesButton";
@@ -383,7 +384,7 @@
             // 
             this.mcLaurienOrderTextBox.Depth = 0;
             this.mcLaurienOrderTextBox.Hint = "";
-            this.mcLaurienOrderTextBox.Location = new System.Drawing.Point(1589, 342);
+            this.mcLaurienOrderTextBox.Location = new System.Drawing.Point(1590, 191);
             this.mcLaurienOrderTextBox.MaxLength = 32767;
             this.mcLaurienOrderTextBox.MouseState = MaterialSkin.MouseState.HOVER;
             this.mcLaurienOrderTextBox.Name = "mcLaurienOrderTextBox";
@@ -397,12 +398,30 @@
             this.mcLaurienOrderTextBox.UseSystemPasswordChar = false;
             this.mcLaurienOrderTextBox.TextChanged += new System.EventHandler(this.mcLaurienOrderTextBox_TextChanged);
             // 
+            // polynomialButton
+            // 
+            this.polynomialButton.AutoSize = true;
+            this.polynomialButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.polynomialButton.Depth = 0;
+            this.polynomialButton.Icon = null;
+            this.polynomialButton.Location = new System.Drawing.Point(1668, 226);
+            this.polynomialButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.polynomialButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.polynomialButton.Name = "polynomialButton";
+            this.polynomialButton.Primary = false;
+            this.polynomialButton.Size = new System.Drawing.Size(107, 36);
+            this.polynomialButton.TabIndex = 30;
+            this.polynomialButton.Text = "Polynomial";
+            this.polynomialButton.UseVisualStyleBackColor = true;
+            this.polynomialButton.Click += new System.EventHandler(this.polynomialButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.polynomialButton);
             this.Controls.Add(this.mcLaurienOrderTextBox);
             this.Controls.Add(this.calculateMcLaurinSeriesButton);
             this.Controls.Add(this.panelPictureBox);
@@ -463,6 +482,7 @@
         private System.Windows.Forms.PictureBox graphPictureBox;
         private MaterialSkin.Controls.MaterialFlatButton calculateMcLaurinSeriesButton;
         private MaterialSkin.Controls.MaterialSingleLineTextField mcLaurienOrderTextBox;
+        private MaterialSkin.Controls.MaterialFlatButton polynomialButton;
     }
 }
 
