@@ -27,10 +27,13 @@ namespace CPP_GraphPlotting
 
         bool plotGraph_called = false;
         bool lightThemeOn = true;
+        bool polynomialTurnedOn = false;
 
         private const string wolframInput = "Input";
         private const string wolframDerivative = "Derivative";
         private const string wolframIntegral = "Indefinite integral";
+
+        private List<DataPoint> polynomialPoints;
 
 
         public Form1 () {
@@ -40,6 +43,8 @@ namespace CPP_GraphPlotting
             
             this.Bounds = Screen.PrimaryScreen.Bounds; // fill up the whole screen
             graphPictureBox.SizeMode = PictureBoxSizeMode.AutoSize; // for being able to scroll the graph window
+
+            polynomialPoints = new List<DataPoint> ();
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
@@ -341,20 +346,37 @@ namespace CPP_GraphPlotting
             }
 
             DataPoint p = OxyPlot.Axes.Axis.InverseTransform (e.Position, X_Axis, Y_Axis);
+            polynomialPoints?.Add (p);
         }
 
         private void polynomialButton_Click (object sender, EventArgs e) {
-            myModel = new PlotModel ();
-            myModel.Title = "Polynomial";
 
-            FunctionSeries series = new FunctionSeries ();
-            series.Points.Add (new DataPoint (0, 0));
+            if (!polynomialTurnedOn) {
 
-            myModel.Series.Add (series);
+                (sender as MaterialSkin.Controls.MaterialFlatButton).Text = "STOP POLYNOMIAL";
+                polynomialPoints = new List<DataPoint> ();
 
-            plot.Model = myModel;
+                myModel = new PlotModel ();
+                myModel.Title = "Polynomial";
 
-            myModel.MouseDown += plot_MouseDown;
+                FunctionSeries series = new FunctionSeries ();
+                series.Points.Add (new DataPoint (0, 0));
+
+                myModel.Series.Add (series);
+
+                plot.Model = myModel;
+
+                myModel.MouseDown += plot_MouseDown;
+
+                polynomialTurnedOn = true;
+
+                (sender as MaterialSkin.Controls.MaterialFlatButton).ForeColor = Color.Red;
+            } else {
+                myModel.MouseDown -= plot_MouseDown;
+                polynomialTurnedOn = false;
+
+
+            }
         }
     }
 }

@@ -404,14 +404,14 @@
             this.polynomialButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.polynomialButton.Depth = 0;
             this.polynomialButton.Icon = null;
-            this.polynomialButton.Location = new System.Drawing.Point(1668, 226);
+            this.polynomialButton.Location = new System.Drawing.Point(1621, 226);
             this.polynomialButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.polynomialButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.polynomialButton.Name = "polynomialButton";
             this.polynomialButton.Primary = false;
-            this.polynomialButton.Size = new System.Drawing.Size(107, 36);
+            this.polynomialButton.Size = new System.Drawing.Size(153, 36);
             this.polynomialButton.TabIndex = 30;
-            this.polynomialButton.Text = "Polynomial";
+            this.polynomialButton.Text = "START POLYNOMIAL";
             this.polynomialButton.UseVisualStyleBackColor = true;
             this.polynomialButton.Click += new System.EventHandler(this.polynomialButton_Click);
             // 

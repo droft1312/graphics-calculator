@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using OxyPlot;
+using OxyPlot.Series;
 
 namespace CPP_GraphPlotting
 {
@@ -153,6 +155,10 @@ namespace CPP_GraphPlotting
 
         #endregion
         #endregion
+
+        public void CreatePolynomialThroughPoints(DataPoint[] points) {
+
+        }
 
         /// <summary>
         /// Creates a MacLaurien series based off the function
