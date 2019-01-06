@@ -157,7 +157,20 @@ namespace CPP_GraphPlotting
         #endregion
 
         public void CreatePolynomialThroughPoints(DataPoint[] points) {
+            /* Let X be the number of points user has selected
+             * Then the polynomial is going to be of the degree (X - 1)
+             * 
+             * Example: X = 5 => ax^4 + bx^3 + cx^2 + dx + e
+             */
 
+            var nrOfPoints = points.Length;
+            var polynomialDegree = nrOfPoints - 1;
+            
+            for (int i = 0; i < nrOfPoints; i++) {
+                double[] equation = new double[nrOfPoints];
+                for (int j = 0; j < polynomialDegree; j++) equation[j] = Math.Pow (points[i].X, polynomialDegree - j);
+                equation[polynomialDegree] = points[i].Y;
+            }
         }
 
         /// <summary>

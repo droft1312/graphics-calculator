@@ -375,7 +375,7 @@ namespace CPP_GraphPlotting
                 myModel.MouseDown -= plot_MouseDown;
                 polynomialTurnedOn = false;
 
-
+                plotter.CreatePolynomialThroughPoints (polynomialPoints.ToArray ());
             }
         }
     }
