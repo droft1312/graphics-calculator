@@ -403,6 +403,8 @@ namespace CPP_GraphPlotting
                 myModel = new PlotModel () { Title = "Polynomial through points" };
                 myModel.Series.Add (series);
                 plot.Model = myModel;
+
+                (sender as MaterialSkin.Controls.MaterialFlatButton).Text = "START POLYNOMIAL";
             }
         }
     }
