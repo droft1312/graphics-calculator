@@ -73,6 +73,14 @@ namespace CPP_GraphPlotting
         public virtual BaseNode Simplify () {
             return null;
         }
+
+        public BaseNode FindMostRight() {
+            if (right == null) {
+                return this;
+            } else {
+                return right.FindMostRight ();
+            }
+        }
     }
 
     class SubstractionNode : BaseNode
@@ -254,6 +262,15 @@ namespace CPP_GraphPlotting
 
             }
         }
+
+        public void LagrangePutToRightNode (BaseNode node) {
+            if (this.right == null) {
+                this.right = node;
+            } else {
+                MultiplicationNode multiplication = new MultiplicationNode (this.right, node, null);
+                this.right = multiplication;
+            }
+        }
     }
 
     class SumNode : BaseNode
@@ -297,7 +314,7 @@ namespace CPP_GraphPlotting
             SetDerivativeRoot (node);
         }
 
-        public void McLaurienPutToRightNode (BaseNode node) {
+        public void PutToRightNode (BaseNode node) {
             if (this.right == null) {
                 this.right = node;
             } else {

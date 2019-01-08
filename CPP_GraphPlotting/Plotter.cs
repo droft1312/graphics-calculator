@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using OxyPlot;
 using OxyPlot.Series;
+
+using static CPP_GraphPlotting.LagrangeItem;
 
 namespace CPP_GraphPlotting
 {
@@ -156,21 +159,26 @@ namespace CPP_GraphPlotting
         #endregion
         #endregion
 
-        public void CreatePolynomialThroughPoints(DataPoint[] points) {
+        public BaseNode CreatePolynomialThroughPoints(DataPoint[] points) {
             /* Let X be the number of points user has selected
              * Then the polynomial is going to be of the degree (X - 1)
              * 
              * Example: X = 5 => ax^4 + bx^3 + cx^2 + dx + e
              */
 
-            var nrOfPoints = points.Length;
-            var polynomialDegree = nrOfPoints - 1;
-            
-            for (int i = 0; i < nrOfPoints; i++) {
-                double[] equation = new double[nrOfPoints];
-                for (int j = 0; j < polynomialDegree; j++) equation[j] = Math.Pow (points[i].X, polynomialDegree - j);
-                equation[polynomialDegree] = points[i].Y;
+            SumNode polynomial = new SumNode (null, null, null);
+
+            var firstDivision = ProduceLagrange (points, 0);
+            var firstMultiplication = new MultiplicationNode(firstDivision, new NumberNode (null, points[0].Y), null);
+            polynomial.left = firstMultiplication;
+
+            for (int j = 1; j < points.Length; j++) {
+                var division = ProduceLagrange (points, j);
+                MultiplicationNode node = new MultiplicationNode (division, new NumberNode (null, points[j].Y), null);
+                polynomial.PutToRightNode (node);
             }
+
+            return polynomial;
         }
 
         /// <summary>
@@ -218,7 +226,7 @@ namespace CPP_GraphPlotting
                 mcLaurienItems.Add (item);
             }
 
-            foreach (var item in mcLaurienItems) result.McLaurienPutToRightNode (item);
+            foreach (var item in mcLaurienItems) result.PutToRightNode (item);
 
             mcLaurienRoot = result;
         }

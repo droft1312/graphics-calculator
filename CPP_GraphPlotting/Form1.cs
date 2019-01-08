@@ -375,7 +375,34 @@ namespace CPP_GraphPlotting
                 myModel.MouseDown -= plot_MouseDown;
                 polynomialTurnedOn = false;
 
-                plotter.CreatePolynomialThroughPoints (polynomialPoints.ToArray ());
+                var polynomial = plotter.CreatePolynomialThroughPoints (polynomialPoints.ToArray ());
+
+                string ans = "";
+
+                for (int i = 0; i < polynomialPoints.Count; i++) {
+                    var x = string.Format ("For your input X and Y : {0} , {1}\nPolynomial gives: {2}", polynomialPoints[i].X, polynomialPoints[i].Y, plotter.ProcessTree (polynomialPoints[i].X, polynomial));
+                    ans += x + "\n";
+                }
+
+                plotter.GetGraphImage (graphPictureBox, polynomial);
+
+                MessageBox.Show (ans);
+
+
+                List<DataPoint> points = new List<DataPoint> ();
+                FunctionSeries series = new FunctionSeries ();
+
+                var boundaries = Boundaries (xValueTextbox.Text);
+
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
+                    points.Add (new DataPoint (i, plotter.ProcessTree (i, polynomial)));
+                }
+
+                series.Points.AddRange (points);
+
+                myModel = new PlotModel () { Title = "Polynomial through points" };
+                myModel.Series.Add (series);
+                plot.Model = myModel;
             }
         }
     }
