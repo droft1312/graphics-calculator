@@ -26,7 +26,6 @@ namespace CPP_GraphPlotting
         PlotModel myModel;
 
         bool plotGraph_called = false;
-        bool lightThemeOn = true;
         bool polynomialTurnedOn = false;
 
         private const string wolframInput = "Input";
@@ -160,16 +159,6 @@ namespace CPP_GraphPlotting
             }
         }
 
-        private void lightRadiobutton_CheckedChanged (object sender, EventArgs e) {
-            if (lightRadiobutton.Checked) {
-                lightThemeOn = true;
-                PutTheme ();
-            } else {
-                lightThemeOn = false;
-                PutTheme ();
-            }
-        }
-
         private int[] Boundaries (string input) {
 
             if (input == string.Empty) {
@@ -246,14 +235,6 @@ namespace CPP_GraphPlotting
         }
 
 
-        private void PutTheme() {
-            if (lightThemeOn) {
-                this.BackColor = Color.White;
-            } else {
-                this.BackColor = Color.FromArgb (54, 57, 63);
-            }
-        }
-
         /// <summary>
         /// Assign image from WolframAlpha to a PictureBox
         /// </summary>
@@ -321,6 +302,39 @@ namespace CPP_GraphPlotting
             } catch (Exception ex) {
                 MessageBox.Show (ex.Message);
             }
+        }
+
+        private void calculateMcLaurienByLimitButton_Click (object sender, EventArgs e) {
+            int n = int.Parse (mcLaurienOrderTextBox.Text); // get the order for the maclaurien
+
+            if (!(n >= 1 && n <= 8)) { // check for the right input
+                MessageBox.Show ("Please input a number that is bigger than 1 and less than 8!");
+                return;
+            }
+
+            /*                 
+                k=0 -> n
+                
+                sum ( (-1)^(k)*(n!/(k! * (n-k)!))*f(X0 + h*( (n-2k)/2 )) ) / h^n
+
+                where 'n' is the order for derivative and X0 is the f^n(x0)
+            */
+
+            var boundaries = Boundaries (xValueTextbox.Text);
+
+            for (int X0 = boundaries[0]; X0 < boundaries[1]; X0++) {
+
+                double answer = 0;
+
+                for (int k = 0; k < n; k++) {
+                    double Kthelement = Math.Pow (-1, k) * (MathNet.Numerics.SpecialFunctions.Factorial (n) / (MathNet.Numerics.SpecialFunctions.Factorial (k) *
+                        MathNet.Numerics.SpecialFunctions.Factorial (n - k))) * plotter.ProcessTree ((X0 + 0.001 * ((n - 2 * k) / 2)), plotter.Root);
+                    answer += Kthelement;
+                }
+
+                answer /= Math.Pow (0.001, n);
+            }
+
         }
 
         private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {

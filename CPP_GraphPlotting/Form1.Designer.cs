@@ -36,9 +36,6 @@
             this.inputTextbox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.xValueTextbox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            this.lightRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
-            this.darkRadiobutton = new MaterialSkin.Controls.MaterialRadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.infixFunctionLabel = new MaterialSkin.Controls.MaterialLabel();
             this.integralInput = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.integrateButton = new MaterialSkin.Controls.MaterialFlatButton();
@@ -52,7 +49,7 @@
             this.calculateMcLaurinSeriesButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.mcLaurienOrderTextBox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.polynomialButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.groupBox1.SuspendLayout();
+            this.calculateMcLaurienByLimitButton = new MaterialSkin.Controls.MaterialFlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).BeginInit();
@@ -203,52 +200,6 @@
             this.materialLabel2.TabIndex = 15;
             this.materialLabel2.Text = "X:";
             // 
-            // lightRadiobutton
-            // 
-            this.lightRadiobutton.AutoSize = true;
-            this.lightRadiobutton.Depth = 0;
-            this.lightRadiobutton.Font = new System.Drawing.Font("Roboto", 10F);
-            this.lightRadiobutton.Location = new System.Drawing.Point(3, 29);
-            this.lightRadiobutton.Margin = new System.Windows.Forms.Padding(0);
-            this.lightRadiobutton.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.lightRadiobutton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lightRadiobutton.Name = "lightRadiobutton";
-            this.lightRadiobutton.Ripple = true;
-            this.lightRadiobutton.Size = new System.Drawing.Size(60, 30);
-            this.lightRadiobutton.TabIndex = 16;
-            this.lightRadiobutton.TabStop = true;
-            this.lightRadiobutton.Text = "Light";
-            this.lightRadiobutton.UseVisualStyleBackColor = true;
-            this.lightRadiobutton.CheckedChanged += new System.EventHandler(this.lightRadiobutton_CheckedChanged);
-            // 
-            // darkRadiobutton
-            // 
-            this.darkRadiobutton.AutoSize = true;
-            this.darkRadiobutton.Depth = 0;
-            this.darkRadiobutton.Font = new System.Drawing.Font("Roboto", 10F);
-            this.darkRadiobutton.Location = new System.Drawing.Point(82, 29);
-            this.darkRadiobutton.Margin = new System.Windows.Forms.Padding(0);
-            this.darkRadiobutton.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.darkRadiobutton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.darkRadiobutton.Name = "darkRadiobutton";
-            this.darkRadiobutton.Ripple = true;
-            this.darkRadiobutton.Size = new System.Drawing.Size(57, 30);
-            this.darkRadiobutton.TabIndex = 17;
-            this.darkRadiobutton.TabStop = true;
-            this.darkRadiobutton.Text = "Dark";
-            this.darkRadiobutton.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lightRadiobutton);
-            this.groupBox1.Controls.Add(this.darkRadiobutton);
-            this.groupBox1.Location = new System.Drawing.Point(149, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 58);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "App Theme";
-            // 
             // infixFunctionLabel
             // 
             this.infixFunctionLabel.AutoSize = true;
@@ -369,7 +320,7 @@
             this.calculateMcLaurinSeriesButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.calculateMcLaurinSeriesButton.Depth = 0;
             this.calculateMcLaurinSeriesButton.Icon = null;
-            this.calculateMcLaurinSeriesButton.Location = new System.Drawing.Point(1678, 178);
+            this.calculateMcLaurinSeriesButton.Location = new System.Drawing.Point(1533, 178);
             this.calculateMcLaurinSeriesButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.calculateMcLaurinSeriesButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.calculateMcLaurinSeriesButton.Name = "calculateMcLaurinSeriesButton";
@@ -384,7 +335,7 @@
             // 
             this.mcLaurienOrderTextBox.Depth = 0;
             this.mcLaurienOrderTextBox.Hint = "";
-            this.mcLaurienOrderTextBox.Location = new System.Drawing.Point(1590, 191);
+            this.mcLaurienOrderTextBox.Location = new System.Drawing.Point(1445, 191);
             this.mcLaurienOrderTextBox.MaxLength = 32767;
             this.mcLaurienOrderTextBox.MouseState = MaterialSkin.MouseState.HOVER;
             this.mcLaurienOrderTextBox.Name = "mcLaurienOrderTextBox";
@@ -415,12 +366,30 @@
             this.polynomialButton.UseVisualStyleBackColor = true;
             this.polynomialButton.Click += new System.EventHandler(this.polynomialButton_Click);
             // 
+            // calculateMcLaurienByLimitButton
+            // 
+            this.calculateMcLaurienByLimitButton.AutoSize = true;
+            this.calculateMcLaurienByLimitButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.calculateMcLaurienByLimitButton.Depth = 0;
+            this.calculateMcLaurienByLimitButton.Icon = null;
+            this.calculateMcLaurienByLimitButton.Location = new System.Drawing.Point(1638, 178);
+            this.calculateMcLaurienByLimitButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.calculateMcLaurienByLimitButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.calculateMcLaurienByLimitButton.Name = "calculateMcLaurienByLimitButton";
+            this.calculateMcLaurienByLimitButton.Primary = false;
+            this.calculateMcLaurienByLimitButton.Size = new System.Drawing.Size(136, 36);
+            this.calculateMcLaurienByLimitButton.TabIndex = 31;
+            this.calculateMcLaurienByLimitButton.Text = "McLaurien Limit";
+            this.calculateMcLaurienByLimitButton.UseVisualStyleBackColor = true;
+            this.calculateMcLaurienByLimitButton.Click += new System.EventHandler(this.calculateMcLaurienByLimitButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.calculateMcLaurienByLimitButton);
             this.Controls.Add(this.polynomialButton);
             this.Controls.Add(this.mcLaurienOrderTextBox);
             this.Controls.Add(this.calculateMcLaurinSeriesButton);
@@ -433,7 +402,6 @@
             this.Controls.Add(this.integrateButton);
             this.Controls.Add(this.integralInput);
             this.Controls.Add(this.infixFunctionLabel);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.materialLabel2);
             this.Controls.Add(this.xValueTextbox);
             this.Controls.Add(this.inputTextbox);
@@ -445,8 +413,6 @@
             this.Controls.Add(this.plot);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).EndInit();
@@ -467,9 +433,6 @@
         private MaterialSkin.Controls.MaterialSingleLineTextField inputTextbox;
         private MaterialSkin.Controls.MaterialSingleLineTextField xValueTextbox;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
-        private MaterialSkin.Controls.MaterialRadioButton lightRadiobutton;
-        private MaterialSkin.Controls.MaterialRadioButton darkRadiobutton;
-        private System.Windows.Forms.GroupBox groupBox1;
         private MaterialSkin.Controls.MaterialLabel infixFunctionLabel;
         private MaterialSkin.Controls.MaterialSingleLineTextField integralInput;
         private MaterialSkin.Controls.MaterialFlatButton integrateButton;
@@ -483,6 +446,7 @@
         private MaterialSkin.Controls.MaterialFlatButton calculateMcLaurinSeriesButton;
         private MaterialSkin.Controls.MaterialSingleLineTextField mcLaurienOrderTextBox;
         private MaterialSkin.Controls.MaterialFlatButton polynomialButton;
+        private MaterialSkin.Controls.MaterialFlatButton calculateMcLaurienByLimitButton;
     }
 }
 
