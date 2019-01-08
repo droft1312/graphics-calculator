@@ -376,6 +376,7 @@ namespace CPP_GraphPlotting
                 polynomialTurnedOn = false;
 
                 var polynomial = plotter.CreatePolynomialThroughPoints (polynomialPoints.ToArray ());
+                polynomial = plotter.SimplifyTree (polynomial);
 
                 string ans = "";
 
