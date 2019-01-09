@@ -321,6 +321,7 @@ namespace CPP_GraphPlotting
             */
 
             var boundaries = Boundaries (xValueTextbox.Text);
+            List<double> valuesOfDerivative = new List<double> ();
 
             for (int X0 = boundaries[0]; X0 < boundaries[1]; X0++) {
 

@@ -231,6 +231,31 @@ namespace CPP_GraphPlotting
             mcLaurienRoot = result;
         }
 
+        public void CreateMcLaurienSeries(out BaseNode mcLaurienRoot, int order, double[] valuesOfDerivatives) {
+            var values = valuesOfDerivatives;
+
+            List<BaseNode> mcLaurienItems = new List<BaseNode> ();
+
+            SumNode result = new SumNode (null, null, null);
+            result.left = new NumberNode (null, values[0]);
+
+            for (int i = 1; i < values.Length; i++) {
+                DivisionNode item = new DivisionNode (null, null, null);
+                FactorialNode denominator = new FactorialNode (new NumberNode (null, i), null); // not sure about this line
+                MultiplicationNode numerator = new MultiplicationNode (
+                    new NumberNode (null, values[i]),
+                    new PowerNode (new BasicFunctionXNode ("", null), new NumberNode (null, i), null), null
+                );
+                item.left = numerator;
+                item.right = denominator;
+                mcLaurienItems.Add (item);
+            }
+
+            foreach (var item in mcLaurienItems) result.PutToRightNode (item);
+
+            mcLaurienRoot = result;
+        }
+
         /// <summary>
         /// Returns an area of the definite integral
         /// </summary>
