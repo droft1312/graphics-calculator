@@ -323,6 +323,9 @@ namespace CPP_GraphPlotting
             var boundaries = Boundaries (xValueTextbox.Text);
             List<double> valuesOfDerivative = new List<double> ();
 
+            BaseNode mcLaurien;
+            plotter.CreateMcLaurienSeriesByLimits (out mcLaurien, n);
+
             for (int X0 = boundaries[0]; X0 < boundaries[1]; X0++) {
             }
 

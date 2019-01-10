@@ -236,8 +236,7 @@ namespace CPP_GraphPlotting
         /// </summary>
         /// <param name="mcLaurienRoot">Where the McLaurien series will be outputted</param>
         /// <param name="order">Order of the McLaurien</param>
-        /// <param name="valuesOfDerivatives">Values of derivatives</param>
-        public void CreateMcLaurienSeriesByLimits(out BaseNode mcLaurienRoot, int order, double[] valuesOfDerivatives) {
+        public void CreateMcLaurienSeriesByLimits(out BaseNode mcLaurienRoot, int order) {
             
             List<double> values = new List<double> ();
             for (int i = 0; i <= order; i++) {
@@ -315,11 +314,13 @@ namespace CPP_GraphPlotting
                 where 'n' is the order for derivative and X0 is the f^n(x0)
             */
 
+            //if (n == 0) return ProcessTree (input, root);
+
             double @return = 0;
 
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k <= n; k++) {
                 double Kthelement = Math.Pow (-1, k) * (MathNet.Numerics.SpecialFunctions.Factorial (n) / (MathNet.Numerics.SpecialFunctions.Factorial (k) *
-                    MathNet.Numerics.SpecialFunctions.Factorial (n - k))) * ProcessTree ((input + 0.001 * ((n - 2 * k) / 2)), root);
+                    MathNet.Numerics.SpecialFunctions.Factorial (n - k))) * ProcessTree ((input + 0.001 * (((n - 2 * k) / 2))), root);
                 @return += Kthelement;
             }
 
