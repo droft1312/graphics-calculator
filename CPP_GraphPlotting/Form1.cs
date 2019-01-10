@@ -417,5 +417,17 @@ namespace CPP_GraphPlotting
                 (sender as MaterialSkin.Controls.MaterialFlatButton).Text = "START POLYNOMIAL";
             }
         }
+
+        private void inputTextbox_KeyDown (object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Enter) {
+                plotGraph_Click (sender, EventArgs.Empty);
+            }
+        }
+
+        private void integralInput_KeyDown (object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Enter) {
+                integrateButton_Click (sender, EventArgs.Empty);
+            }
+        }
     }
 }

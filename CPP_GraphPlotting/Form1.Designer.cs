@@ -168,6 +168,7 @@
             this.inputTextbox.TabIndex = 13;
             this.inputTextbox.TabStop = false;
             this.inputTextbox.UseSystemPasswordChar = false;
+            this.inputTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextbox_KeyDown);
             // 
             // xValueTextbox
             // 
@@ -185,6 +186,7 @@
             this.xValueTextbox.Size = new System.Drawing.Size(75, 23);
             this.xValueTextbox.TabIndex = 14;
             this.xValueTextbox.TabStop = false;
+            this.xValueTextbox.Text = "-100;100";
             this.xValueTextbox.UseSystemPasswordChar = false;
             // 
             // materialLabel2
@@ -229,6 +231,7 @@
             this.integralInput.TabIndex = 20;
             this.integralInput.TabStop = false;
             this.integralInput.UseSystemPasswordChar = false;
+            this.integralInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.integralInput_KeyDown);
             // 
             // integrateButton
             // 
