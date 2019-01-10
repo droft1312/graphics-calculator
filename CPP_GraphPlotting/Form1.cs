@@ -324,18 +324,9 @@ namespace CPP_GraphPlotting
             List<double> valuesOfDerivative = new List<double> ();
 
             for (int X0 = boundaries[0]; X0 < boundaries[1]; X0++) {
-
-                double answer = 0;
-
-                for (int k = 0; k < n; k++) {
-                    double Kthelement = Math.Pow (-1, k) * (MathNet.Numerics.SpecialFunctions.Factorial (n) / (MathNet.Numerics.SpecialFunctions.Factorial (k) *
-                        MathNet.Numerics.SpecialFunctions.Factorial (n - k))) * plotter.ProcessTree ((X0 + 0.001 * ((n - 2 * k) / 2)), plotter.Root);
-                    answer += Kthelement;
-                }
-
-                answer /= Math.Pow (0.001, n);
             }
 
+            
         }
 
         private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {

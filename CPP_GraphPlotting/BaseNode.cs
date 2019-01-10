@@ -778,46 +778,11 @@ namespace CPP_GraphPlotting
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            if (this.right is NumberNode && this.left is NumberNode) {
-                // if both this.left and this.right are numbers, return 0 for its just a number and it's anyway gon be 0
-                NumberNode node = new NumberNode (parent, 0);
-
-                if (parent != null) {
-                    if (isLeft)
-                        parent.left = node;
-                    else
-                        parent.right = node;
-                }
-
-                //Plotter.SetDerivativeRoot (node);
-                SetDerivativeRoot (node);
-                return;
-            } else if (this.right is NumberNode && !(this.left is NumberNode)) {
-                // f(x) ^ (some number)
-                // if left one some function
-                double nMinus1 = ((NumberNode)this.right).RealValue - 1;
-                var value = ((NumberNode)this.right).RealValue;
-                PowerNode power = new PowerNode (Plotter.CloneTree (this.left), new NumberNode (null, nMinus1), null);
-                MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, value), Plotter.CloneTree (this.left), null);
-
-                // if the f(x) is more complicated than just 'x', we do additional calculation
-                if (!(multiplication.right is BasicFunctionXNode)) {
-                    MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.left), parent);
-                    node.right.CreateDerivativeTree (multiplication, false);
-
-                    if (parent != null) {
-                        if (isLeft)
-                            parent.left = node;
-                        else
-                            parent.right = node;
-                    }
-
-                    //Plotter.SetDerivativeRoot (node);
-                    SetDerivativeRoot (node);
-                    return;
-                }
-
-                multiplication.parent = parent;
+            if (this.right is NumberNode && this.left is BasicFunctionXNode) {
+                var lesser = (right as NumberNode).RealValue - 1;
+                BasicFunctionXNode x = new BasicFunctionXNode ("", null);
+                MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, (right as NumberNode).RealValue),
+                    new PowerNode (x, new NumberNode (null, lesser), null), null);
 
                 if (parent != null) {
                     if (isLeft)
@@ -826,19 +791,13 @@ namespace CPP_GraphPlotting
                         parent.right = multiplication;
                 }
 
-                //Plotter.SetDerivativeRoot (multiplication);
                 SetDerivativeRoot (multiplication);
                 return;
-            } else if (!(this.right is NumberNode) && (this.left is NumberNode)) {
-                // (some number) ^ f(x)
+            } else {
 
-                var value = ((NumberNode)this.left).RealValue;
-
-                if (this.right is BasicFunctionXNode) {
-                    // simple function
-                    PowerNode power = new PowerNode (new NumberNode (null, value), new BasicFunctionXNode (""), null);
-                    LnNode ln = new LnNode (new NumberNode (null, value), null);
-                    MultiplicationNode node = new MultiplicationNode (power, ln, parent);
+                if (this.right is NumberNode && this.left is NumberNode) {
+                    // if both this.left and this.right are numbers, return 0 for its just a number and it's anyway gon be 0
+                    NumberNode node = new NumberNode (parent, 0);
 
                     if (parent != null) {
                         if (isLeft)
@@ -850,13 +809,96 @@ namespace CPP_GraphPlotting
                     //Plotter.SetDerivativeRoot (node);
                     SetDerivativeRoot (node);
                     return;
-                } else {
-                    // function is more complicated
-                    PowerNode power = new PowerNode (new NumberNode (null, value), this.right, null);
-                    LnNode ln = new LnNode (new NumberNode (null, value), null);
-                    MultiplicationNode multiplication = new MultiplicationNode (power, ln, parent);
-                    MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.right), parent);
-                    node.right.CreateDerivativeTree (node, false);
+                } else if (this.right is NumberNode && !(this.left is NumberNode)) {
+                    // f(x) ^ (some number)
+                    // if left one some function
+                    double nMinus1 = ((NumberNode)this.right).RealValue - 1;
+                    var value = ((NumberNode)this.right).RealValue;
+                    PowerNode power = new PowerNode (Plotter.CloneTree (this.left), new NumberNode (null, nMinus1), null);
+                    MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, value), Plotter.CloneTree (this.left), null);
+
+                    // if the f(x) is more complicated than just 'x', we do additional calculation
+                    if (!(multiplication.right is BasicFunctionXNode)) {
+                        MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.left), parent);
+                        node.right.CreateDerivativeTree (multiplication, false);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        //Plotter.SetDerivativeRoot (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    }
+
+                    multiplication.parent = parent;
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = multiplication;
+                        else
+                            parent.right = multiplication;
+                    }
+
+                    //Plotter.SetDerivativeRoot (multiplication);
+                    SetDerivativeRoot (multiplication);
+                    return;
+                } else if (!(this.right is NumberNode) && (this.left is NumberNode)) {
+                    // (some number) ^ f(x)
+
+                    var value = ((NumberNode)this.left).RealValue;
+
+                    if (this.right is BasicFunctionXNode) {
+                        // simple function
+                        PowerNode power = new PowerNode (new NumberNode (null, value), new BasicFunctionXNode (""), null);
+                        LnNode ln = new LnNode (new NumberNode (null, value), null);
+                        MultiplicationNode node = new MultiplicationNode (power, ln, parent);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        //Plotter.SetDerivativeRoot (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    } else {
+                        // function is more complicated
+                        PowerNode power = new PowerNode (new NumberNode (null, value), this.right, null);
+                        LnNode ln = new LnNode (new NumberNode (null, value), null);
+                        MultiplicationNode multiplication = new MultiplicationNode (power, ln, parent);
+                        MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.right), parent);
+                        node.right.CreateDerivativeTree (node, false);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        //Plotter.SetDerivativeRoot (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    }
+                } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
+                    // neither is a number 
+                    // CASE: f(x) ^ g(x)
+                    // d(f(x) ^ g(x))/dx = e^(g(x)*ln(f(x)) * d((g(x)*f(x)))/dx )
+                    // this.left = f(x), this.right = g(x)
+
+                    LnNode lnFx = new LnNode (Plotter.CloneTree (this.left), null); // create ln(f(x))
+                    MultiplicationNode multiplication = new MultiplicationNode (Plotter.CloneTree (this.right), lnFx, null); // create g(x)*ln(f(x))
+                    PowerNode ePower = new PowerNode (new NumberNode (null, Math.E), multiplication, null); // create e^(g(x)*ln(f(x)))
+                    MultiplicationNode derivativeOfMultiplication = new MultiplicationNode (Plotter.CloneTree (multiplication.left), Plotter.CloneTree (multiplication.right), null); // do the derivative of g(x)*ln(f(x))
+                    MultiplicationNode node = new MultiplicationNode (ePower, derivativeOfMultiplication, parent); // put it all together
+
+                    node.right.CreateDerivativeTree (node, false); // take a derivative
 
                     if (parent != null) {
                         if (isLeft)
@@ -869,30 +911,6 @@ namespace CPP_GraphPlotting
                     SetDerivativeRoot (node);
                     return;
                 }
-            } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
-                // neither is a number 
-                // CASE: f(x) ^ g(x)
-                // d(f(x) ^ g(x))/dx = e^(g(x)*ln(f(x)) * d((g(x)*f(x)))/dx )
-                // this.left = f(x), this.right = g(x)
-
-                LnNode lnFx = new LnNode (Plotter.CloneTree (this.left), null); // create ln(f(x))
-                MultiplicationNode multiplication = new MultiplicationNode (Plotter.CloneTree (this.right), lnFx, null); // create g(x)*ln(f(x))
-                PowerNode ePower = new PowerNode (new NumberNode (null, Math.E), multiplication, null); // create e^(g(x)*ln(f(x)))
-                MultiplicationNode derivativeOfMultiplication = new MultiplicationNode (Plotter.CloneTree (multiplication.left), Plotter.CloneTree (multiplication.right), null); // do the derivative of g(x)*ln(f(x))
-                MultiplicationNode node = new MultiplicationNode (ePower, derivativeOfMultiplication, parent); // put it all together
-
-                node.right.CreateDerivativeTree (node, false); // take a derivative
-
-                if (parent != null) {
-                    if (isLeft)
-                        parent.left = node;
-                    else
-                        parent.right = node;
-                }
-
-                //Plotter.SetDerivativeRoot (node);
-                SetDerivativeRoot (node);
-                return;
             }
         }
 

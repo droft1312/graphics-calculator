@@ -231,15 +231,26 @@ namespace CPP_GraphPlotting
             mcLaurienRoot = result;
         }
 
-        public void CreateMcLaurienSeries(out BaseNode mcLaurienRoot, int order, double[] valuesOfDerivatives) {
-            var values = valuesOfDerivatives;
+        /// <summary>
+        /// Get the McLaurien series based off already given values for derivatives
+        /// </summary>
+        /// <param name="mcLaurienRoot">Where the McLaurien series will be outputted</param>
+        /// <param name="order">Order of the McLaurien</param>
+        /// <param name="valuesOfDerivatives">Values of derivatives</param>
+        public void CreateMcLaurienSeriesByLimits(out BaseNode mcLaurienRoot, int order, double[] valuesOfDerivatives) {
+            
+            List<double> values = new List<double> ();
+            for (int i = 0; i <= order; i++) {
+                var value = ProcessNthDerivative_Quotient (0, i, root);
+                values.Add (value);
+            }
 
             List<BaseNode> mcLaurienItems = new List<BaseNode> ();
 
             SumNode result = new SumNode (null, null, null);
             result.left = new NumberNode (null, values[0]);
 
-            for (int i = 1; i < values.Length; i++) {
+            for (int i = 1; i < values.Count; i++) {
                 DivisionNode item = new DivisionNode (null, null, null);
                 FactorialNode denominator = new FactorialNode (new NumberNode (null, i), null); // not sure about this line
                 MultiplicationNode numerator = new MultiplicationNode (
@@ -284,6 +295,37 @@ namespace CPP_GraphPlotting
             double y1 = @base.Calculate (x1);
             double y2 = @base.Calculate (x2);
             return (y2 - y1) / (x2 - x1);
+        }
+
+        /// <summary>
+        /// Gives a value for the Nth derivative of a function using the definition
+        /// </summary>
+        /// <param name="input">F^(n)(X0), input is X0</param>
+        /// <param name="n">The degree of derivative</param>
+        /// <param name="root">Initial function</param>
+        /// <returns>F^(n)(X0)</returns>
+        public double ProcessNthDerivative_Quotient(double input, int n, BaseNode root) {
+            /*
+                FORMULA:
+
+                k=0 -> n
+                
+                sum ( (-1)^(k)*(n!/(k! * (n-k)!))*f(X0 + h*( (n-2k)/2 )) ) / h^n
+
+                where 'n' is the order for derivative and X0 is the f^n(x0)
+            */
+
+            double @return = 0;
+
+            for (int k = 0; k < n; k++) {
+                double Kthelement = Math.Pow (-1, k) * (MathNet.Numerics.SpecialFunctions.Factorial (n) / (MathNet.Numerics.SpecialFunctions.Factorial (k) *
+                    MathNet.Numerics.SpecialFunctions.Factorial (n - k))) * ProcessTree ((input + 0.001 * ((n - 2 * k) / 2)), root);
+                @return += Kthelement;
+            }
+
+            @return /= Math.Pow (h, n);
+
+            return @return;
         }
 
         /// <summary>
