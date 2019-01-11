@@ -50,6 +50,7 @@
             this.mcLaurienOrderTextBox = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.polynomialButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.calculateMcLaurienByLimitButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.polynomialPointsListView = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.functionPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.derivativePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.integralPictureBox)).BeginInit();
@@ -386,12 +387,21 @@
             this.calculateMcLaurienByLimitButton.UseVisualStyleBackColor = true;
             this.calculateMcLaurienByLimitButton.Click += new System.EventHandler(this.calculateMcLaurienByLimitButton_Click);
             // 
+            // polynomialPointsListView
+            // 
+            this.polynomialPointsListView.FormattingEnabled = true;
+            this.polynomialPointsListView.Location = new System.Drawing.Point(1533, 271);
+            this.polynomialPointsListView.Name = "polynomialPointsListView";
+            this.polynomialPointsListView.Size = new System.Drawing.Size(241, 212);
+            this.polynomialPointsListView.TabIndex = 32;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1787, 987);
+            this.Controls.Add(this.polynomialPointsListView);
             this.Controls.Add(this.calculateMcLaurienByLimitButton);
             this.Controls.Add(this.polynomialButton);
             this.Controls.Add(this.mcLaurienOrderTextBox);
@@ -450,6 +460,7 @@
         private MaterialSkin.Controls.MaterialSingleLineTextField mcLaurienOrderTextBox;
         private MaterialSkin.Controls.MaterialFlatButton polynomialButton;
         private MaterialSkin.Controls.MaterialFlatButton calculateMcLaurienByLimitButton;
+        private System.Windows.Forms.ListBox polynomialPointsListView;
     }
 }
 

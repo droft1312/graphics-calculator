@@ -356,6 +356,12 @@ namespace CPP_GraphPlotting
 
             DataPoint p = OxyPlot.Axes.Axis.InverseTransform (e.Position, X_Axis, Y_Axis);
             polynomialPoints?.Add (p);
+
+            string toAddToListView = string.Empty;
+            toAddToListView += "X: " + (int)p.X + " ; Y: " + (int)p.Y;
+            toAddToListView += Environment.NewLine;
+            
+            polynomialPointsListView.Items.Add (toAddToListView);
         }
 
         private void polynomialButton_Click (object sender, EventArgs e) {
@@ -369,13 +375,15 @@ namespace CPP_GraphPlotting
                 myModel.Title = "Polynomial";
 
                 FunctionSeries series = new FunctionSeries ();
-                series.Points.Add (new DataPoint (0, 0));
+                series.Points.Add (new DataPoint (100, 100));
 
                 myModel.Series.Add (series);
 
                 plot.Model = myModel;
 
                 myModel.MouseDown += plot_MouseDown;
+                polynomialPointsListView.Items.Clear ();
+                polynomialPointsListView.Items.Add ("Selected points:");
 
                 polynomialTurnedOn = true;
 
