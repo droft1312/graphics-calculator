@@ -205,8 +205,6 @@ namespace CPP_GraphPlotting
                 }
             }
 
-            
-            // really unsure about the code down below (TO BE TESTED)
             List<BaseNode> mcLaurienItems = new List<BaseNode> ();
 
             SumNode result = new SumNode (null, null, null);
@@ -583,8 +581,7 @@ namespace CPP_GraphPlotting
         /// <param name="tree">Tree to simplify</param>
         public BaseNode SimplifyTree(BaseNode tree) {
             var simplifiedTree = CloneTree (tree);
-            simplifiedTree.left = tree.left.Simplify ();
-            simplifiedTree.right = tree.right.Simplify ();
+            simplifiedTree = simplifiedTree.Simplify ();
             return simplifiedTree;
         }
 

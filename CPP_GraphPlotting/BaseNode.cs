@@ -31,6 +31,10 @@ namespace CPP_GraphPlotting
             left = right = null;
         }
 
+        /// <summary>
+        /// Inserts a node into a tree
+        /// </summary>
+        /// <param name="node"></param>
         public void Insert (BaseNode node) {
             if (left == null) {
                 left = node;
@@ -66,20 +70,20 @@ namespace CPP_GraphPlotting
         public virtual void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
         }
 
+        /// <summary>
+        /// Sets the derivative (read the methods to understand)
+        /// </summary>
+        /// <param name="node"></param>
         protected void SetDerivativeRoot(BaseNode node) {
             Plotter.SetDerivativeRoot (node, ref derivativeRoot);
         }
 
+        /// <summary>
+        /// Simplifies current tree
+        /// </summary>
+        /// <returns>Simplified tree</returns>
         public virtual BaseNode Simplify () {
             return null;
-        }
-
-        public BaseNode FindMostRight() {
-            if (right == null) {
-                return this;
-            } else {
-                return right.FindMostRight ();
-            }
         }
     }
 
