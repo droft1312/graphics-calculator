@@ -312,14 +312,14 @@ namespace CPP_GraphPlotting
                 where 'n' is the order for derivative and X0 is the f^n(x0)
             */
 
-            //if (n == 0) return ProcessTree (input, root);
-
             double @return = 0;
 
             for (int k = 0; k <= n; k++) {
-                double Kthelement = Math.Pow (-1, k) * (MathNet.Numerics.SpecialFunctions.Factorial (n) / (MathNet.Numerics.SpecialFunctions.Factorial (k) *
-                    MathNet.Numerics.SpecialFunctions.Factorial (n - k))) * ProcessTree ((input + 0.001 * (((n - 2 * k) / 2))), root);
-                @return += Kthelement;
+                double firstElement = Math.Pow (-1, k);
+                double secondElement = MathNet.Numerics.SpecialFunctions.Factorial (n) / (MathNet.Numerics.SpecialFunctions.Factorial (k) *
+                    MathNet.Numerics.SpecialFunctions.Factorial (n - k));
+                double thirdElement = ProcessTree (input + ((n - 2 * (double)k) / 2) * h, root);
+                @return += firstElement * secondElement * thirdElement;
             }
 
             @return /= Math.Pow (h, n);

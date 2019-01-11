@@ -319,17 +319,41 @@ namespace CPP_GraphPlotting
 
                 where 'n' is the order for derivative and X0 is the f^n(x0)
             */
+            
 
-            var boundaries = Boundaries (xValueTextbox.Text);
-            List<double> valuesOfDerivative = new List<double> ();
+            BaseNode mcLaurienRoot;
+            plotter.CreateMcLaurienSeriesByLimits (out mcLaurienRoot, n);
+            mcLaurienRoot = plotter.SimplifyTree (mcLaurienRoot);
+            plotter.GetGraphImage (graphPictureBox, mcLaurienRoot);
 
-            BaseNode mcLaurien;
-            plotter.CreateMcLaurienSeriesByLimits (out mcLaurien, n);
+            List<DataPoint> mcLaurienPoints = new List<DataPoint> ();
+            FunctionSeries mcLaurienSeries = new FunctionSeries { Title = "McLaurien" };
+            List<DataPoint> graphPoints = new List<DataPoint> ();
+            FunctionSeries graphSeries = new FunctionSeries { Title = "Graph" };
 
-            for (int X0 = boundaries[0]; X0 < boundaries[1]; X0++) {
+            try {
+
+                var boundaries = Boundaries (xValueTextbox.Text);
+
+                for (int i = boundaries[0]; i < boundaries[1]; i++) {
+                    mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
+                    graphPoints.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
+                }
+
+                mcLaurienSeries.Points.AddRange (mcLaurienPoints);
+                graphSeries.Points.AddRange (graphPoints);
+                myModel = new PlotModel () { Title = "McLaurien Series (order = " + n + ")" };
+                myModel.Series.Add (mcLaurienSeries);
+                myModel.Series.Add (graphSeries);
+                plot.Model = myModel;
+
+                plotGraph_called = true;
+
+            } catch (Exception ex) {
+                MessageBox.Show (ex.Message);
             }
 
-            
+
         }
 
         private void mcLaurienOrderTextBox_TextChanged (object sender, EventArgs e) {
