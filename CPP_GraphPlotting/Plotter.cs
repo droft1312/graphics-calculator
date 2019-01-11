@@ -6,8 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 
 using OxyPlot;
-using OxyPlot.Series;
-
 using static CPP_GraphPlotting.LagrangeItem;
 
 namespace CPP_GraphPlotting
@@ -606,12 +604,6 @@ namespace CPP_GraphPlotting
              VERY BAD DESIGN
 
              */
-        }
-
-        public BaseNode CreateDerivativeTree(BaseNode root) {
-            var derivativeNode = root;
-            derivativeNode.CreateDerivativeTree (null);
-            return derivativeNode;
         }
 
         /// <summary>
