@@ -229,11 +229,13 @@ namespace CPP_GraphPlotting
                 } else if (left is NumberNode && !(right is NumberNode)) {
                     var value = (left as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 0); }
+                    else if (value == 1) { return this.right.Simplify (); }
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
                     var value = (right as NumberNode).RealValue;
-                    if (value == 0) { return new NumberNode (null, 0); }
+                    if (value == 0) { return new NumberNode (null, 0); } 
+                    else if (value == 1) { return this.left.Simplify (); }
                     this.left = this.left.Simplify ();
                     return this;
                 } else {
@@ -249,11 +251,13 @@ namespace CPP_GraphPlotting
                 } else if (left is NumberNode && !(right is NumberNode)) {
                     var value = (left as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 0); }
+                    else if (value == 1) { return this.right.Simplify (); }
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
                     var value = (right as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 0); }
+                    else if (value == 1) { return this.left.Simplify (); }
                     this.left = this.left.Simplify ();
                     return this;
                 } else {
@@ -438,6 +442,7 @@ namespace CPP_GraphPlotting
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
+                    if ((right as NumberNode).RealValue == 1) return this.left.Simplify ();
                     this.left = this.left.Simplify ();
                     return this;
                 } else {
@@ -459,6 +464,7 @@ namespace CPP_GraphPlotting
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
+                    if ((right as NumberNode).RealValue == 1) return this.left.Simplify ();
                     this.left = this.left.Simplify ();
                     return this;
                 } else {
@@ -927,11 +933,14 @@ namespace CPP_GraphPlotting
                 } else if (left is NumberNode && !(right is NumberNode)) {
                     var value = (left as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 0); }
+                    //  MIGHT BE CAUSING PROBLEMS (CHECK IT LATER)
+                    else if (value == 1) { return new NumberNode (null, 1); }
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
                     var value = (right as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 1); }
+                    else if (value == 1) { return this.left.Simplify (); }
                     this.left = this.left.Simplify ();
                     return this;
                 } else {
@@ -947,11 +956,14 @@ namespace CPP_GraphPlotting
                 } else if (left is NumberNode && !(right is NumberNode)) {
                     var value = (left as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 0); }
+                    else if (value == 1) { return new NumberNode (null, 1); }
                     this.right = this.right.Simplify ();
                     return this;
                 } else if (!(left is NumberNode) && right is NumberNode) {
                     var value = (right as NumberNode).RealValue;
                     if (value == 0) { return new NumberNode (null, 1); }
+                    //  MIGHT BE CAUSING PROBLEMS (CHECK IT LATER)
+                    else if (value == 1) { return this.left.Simplify (); }
                     this.left = this.left.Simplify ();
                     return this;
                 } else {

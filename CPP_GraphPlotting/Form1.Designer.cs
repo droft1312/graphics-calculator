@@ -277,6 +277,7 @@
             this.derivativePictureBox.Location = new System.Drawing.Point(903, 886);
             this.derivativePictureBox.Name = "derivativePictureBox";
             this.derivativePictureBox.Size = new System.Drawing.Size(231, 89);
+            this.derivativePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.derivativePictureBox.TabIndex = 24;
             this.derivativePictureBox.TabStop = false;
             // 
