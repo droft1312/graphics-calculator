@@ -824,6 +824,13 @@ namespace CPP_GraphPlotting
                     // if left one some function
                     double nMinus1 = ((NumberNode)this.right).RealValue - 1;
                     var value = ((NumberNode)this.right).RealValue;
+
+                    if (value == 1) {
+                        var node = Plotter.CloneTree (this.left);
+                        //node.CreateDerivativeTree ()
+
+                    }
+
                     PowerNode power = new PowerNode (Plotter.CloneTree (this.left), new NumberNode (null, nMinus1), null);
                     MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, value), Plotter.CloneTree (this.left), null);
 

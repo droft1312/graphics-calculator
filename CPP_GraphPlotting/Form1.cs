@@ -416,6 +416,8 @@ namespace CPP_GraphPlotting
                 myModel.MouseDown -= plot_MouseDown;
                 polynomialTurnedOn = false;
 
+                if (polynomialPoints.Count < 2) { MessageBox.Show ("Please input more than 1 point!"); (sender as MaterialSkin.Controls.MaterialFlatButton).Text = "START POLYNOMIAL"; return; }
+
                 var polynomial = plotter.CreatePolynomialThroughPoints (polynomialPoints.ToArray ());
                 polynomial = plotter.SimplifyTree (polynomial);
 
