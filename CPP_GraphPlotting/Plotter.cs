@@ -406,9 +406,6 @@ namespace CPP_GraphPlotting
 
                 // same stuff as in the first 'if'
                 root = new NumberNode (newS, null, "-" + toParseIntoNumber);
-            } else if (s[0] == 'n') {
-                s = Plotter.DeleteNFromString (s);
-                ProcessString (s);
             }
 
             CreateTree (root.value, root);
@@ -534,10 +531,6 @@ namespace CPP_GraphPlotting
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
-            } else if (s[0] == 'n') {
-                // ignore this guy
-                s = Plotter.DeleteNFromString (s);
-                CreateTree (s, baseNode);
             } else if (s[0] == 'x') {
 
                 // same as in the first 'if'
