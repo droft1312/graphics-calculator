@@ -826,9 +826,18 @@ namespace CPP_GraphPlotting
                     var value = ((NumberNode)this.right).RealValue;
 
                     if (value == 1) {
-                        var node = Plotter.CloneTree (this.left);
-                        //node.CreateDerivativeTree ()
+                        var node = Plotter.CloneTree (this);
 
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        node.left.CreateDerivativeTree (node);
+                        SetDerivativeRoot (node);
+                        return;
                     }
 
                     PowerNode power = new PowerNode (Plotter.CloneTree (this.left), new NumberNode (null, nMinus1), null);
