@@ -406,8 +406,10 @@ namespace CPP_GraphPlotting
 
                 // same stuff as in the first 'if'
                 root = new NumberNode (newS, null, "-" + toParseIntoNumber);
+            } else if (s[0] == 'n') {
+                s = Plotter.DeleteNFromString (s);
+                ProcessString (s);
             }
-
 
             CreateTree (root.value, root);
 
@@ -532,6 +534,10 @@ namespace CPP_GraphPlotting
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
+            } else if (s[0] == 'n') {
+                // ignore this guy
+                s = Plotter.DeleteNFromString (s);
+                CreateTree (s, baseNode);
             } else if (s[0] == 'x') {
 
                 // same as in the first 'if'
@@ -662,6 +668,56 @@ namespace CPP_GraphPlotting
                 @return += s[j];
 
             return @return;
+        }
+
+        /// <summary>
+        /// Deletes n() from an input string because we don't need it
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string DeleteNFromString (string input) {
+
+            // Removes the first occurence of a specified char in a specified string
+            string RemoveFirstOccurenceOf (string yourString, char toDelete) {
+                int index = -1;
+
+                for (int i = 0; i < yourString.Length; i++) if (yourString[i] == toDelete) { index = i; break; }
+
+                if (index == -1) throw new Exception ("Specified char has not been found");
+
+                return yourString.Remove (index, 1);
+            }
+
+            int GetIndexOf (string yourString, char toFind) {
+                int index = -1;
+
+                for (int i = 0; i < yourString.Length; i++) if (yourString[i] == toFind) { index = i; break; }
+
+                return index;
+            }
+
+            string corrected_string = string.Empty;
+            bool concatenated = false;
+
+            int indexOfN = input.ToLower ().IndexOf ('n');
+            string substring = input.Substring (indexOfN);
+            int indexOfClosingParentheses = GetIndexOf (substring, ')');
+            substring = substring.Substring (0, indexOfClosingParentheses);
+            substring = RemoveFirstOccurenceOf (substring, '(');
+            substring = substring.Contains (')') ? RemoveFirstOccurenceOf (substring, ')') : substring;
+            substring = RemoveFirstOccurenceOf (substring, 'n');
+
+            for (int i = 0; i < input.Length; i++) {
+                if (i == indexOfN && !concatenated) {
+                    corrected_string += substring;
+                    i = Math.Abs (indexOfClosingParentheses + indexOfN);
+                    concatenated = true;
+                } else {
+                    corrected_string += input[i];
+                }
+            }
+
+            return corrected_string;
         }
 
         /// <summary>

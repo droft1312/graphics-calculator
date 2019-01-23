@@ -47,12 +47,15 @@ namespace CPP_GraphPlotting
         }
 
         private void plotGraph_Click (object sender, EventArgs e) {
-            string input = inputTextbox.Text.Replace(" ", string.Empty);
+            string input = inputTextbox.Text.Replace(" ", string.Empty).ToLower();
 
             List<DataPoint> points = new List<DataPoint>();
             FunctionSeries series = new FunctionSeries ();
 
             try {
+
+                if (input.Contains ('n')) { input = Plotter.DeleteNFromString (input); }
+
                 plotter.ProcessString (input);
 
                 var boundaries = Boundaries (xValueTextbox.Text);
