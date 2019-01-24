@@ -479,61 +479,6 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class DecimalNumberNode : BaseNode
-    {
-        // ------------------------------------- TO BE RE-WRITTEN!!!!----------------------------------------------------
-
-        double realValue;
-
-        public DecimalNumberNode (string input, BaseNode parentNode, string realValue) {
-            value = input;
-            parent = parentNode;
-
-
-            if (realValue[0] == 'p') {
-                this.realValue = 3.14d;
-            } else {
-                this.realValue = Double.Parse (realValue);
-            }
-        }
-
-        public DecimalNumberNode (BaseNode parent, double realValue) {
-            value = string.Empty;
-            this.parent = parent;
-            this.realValue = realValue;
-        }
-
-        public DecimalNumberNode (string value) : base (value) {
-        }
-
-        public double RealValue { get { return realValue; } }
-
-        public override string ToString () {
-            return realValue.ToString ();
-        }
-
-        public override double Calculate (double number) => realValue;
-
-        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            NumberNode node = new NumberNode (parent, 0);
-            if (parent != null) {
-                if (isLeft)
-                    parent.left = node;
-                else
-                    parent.right = node;
-            }
-
-            //Plotter.SetDerivativeRoot (node);
-            SetDerivativeRoot (node);
-
-            return;
-        }
-
-        public override BaseNode Simplify () {
-            return this;
-        }
-    }
-
     class NumberNode : BaseNode
     {
         double realValue;
