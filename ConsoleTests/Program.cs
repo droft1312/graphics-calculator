@@ -12,36 +12,18 @@ namespace ConsoleTests
     class Program
     {
         static void Main (string[] args) {
-            //string input = "/(*(x,+(3,*(2,x))),+(x,*(5,x)))";
-            string input = "s(/(+(x,3),5))";
 
-            Plotter plotter = new Plotter ();
-            plotter.ProcessString (input);
+            string a = "+(r(32.43), *(32, x))";
 
-            //Console.WriteLine(plotter.PrefixToInfix ("/(*(x,+(3,*(2,x))),+(x,*(5,x)))"));
+            if (a.Contains ('r')) a = Plotter.DeleteCharFromString (a, 'r');
 
-            WolframAlpha wolfram = new WolframAlpha ("HVTG5G-R85WWR978J");
+            Plotter p = new Plotter ();
 
-            //Then you simply query Wolfram|Alpha like this
-            //Note that the spelling error will be correct by Wolfram|Alpha
-            QueryResult results = wolfram.Query (plotter.PrefixToInfix ("/(*(x,+(3,*(2,x))),+(x,*(5,x)))"));
+            p.ProcessString (a);
 
-            //The QueryResult object contains the parsed XML from Wolfram|Alpha. Lets look at it.
-            //The results from wolfram is split into "pods". We just print them.
-            if (results != null) {
-                foreach (Pod pod in results.Pods) {
-                    Console.WriteLine (pod.Title);
-                    if (pod.SubPods != null) {
-                        foreach (SubPod subPod in pod.SubPods) {
-                            Console.WriteLine (subPod.Title);
-                            Console.WriteLine (subPod.Image.Src);
-                            Console.WriteLine (subPod.Plaintext);
-                            
-                        }
-                    }
-                    Console.WriteLine (new string('-', 20));
-                }
-            }
+            var v = p.Root;
+
+            Console.WriteLine ();
 
             Console.ReadKey ();
         }

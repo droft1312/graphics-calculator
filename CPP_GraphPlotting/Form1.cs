@@ -54,7 +54,8 @@ namespace CPP_GraphPlotting
 
             try {
 
-                if (input.Contains ('n')) { input = Plotter.DeleteNFromString (input); }
+                if (input.Contains ('n')) { input = Plotter.DeleteCharFromString (input, 'n'); }
+                if (input.Contains('r')) { input = Plotter.DeleteCharFromString (input, 'r'); }
 
                 plotter.ProcessString (input);
 

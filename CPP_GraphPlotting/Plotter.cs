@@ -361,8 +361,6 @@ namespace CPP_GraphPlotting
                 root = new FactorialNode (s, null);
             } else if (s[0] == 'x') {
                 root = new BasicFunctionXNode (s, null);
-            } else if (s[0] == 'r') {
-
             } else if (s[0] >= '0' && s[0] <= '9') {
                 string toParseIntoNumber = string.Empty;
                 int counter = 0;
@@ -373,7 +371,7 @@ namespace CPP_GraphPlotting
                     do {
                         toParseIntoNumber += s[counter];
                         counter++;
-                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                    } while (counter < s.Length && (s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.');
                 }
 
                 string @newS = string.Empty;
@@ -397,7 +395,7 @@ namespace CPP_GraphPlotting
                     do {
                         toParseIntoNumber += s[counter];
                         counter++;
-                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                    } while (counter < s.Length && (s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.');
                 }
 
                 string @newS = string.Empty;
@@ -490,11 +488,13 @@ namespace CPP_GraphPlotting
                 if (s[0] == 'p') {
                     toParseIntoNumber = "p";
                 } else {
-                    while (s[counter] >= '0' && s[counter] <= '9') {
+                    while ((s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.') {
                         toParseIntoNumber += s[counter];
                         counter++;
                     }
                 }
+
+                if (toParseIntoNumber.Contains ('.')) toParseIntoNumber = toParseIntoNumber.Replace ('.', ',');
 
                 string @newS = string.Empty;
 
@@ -520,7 +520,7 @@ namespace CPP_GraphPlotting
                     do {
                         toParseIntoNumber += s[counter];
                         counter++;
-                    } while (counter < s.Length && s[counter] >= '0' && s[counter] <= '9');
+                    } while (counter < s.Length && ((s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.'));
                 }
 
                 string @newS = string.Empty;
@@ -666,11 +666,12 @@ namespace CPP_GraphPlotting
         }
 
         /// <summary>
-        /// Deletes n() from an input string because we don't need it
+        /// If you wanna delete for example 'n' from a string s(n(-32)), you will get this: s(-32)
         /// </summary>
         /// <param name="input"></param>
+        /// <param name="itemToDelete"></param>
         /// <returns></returns>
-        public static string DeleteNFromString (string input) {
+        public static string DeleteCharFromString (string input, char itemToDelete) {
 
             // Removes the first occurence of a specified char in a specified string
             string RemoveFirstOccurenceOf (string yourString, char toDelete) {
@@ -694,13 +695,13 @@ namespace CPP_GraphPlotting
             string corrected_string = string.Empty;
             bool concatenated = false;
 
-            int indexOfN = input.ToLower ().IndexOf ('n');
+            int indexOfN = input.ToLower ().IndexOf (itemToDelete);
             string substring = input.Substring (indexOfN);
             int indexOfClosingParentheses = GetIndexOf (substring, ')');
             substring = substring.Substring (0, indexOfClosingParentheses);
             substring = RemoveFirstOccurenceOf (substring, '(');
             substring = substring.Contains (')') ? RemoveFirstOccurenceOf (substring, ')') : substring;
-            substring = RemoveFirstOccurenceOf (substring, 'n');
+            substring = RemoveFirstOccurenceOf (substring, itemToDelete);
 
             for (int i = 0; i < input.Length; i++) {
                 if (i == indexOfN && !concatenated) {
