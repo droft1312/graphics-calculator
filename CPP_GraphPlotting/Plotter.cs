@@ -523,6 +523,8 @@ namespace CPP_GraphPlotting
                     } while (counter < s.Length && ((s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.'));
                 }
 
+                if (toParseIntoNumber.Contains ('.')) toParseIntoNumber = toParseIntoNumber.Replace ('.', ',');
+
                 string @newS = string.Empty;
 
                 for (int i = (s[0] == 'p' ? 1 : counter); i < s.Length; i++) {
@@ -663,6 +665,14 @@ namespace CPP_GraphPlotting
                 @return += s[j];
 
             return @return;
+        }
+
+        public static string DeleteAllOccurencesOfCharFromString(string input, char itemTodelete) {
+            while (input.Contains(itemTodelete)) {
+                input = DeleteCharFromString (input, itemTodelete);
+            }
+
+            return input;
         }
 
         /// <summary>

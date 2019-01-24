@@ -53,9 +53,8 @@ namespace CPP_GraphPlotting
             FunctionSeries series = new FunctionSeries ();
 
             try {
-
-                if (input.Contains ('n')) { input = Plotter.DeleteCharFromString (input, 'n'); }
-                if (input.Contains('r')) { input = Plotter.DeleteCharFromString (input, 'r'); }
+                input = Plotter.DeleteAllOccurencesOfCharFromString (input, 'n');
+                input = Plotter.DeleteAllOccurencesOfCharFromString (input, 'r');
 
                 plotter.ProcessString (input);
 
