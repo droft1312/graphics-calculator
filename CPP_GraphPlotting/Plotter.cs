@@ -361,6 +361,8 @@ namespace CPP_GraphPlotting
                 root = new FactorialNode (s, null);
             } else if (s[0] == 'x') {
                 root = new BasicFunctionXNode (s, null);
+            } else if (s[0] == 'r') {
+
             } else if (s[0] >= '0' && s[0] <= '9') {
                 string toParseIntoNumber = string.Empty;
                 int counter = 0;

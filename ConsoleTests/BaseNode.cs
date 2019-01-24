@@ -17,13 +17,13 @@ namespace ConsoleTests
         /// Left, right, and parent reference for binary tree
         /// </summary>
         public BaseNode left, right, parent;
-
-        public bool visited = false;
+        public BaseNode derivativeRoot;
 
         public int number;
 
         public BaseNode () {
             number = ++NodeCounter.Count;
+            derivativeRoot = Plotter.derivativeRoot;
         }
 
         public BaseNode (string value) : this () {
@@ -31,6 +31,10 @@ namespace ConsoleTests
             left = right = null;
         }
 
+        /// <summary>
+        /// Inserts a node into a tree
+        /// </summary>
+        /// <param name="node"></param>
         public void Insert (BaseNode node) {
             if (left == null) {
                 left = node;
@@ -64,6 +68,22 @@ namespace ConsoleTests
         /// <param name="parent"></param>
         /// <param name="isLeft"></param>
         public virtual void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+        }
+
+        /// <summary>
+        /// Sets the derivative (read the methods to understand)
+        /// </summary>
+        /// <param name="node"></param>
+        protected void SetDerivativeRoot (BaseNode node) {
+            Plotter.SetDerivativeRoot (node, ref derivativeRoot);
+        }
+
+        /// <summary>
+        /// Simplifies current tree
+        /// </summary>
+        /// <returns>Simplified tree</returns>
+        public virtual BaseNode Simplify () {
+            return null;
         }
     }
 
@@ -105,7 +125,54 @@ namespace ConsoleTests
             node.left.CreateDerivativeTree (node);
             node.right.CreateDerivativeTree (node, false);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node, Plotter.derivativeRoot);
+            SetDerivativeRoot (node);
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode substraction = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue - (right as NumberNode).RealValue)
+                    );
+                    return substraction;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    this.left = this.left.Simplify ();
+                    if (value == 0) { return this.left; }
+                    return this;
+                } else {
+                    return this;
+                }
+
+            } else { // if one of them IS actually a number
+                // we go over all the possibilities
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode substraction = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue - (right as NumberNode).RealValue)
+                    );
+                    return substraction;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    this.left = this.left.Simplify ();
+                    if (value == 0) { return this.left; }
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
         }
     }
 
@@ -149,7 +216,64 @@ namespace ConsoleTests
             sum.left.left.CreateDerivativeTree (sum.left);
             sum.right.right.CreateDerivativeTree (sum.right, false);
 
-            Plotter.SetDerivativeRoot (sum);
+            //Plotter.SetDerivativeRoot (sum);
+            SetDerivativeRoot (sum);
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode multiplication = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue * (right as NumberNode).RealValue)
+                    );
+                    return multiplication;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); } else if (value == 1) { return this.right.Simplify (); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); } else if (value == 1) { return this.left.Simplify (); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return this;
+                }
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode multiplication = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue * (right as NumberNode).RealValue)
+                    );
+                    return multiplication;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); } else if (value == 1) { return this.right.Simplify (); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); } else if (value == 1) { return this.left.Simplify (); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
+        }
+
+        public void LagrangePutToRightNode (BaseNode node) {
+            if (this.right == null) {
+                this.right = node;
+            } else {
+                MultiplicationNode multiplication = new MultiplicationNode (this.right, node, null);
+                this.right = multiplication;
+            }
         }
     }
 
@@ -190,7 +314,64 @@ namespace ConsoleTests
             node.left.CreateDerivativeTree (node);
             node.right.CreateDerivativeTree (node, false);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
+        }
+
+        public void PutToRightNode (BaseNode node) {
+            if (this.right == null) {
+                this.right = node;
+            } else {
+                SumNode sum = new SumNode (this.right, node, null);
+                this.right = sum;
+            }
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode sum = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue + (right as NumberNode).RealValue)
+                    );
+                    return sum;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    this.right = this.right.Simplify ();
+                    if (value == 0) { return this.right; }
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    this.left = this.left.Simplify ();
+                    if (value == 0) { return this.left; }
+                    return this;
+                } else {
+                    return this;
+                }
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode sum = new NumberNode (
+                        null,
+                        ((left as NumberNode).RealValue + (right as NumberNode).RealValue)
+                    );
+                    return sum;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    this.right = this.right.Simplify ();
+                    if (value == 0) { return this.right; }
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    this.left = this.left.Simplify ();
+                    if (value == 0) { return this.left; }
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
         }
     }
 
@@ -238,7 +419,114 @@ namespace ConsoleTests
             node.left.left.left.CreateDerivativeTree (node.left.left);
             node.left.right.right.CreateDerivativeTree (node.left.right, false);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                if (left is NumberNode && right is NumberNode) {
+                    if ((right as NumberNode).RealValue != 0) {
+                        NumberNode division = new NumberNode (
+                            null,
+                            ((left as NumberNode).RealValue / (right as NumberNode).RealValue)
+                        );
+                        return division;
+                    }
+                    return this;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    if ((right as NumberNode).RealValue == 1) return this.left.Simplify ();
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return this;
+                }
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    if ((right as NumberNode).RealValue != 0) {
+                        NumberNode division = new NumberNode (
+                            null,
+                            ((left as NumberNode).RealValue / (right as NumberNode).RealValue)
+                        );
+                        return division;
+                    }
+                    return this;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    if ((right as NumberNode).RealValue == 1) return this.left.Simplify ();
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
+        }
+    }
+
+    class DecimalNumberNode : BaseNode
+    {
+        // ------------------------------------- TO BE RE-WRITTEN!!!!----------------------------------------------------
+
+        double realValue;
+
+        public DecimalNumberNode (string input, BaseNode parentNode, string realValue) {
+            value = input;
+            parent = parentNode;
+
+
+            if (realValue[0] == 'p') {
+                this.realValue = 3.14d;
+            } else {
+                this.realValue = Double.Parse (realValue);
+            }
+        }
+
+        public DecimalNumberNode (BaseNode parent, double realValue) {
+            value = string.Empty;
+            this.parent = parent;
+            this.realValue = realValue;
+        }
+
+        public DecimalNumberNode (string value) : base (value) {
+        }
+
+        public double RealValue { get { return realValue; } }
+
+        public override string ToString () {
+            return realValue.ToString ();
+        }
+
+        public override double Calculate (double number) => realValue;
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            NumberNode node = new NumberNode (parent, 0);
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = node;
+                else
+                    parent.right = node;
+            }
+
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
+
+            return;
+        }
+
+        public override BaseNode Simplify () {
+            return this;
         }
     }
 
@@ -284,9 +572,14 @@ namespace ConsoleTests
                     parent.right = node;
             }
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
 
             return;
+        }
+
+        public override BaseNode Simplify () {
+            return this;
         }
     }
 
@@ -315,9 +608,14 @@ namespace ConsoleTests
                     parent.right = node;
             }
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
 
             return;
+        }
+
+        public override BaseNode Simplify () {
+            return this;
         }
     }
 
@@ -358,7 +656,13 @@ namespace ConsoleTests
 
             node.left.CreateDerivativeTree (node);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
+        }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
         }
     }
 
@@ -401,7 +705,13 @@ namespace ConsoleTests
 
             node.left.CreateDerivativeTree (node);
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
+        }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
         }
     }
 
@@ -445,7 +755,13 @@ namespace ConsoleTests
 
             multiplication.right.CreateDerivativeTree (multiplication, false);
 
-            Plotter.SetDerivativeRoot (multiplication);
+            //Plotter.SetDerivativeRoot (multiplication);
+            SetDerivativeRoot (multiplication);
+        }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
         }
     }
 
@@ -476,7 +792,8 @@ namespace ConsoleTests
                     parent.right = node;
             }
 
-            Plotter.SetDerivativeRoot (node);
+            //Plotter.SetDerivativeRoot (node);
+            SetDerivativeRoot (node);
 
             return;
         }
@@ -487,6 +804,11 @@ namespace ConsoleTests
 
         public override string Print () {
             return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
         }
     }
 
@@ -517,9 +839,207 @@ namespace ConsoleTests
         }
 
         public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
-            base.CreateDerivativeTree (parent, isLeft);
+            if (this.right is NumberNode && this.left is BasicFunctionXNode) {
+                var lesser = (right as NumberNode).RealValue - 1;
+                BasicFunctionXNode x = new BasicFunctionXNode ("", null);
+                MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, (right as NumberNode).RealValue),
+                    new PowerNode (x, new NumberNode (null, lesser), null), null);
+
+                if (parent != null) {
+                    if (isLeft)
+                        parent.left = multiplication;
+                    else
+                        parent.right = multiplication;
+                }
+
+                SetDerivativeRoot (multiplication);
+                return;
+            } else {
+
+                if (this.right is NumberNode && this.left is NumberNode) {
+                    // if both this.left and this.right are numbers, return 0 for its just a number and it's anyway gon be 0
+                    NumberNode node = new NumberNode (parent, 0);
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = node;
+                        else
+                            parent.right = node;
+                    }
+
+                    //Plotter.SetDerivativeRoot (node);
+                    SetDerivativeRoot (node);
+                    return;
+                } else if (this.right is NumberNode && !(this.left is NumberNode)) {
+                    // f(x) ^ (some number)
+                    // if left one some function
+                    double nMinus1 = ((NumberNode)this.right).RealValue - 1;
+                    var value = ((NumberNode)this.right).RealValue;
+
+                    if (value == 1) {
+                        var node = Plotter.CloneTree (this);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        node.left.CreateDerivativeTree (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    }
+
+                    PowerNode power = new PowerNode (Plotter.CloneTree (this.left), new NumberNode (null, nMinus1), null);
+                    MultiplicationNode multiplication = new MultiplicationNode (new NumberNode (null, value), Plotter.CloneTree (this.left), null);
+
+                    // if the f(x) is more complicated than just 'x', we do additional calculation
+                    if (!(multiplication.right is BasicFunctionXNode)) {
+                        MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.left), parent);
+                        node.right.CreateDerivativeTree (multiplication, false);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        //Plotter.SetDerivativeRoot (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    }
+
+                    multiplication.parent = parent;
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = multiplication;
+                        else
+                            parent.right = multiplication;
+                    }
+
+                    //Plotter.SetDerivativeRoot (multiplication);
+                    SetDerivativeRoot (multiplication);
+                    return;
+                } else if (!(this.right is NumberNode) && (this.left is NumberNode)) {
+                    // (some number) ^ f(x)
+
+                    var value = ((NumberNode)this.left).RealValue;
+
+                    if (this.right is BasicFunctionXNode) {
+                        // simple function
+                        PowerNode power = new PowerNode (new NumberNode (null, value), new BasicFunctionXNode (""), null);
+                        LnNode ln = new LnNode (new NumberNode (null, value), null);
+                        MultiplicationNode node = new MultiplicationNode (power, ln, parent);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        //Plotter.SetDerivativeRoot (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    } else {
+                        // function is more complicated
+                        PowerNode power = new PowerNode (new NumberNode (null, value), this.right, null);
+                        LnNode ln = new LnNode (new NumberNode (null, value), null);
+                        MultiplicationNode multiplication = new MultiplicationNode (power, ln, parent);
+                        MultiplicationNode node = new MultiplicationNode (multiplication, Plotter.CloneTree (this.right), parent);
+                        node.right.CreateDerivativeTree (node, false);
+
+                        if (parent != null) {
+                            if (isLeft)
+                                parent.left = node;
+                            else
+                                parent.right = node;
+                        }
+
+                        //Plotter.SetDerivativeRoot (node);
+                        SetDerivativeRoot (node);
+                        return;
+                    }
+                } else if (!(this.right is NumberNode) && !(this.left is NumberNode)) {
+                    // neither is a number 
+                    // CASE: f(x) ^ g(x)
+                    // d(f(x) ^ g(x))/dx = e^(g(x)*ln(f(x)) * d((g(x)*f(x)))/dx )
+                    // this.left = f(x), this.right = g(x)
+
+                    LnNode lnFx = new LnNode (Plotter.CloneTree (this.left), null); // create ln(f(x))
+                    MultiplicationNode multiplication = new MultiplicationNode (Plotter.CloneTree (this.right), lnFx, null); // create g(x)*ln(f(x))
+                    PowerNode ePower = new PowerNode (new NumberNode (null, Math.E), multiplication, null); // create e^(g(x)*ln(f(x)))
+                    MultiplicationNode derivativeOfMultiplication = new MultiplicationNode (Plotter.CloneTree (multiplication.left), Plotter.CloneTree (multiplication.right), null); // do the derivative of g(x)*ln(f(x))
+                    MultiplicationNode node = new MultiplicationNode (ePower, derivativeOfMultiplication, parent); // put it all together
+
+                    node.right.CreateDerivativeTree (node, false); // take a derivative
+
+                    if (parent != null) {
+                        if (isLeft)
+                            parent.left = node;
+                        else
+                            parent.right = node;
+                    }
+
+                    //Plotter.SetDerivativeRoot (node);
+                    SetDerivativeRoot (node);
+                    return;
+                }
+            }
+        }
+
+        public override BaseNode Simplify () {
+            if (!(left is NumberNode || right is NumberNode)) { // if neither left nor right guy is a number
+                this.left = this.left.Simplify (); // tell the left guy to get simple
+                this.right = this.right.Simplify (); // right guy also has to get simple
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode power = new NumberNode (
+                        null,
+                        Math.Pow ((left as NumberNode).RealValue, (right as NumberNode).RealValue)
+                    );
+                    return power;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); }
+                    //  MIGHT BE CAUSING PROBLEMS (CHECK IT LATER)
+                    else if (value == 1) { return new NumberNode (null, 1); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 1); } else if (value == 1) { return this.left.Simplify (); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return this;
+                }
+            } else { // if one of them IS actually a number
+                if (left is NumberNode && right is NumberNode) {
+                    NumberNode power = new NumberNode (
+                        null,
+                        Math.Pow ((left as NumberNode).RealValue, (right as NumberNode).RealValue)
+                    );
+                    return power;
+                } else if (left is NumberNode && !(right is NumberNode)) {
+                    var value = (left as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 0); } else if (value == 1) { return new NumberNode (null, 1); }
+                    this.right = this.right.Simplify ();
+                    return this;
+                } else if (!(left is NumberNode) && right is NumberNode) {
+                    var value = (right as NumberNode).RealValue;
+                    if (value == 0) { return new NumberNode (null, 1); }
+                    //  MIGHT BE CAUSING PROBLEMS (CHECK IT LATER)
+                    else if (value == 1) { return this.left.Simplify (); }
+                    this.left = this.left.Simplify ();
+                    return this;
+                } else {
+                    return null;
+                }
+
+            }
         }
     }
-
-
 }
