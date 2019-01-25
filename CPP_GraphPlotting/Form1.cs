@@ -338,9 +338,13 @@ namespace CPP_GraphPlotting
             try {
 
                 var boundaries = Boundaries (xValueTextbox.Text);
+                var newBoundaries = GetNewRangeBasedUponOldOne (plotter.Root, mcLaurienRoot, boundaries[0], boundaries[1]);
+
+                for (double i = newBoundaries.lower; i < newBoundaries.upper; i += 0.3) {
+                    mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
+                }
 
                 for (int i = boundaries[0]; i < boundaries[1]; i++) {
-                    mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
                     graphPoints.Add (new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
                 }
 
