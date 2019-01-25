@@ -53,6 +53,14 @@ namespace CPP_GraphPlotting
             return newBoundaries;
         }
 
+        /// <summary>
+        /// Returns new X-wise boundaries for a function f(x) based upon the points user selected as well as the lower and upper boundaries
+        /// </summary>
+        /// <param name="function">Function you're gonna draw</param>
+        /// <param name="selectedPoints">Points selected by a user</param>
+        /// <param name="lowerBoundary"></param>
+        /// <param name="upperBoundary"></param>
+        /// <returns>A tuple containing new boundaries</returns>
         public static (double lower, double upper) GetNewRangeBasedUponFixatedLimits(BaseNode function, DataPoint[] selectedPoints, double lowerBoundary, double upperBoundary) {
             var newBoundaries = (lower: -1.0d, upper: -1.0d);
 
