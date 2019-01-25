@@ -284,9 +284,9 @@ namespace CPP_GraphPlotting
 
                 var boundaries = Boundaries (xValueTextbox.Text);
 
-                var newBoundaries = GetNewRangeBasedUponOldOne (plotter.Root, mcLaurienRoot, boundaries[0], boundaries[1]);
+                var realBoundaries = GetNewRangeBasedUponOldOne (plotter.Root, mcLaurienRoot, boundaries[0], boundaries[1]);
 
-                for (double i = newBoundaries.lower; i < newBoundaries.upper; i += 0.3) {
+                for (double i = realBoundaries.lower; i < realBoundaries.upper; i += 0.3) {
                     mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
                 }
 
@@ -338,9 +338,9 @@ namespace CPP_GraphPlotting
             try {
 
                 var boundaries = Boundaries (xValueTextbox.Text);
-                var newBoundaries = GetNewRangeBasedUponOldOne (plotter.Root, mcLaurienRoot, boundaries[0], boundaries[1]);
+                var realBoundaries = GetNewRangeBasedUponOldOne (plotter.Root, mcLaurienRoot, boundaries[0], boundaries[1]);
 
-                for (double i = newBoundaries.lower; i < newBoundaries.upper; i += 0.3) {
+                for (double i = realBoundaries.lower; i < realBoundaries.upper; i += 0.3) {
                     mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
                 }
 
@@ -445,8 +445,9 @@ namespace CPP_GraphPlotting
                 FunctionSeries series = new FunctionSeries ();
 
                 var boundaries = Boundaries (xValueTextbox.Text);
+                var realBoundaries = GetNewRangeBasedUponFixatedLimits (polynomial, polynomialPoints.ToArray (), boundaries[0], boundaries[1]);
 
-                for (int i = boundaries[0]; i < boundaries[1]; i++) {
+                for (double i = realBoundaries.lower; i < realBoundaries.upper; i += 0.3) {
                     points.Add (new DataPoint (i, plotter.ProcessTree (i, polynomial)));
                 }
 

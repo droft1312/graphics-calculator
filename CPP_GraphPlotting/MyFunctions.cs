@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using OxyPlot;
 
 
 namespace CPP_GraphPlotting
@@ -49,6 +49,35 @@ namespace CPP_GraphPlotting
             }
 
             newBoundaries = (lower: possibleBoundaries.Min (), upper: possibleBoundaries.Max ());
+
+            return newBoundaries;
+        }
+
+        public static (double lower, double upper) GetNewRangeBasedUponFixatedLimits(BaseNode function, DataPoint[] selectedPoints, double lowerBoundary, double upperBoundary) {
+            var newBoundaries = (lower: -1.0d, upper: -1.0d);
+
+            double[] xPoints = new double[selectedPoints.Length];
+            double[] yPoints = new double[selectedPoints.Length];
+
+            for (int i = 0; i < selectedPoints.Length; i++) {
+                xPoints[i] = selectedPoints[i].X;
+                yPoints[i] = selectedPoints[i].Y;
+            }
+
+            var maxValue = yPoints.Max ();
+            var minValue = yPoints.Min ();
+
+            List<double> possibleValues = new List<double> ();
+
+            for (double i = lowerBoundary; i < upperBoundary; i += 0.3) {
+                var val = function.Calculate (i);
+
+                if (val <= maxValue && val >= minValue) {
+                    possibleValues.Add (i);
+                }
+            }
+
+            newBoundaries = (lower: possibleValues.Min (), upper: possibleValues.Max ());
 
             return newBoundaries;
         }
