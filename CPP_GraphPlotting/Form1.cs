@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using OxyPlot;
 using OxyPlot.Series;
 
-using MathNet;
-using MathNet.Numerics;
-
 using WolframAlphaNET;
 using WolframAlphaNET.Objects;
+
+using static CPP_GraphPlotting.MyFunctions;
 
 namespace CPP_GraphPlotting
 {
@@ -287,6 +283,8 @@ namespace CPP_GraphPlotting
             try {
 
                 var boundaries = Boundaries (xValueTextbox.Text);
+
+                var newBoundaries = GetNewRangeBasedUponOldOne (plotter.Root, mcLaurienRoot, boundaries[0], boundaries[1]);
 
                 for (int i = boundaries[0]; i < boundaries[1]; i++) {
                     mcLaurienPoints.Add (new DataPoint (i, plotter.ProcessTree (i, mcLaurienRoot)));
