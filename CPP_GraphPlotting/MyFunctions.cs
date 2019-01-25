@@ -40,7 +40,7 @@ namespace CPP_GraphPlotting
 
             List<double> possibleBoundaries = new List<double> ();
 
-            for (double i = lowerBoundary; i < upperBoundary; i++) {
+            for (double i = lowerBoundary; i < upperBoundary; i += 0.3) {
                 var val = GetReturnValueForFunction (newFunction, i);
 
                 if (val >= minValueOfOldFunction && val <= maxValueOfOldFunction) {
