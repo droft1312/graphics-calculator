@@ -371,8 +371,10 @@ namespace CPP_GraphPlotting
                     do {
                         toParseIntoNumber += s[counter];
                         counter++;
-                    } while (counter < s.Length && (s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.');
+                    } while (counter < s.Length && ((s[counter] >= '0' && s[counter] <= '9') || s[counter] == '.'));
                 }
+
+                if (toParseIntoNumber.Contains ('.')) toParseIntoNumber = toParseIntoNumber.Replace ('.', ',');
 
                 string @newS = string.Empty;
 
@@ -792,7 +794,7 @@ namespace CPP_GraphPlotting
                     do {
                         temp += input[counter];
                         counter--;
-                    } while (counter >= 0 && input[counter] >= '0' && input[counter] <= '9');
+                    } while (counter >= 0 && ((input[counter] >= '0' && input[counter] <= '9') || input[counter] == '.'));
 
                     var normalOrderNumber = temp.Reverse ();
                     string toAdd = "";
