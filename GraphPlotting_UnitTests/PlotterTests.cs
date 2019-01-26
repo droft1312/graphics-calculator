@@ -124,7 +124,19 @@ namespace GraphPlotting_UnitTests
             Assert.AreEqual (expected, result, 0);
         }
 
+        [TestMethod]
+        public void CloneTree_Test() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("^(x,3)");
 
+            var expectedResult = plotter.ProcessTree (3, plotter.Root);
+
+            var copy_tree = Plotter.CloneTree (plotter.Root);
+
+            var result = copy_tree.Calculate (3);
+
+            Assert.AreEqual (expectedResult, result);
+        }
 
     }
 }
