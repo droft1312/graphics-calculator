@@ -9,6 +9,15 @@ namespace GraphPlotting_UnitTests
     public class PlotterTests
     {
         [TestMethod]
+        public void ProcessTree_Test() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("x");
+
+            Assert.AreEqual (1d, plotter.ProcessTree (1, plotter.Root), 0);
+        }
+
+
+        [TestMethod]
         public void CalculateIntegral_Test () {
             // Arrange
             var plotter = new Plotter ();
@@ -75,5 +84,47 @@ namespace GraphPlotting_UnitTests
 
             Assert.AreEqual (expected, result);
         }
+
+        [TestMethod]
+        public void CreateMcLaurienSeries_Test() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("s(x)");
+
+            BaseNode mcLaurien;
+            plotter.CreateMcLaurienSeries (out mcLaurien, 3);
+
+            var result = plotter.ProcessTree (2, mcLaurien);
+            var expected = 0.6666d;
+
+            Assert.AreEqual (expected, result, 3);
+        }
+
+        [TestMethod]
+        public void CreateMcLaurienSeriesByLimits_Test() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("s(x)");
+
+            BaseNode mcLaurien;
+            plotter.CreateMcLaurienSeriesByLimits (out mcLaurien, 3);
+
+            var result = plotter.ProcessTree (2, mcLaurien);
+            var expected = 0.6666d;
+
+            Assert.AreEqual (expected, result, 3);
+        }
+
+        [TestMethod]
+        public void ProcessString_Test() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("^(x,3)");
+
+            var expected = Math.Pow (2, 3);
+            var result = plotter.ProcessTree (2, plotter.Root);
+
+            Assert.AreEqual (expected, result, 0);
+        }
+
+
+
     }
 }
