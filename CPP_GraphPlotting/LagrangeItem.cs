@@ -11,7 +11,7 @@ namespace CPP_GraphPlotting
     /// <summary>
     /// Class for producing a Lagrange item
     /// </summary>
-    static class LagrangeItem
+    public static class LagrangeItem
     {
         /// <summary>
         /// Produces a Lagrange Item, which looks like this: (x-Xj)/(Xterm - Xj), where term != j

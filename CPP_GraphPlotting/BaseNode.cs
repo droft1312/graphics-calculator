@@ -7,7 +7,7 @@ namespace CPP_GraphPlotting
         public static int Count = 0;
     }
 
-    class BaseNode
+    public class BaseNode
     {
         /// <summary>
         /// If input during the initializing of the node was s(x) => value = (x)
@@ -87,7 +87,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class SubstractionNode : BaseNode
+    public class SubstractionNode : BaseNode
     {
         public SubstractionNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -176,7 +176,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class MultiplicationNode : BaseNode
+    public class MultiplicationNode : BaseNode
     {
         public MultiplicationNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -281,7 +281,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class SumNode : BaseNode
+    public class SumNode : BaseNode
     {
         public SumNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -379,7 +379,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class DivisionNode : BaseNode
+    public class DivisionNode : BaseNode
     {
         public DivisionNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -479,7 +479,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class NumberNode : BaseNode
+    public class NumberNode : BaseNode
     {
         double realValue;
 
@@ -532,7 +532,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class BasicFunctionXNode : BaseNode
+    public class BasicFunctionXNode : BaseNode
     {
         public BasicFunctionXNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -568,7 +568,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class SinNode : BaseNode
+    public class SinNode : BaseNode
     {
         public SinNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -615,7 +615,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class CosNode : BaseNode
+    public class CosNode : BaseNode
     {
         public CosNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -664,7 +664,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class LnNode : BaseNode
+    public class LnNode : BaseNode
     {
         public LnNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -714,7 +714,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class FactorialNode : BaseNode
+    public class FactorialNode : BaseNode
     {
         public FactorialNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);
@@ -761,7 +761,7 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class PowerNode : BaseNode
+    public class PowerNode : BaseNode
     {
         public PowerNode (string input, BaseNode parentNode) {
             value = Plotter.GetStringFromIndex (input, 1);

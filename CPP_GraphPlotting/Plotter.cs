@@ -13,7 +13,7 @@ namespace CPP_GraphPlotting
     /// <summary>
     /// Describes the type of the char (is used in prefix-to-infix methods)
     /// </summary>
-    enum TypeOfChar
+    public enum TypeOfChar
     {
         Operand,
         TwoValueOperation,
@@ -23,7 +23,7 @@ namespace CPP_GraphPlotting
     /// <summary>
     /// Is used in prefix-to-infix methods
     /// </summary>
-    class ReverseElement
+    public class ReverseElement
     {
         public string Value { get; protected set; }
         public TypeOfChar Type { get; protected set; }
@@ -41,13 +41,13 @@ namespace CPP_GraphPlotting
         }
     }
 
-    class Element : ReverseElement
+    public class Element : ReverseElement
     {
         public Element (string value) : base (value) {
         }
     }
 
-    class Plotter
+    public class Plotter
     {
         const double h = 0.001;
 

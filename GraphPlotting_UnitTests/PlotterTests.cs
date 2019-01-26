@@ -1,13 +1,16 @@
 ﻿using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CPP_GraphPlotting;
 
 namespace GraphPlotting_UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class PlotterTests
     {
         [TestMethod]
-        public void TestMethod1 () {
+        public void CalculateIntegral_Test () {
+            
         }
     }
 }

@@ -7,7 +7,7 @@ using OxyPlot;
 
 namespace CPP_GraphPlotting
 {
-    static class MyFunctions
+    public static class MyFunctions
     {
         /// <summary>
         /// Returns new X-wise boundaries for a function based upon the values f(x) had given before. 
