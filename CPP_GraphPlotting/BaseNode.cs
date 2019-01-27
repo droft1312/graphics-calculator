@@ -993,4 +993,56 @@ namespace CPP_GraphPlotting
             }
         }
     }
+
+    public class ExponentNode : BaseNode
+    {
+
+        public ExponentNode (string input, BaseNode parentNode) {
+            value = Plotter.GetStringFromIndex (input, 1);
+            parent = parentNode;
+        }
+
+        public ExponentNode (BaseNode left, BaseNode parent) {
+            this.left = left;
+            this.parent = parent;
+        }
+
+        public ExponentNode (string value) : base (value) {
+
+        }
+
+        public override double Calculate (double number) => Math.Pow (Math.E, this.left.Calculate (number));
+
+        public override void CreateDerivativeTree (BaseNode parent, bool isLeft = true) {
+            // d(e^f(x))/dx = d(f(x))/dx * e^f(x)
+            
+            // MIGHT HAVE SOME BUGS, CHECK IT
+
+            MultiplicationNode multiplication = new MultiplicationNode (Plotter.CloneTree (this.left), Plotter.CloneTree (this), null);
+
+            if (parent != null) {
+                if (isLeft)
+                    parent.left = multiplication;
+                else
+                    parent.right = multiplication;
+            }
+
+            multiplication.left.CreateDerivativeTree (multiplication);
+
+            SetDerivativeRoot (multiplication);
+        }
+
+        public override string ToString () {
+            return "e";
+        }
+
+        public override string Print () {
+            return string.Format ("node{0} -- node{1}\n", number, left.number);
+        }
+
+        public override BaseNode Simplify () {
+            this.left = this.left.Simplify ();
+            return this;
+        }
+    }
 }

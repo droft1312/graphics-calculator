@@ -357,6 +357,8 @@ namespace CPP_GraphPlotting
                 root = new LnNode (s, null);
             } else if (s[0] == '^') {
                 root = new PowerNode (s, null);
+            } else if (s[0] == 'e') {
+                root = new ExponentNode (s, null);
             } else if (s[0] == '!') {
                 root = new FactorialNode (s, null);
             } else if (s[0] == 'x') {
@@ -472,6 +474,12 @@ namespace CPP_GraphPlotting
             } else if (s[0] == '^') {
 
                 PowerNode node = new PowerNode (s, baseNode);
+                baseNode.Insert (node);
+                CreateTree (node.value, node);
+
+            } else if (s[0] == 'e') {
+
+                ExponentNode node = new ExponentNode (s, baseNode);
                 baseNode.Insert (node);
                 CreateTree (node.value, node);
 
@@ -643,6 +651,8 @@ namespace CPP_GraphPlotting
                 newNode = new CosNode (root.value);
             } else if (root is PowerNode) {
                 newNode = new PowerNode (root.value);
+            } else if (root is ExponentNode) {
+                newNode = new ExponentNode (root.value);
             } else if (root is LnNode) {
                 newNode = new LnNode (root.value);
             } else if (root is FactorialNode) {
