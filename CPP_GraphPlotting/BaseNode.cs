@@ -2,11 +2,18 @@
 
 namespace CPP_GraphPlotting
 {
+    /// <summary>
+    /// This class is used for counting each node that is created. Maximum number of nodes
+    /// permitted is the maximum value integer can have
+    /// </summary>
     static class NodeCounter
     {
         public static int Count = 0;
     }
 
+    /// <summary>
+    /// This is base class for all nodes. Each node is derived from this class and implements its methods
+    /// </summary>
     public class BaseNode
     {
         /// <summary>
@@ -87,6 +94,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents substraction
+    /// </summary>
     public class SubstractionNode : BaseNode
     {
         public SubstractionNode (string input, BaseNode parentNode) {
@@ -176,6 +186,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents Multiplication
+    /// </summary>
     public class MultiplicationNode : BaseNode
     {
         public MultiplicationNode (string input, BaseNode parentNode) {
@@ -281,6 +294,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represent Addition
+    /// </summary>
     public class SumNode : BaseNode
     {
         public SumNode (string input, BaseNode parentNode) {
@@ -379,6 +395,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents Division
+    /// </summary>
     public class DivisionNode : BaseNode
     {
         public DivisionNode (string input, BaseNode parentNode) {
@@ -479,6 +498,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents Number
+    /// </summary>
     public class NumberNode : BaseNode
     {
         double realValue;
@@ -532,6 +554,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents the most basic functions which would be f(x) = x
+    /// </summary>
     public class BasicFunctionXNode : BaseNode
     {
         public BasicFunctionXNode (string input, BaseNode parentNode) {
@@ -568,6 +593,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents Sin
+    /// </summary>
     public class SinNode : BaseNode
     {
         public SinNode (string input, BaseNode parentNode) {
@@ -615,6 +643,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents Cos
+    /// </summary>
     public class CosNode : BaseNode
     {
         public CosNode (string input, BaseNode parentNode) {
@@ -664,6 +695,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents Natural Logarithm
+    /// </summary>
     public class LnNode : BaseNode
     {
         public LnNode (string input, BaseNode parentNode) {
@@ -714,6 +748,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents factorial
+    /// </summary>
     public class FactorialNode : BaseNode
     {
         public FactorialNode (string input, BaseNode parentNode) {
@@ -761,6 +798,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents f(x)^g(x), where both f(x) and g(x) don't necessarily have to be functions
+    /// </summary>
     public class PowerNode : BaseNode
     {
         public PowerNode (string input, BaseNode parentNode) {
@@ -994,6 +1034,9 @@ namespace CPP_GraphPlotting
         }
     }
 
+    /// <summary>
+    /// Represents exp(x) (e^(f(x))
+    /// </summary>
     public class ExponentNode : BaseNode
     {
 

@@ -679,6 +679,12 @@ namespace CPP_GraphPlotting
             return @return;
         }
 
+        /// <summary>
+        /// Deletes all occurences of a specified char within string.
+        /// </summary>
+        /// <param name="input">String to delete from</param>
+        /// <param name="itemTodelete">Char to delete</param>
+        /// <returns></returns>
         public static string DeleteAllOccurencesOfCharFromString(string input, char itemTodelete) {
             while (input.Contains(itemTodelete)) {
                 input = DeleteCharFromString (input, itemTodelete);
