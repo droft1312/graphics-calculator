@@ -33,7 +33,7 @@ namespace CPP_GraphPlotting
 
             if (value == "+" || value == "-" || value == "*" || value == "/" || value == "^") {
                 Type = TypeOfChar.TwoValueOperation;
-            } else if (value == "s" || value == "c" || value == "!" || value == "l") {
+            } else if (value == "s" || value == "c" || value == "!" || value == "l" || value == "e") {
                 Type = TypeOfChar.OneValueOperation;
             } else {
                 Type = TypeOfChar.Operand;
@@ -774,7 +774,7 @@ namespace CPP_GraphPlotting
                 }
             }
             infix = reversed[0].Value;
-            return infix.Replace ("s", "sin").Replace ("c", "cos").Replace ("l", "ln");
+            return infix.Replace ("s", "sin").Replace ("c", "cos").Replace ("l", "ln").Replace("e", "exp");
         }
 
         /// <summary>
