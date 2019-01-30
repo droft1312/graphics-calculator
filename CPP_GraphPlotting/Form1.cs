@@ -427,23 +427,19 @@ namespace CPP_GraphPlotting
 
                 plotter.GetGraphImage (graphPictureBox, polynomial);
 
-                MessageBox.Show (ans);
+                //MessageBox.Show (ans);
+                
+                var realBoundaries = GetNewRangeBasedUponSetOfPoints (polynomialPoints.ToArray ());
 
+                Func<double, double> polynomialFunc = (m) => plotter.ProcessTree (m, polynomial);
+                FunctionSeries f = new FunctionSeries (polynomialFunc, realBoundaries.lower, realBoundaries.upper, 0.1, "Polynomial");
 
-                List<DataPoint> points = new List<DataPoint> ();
-                FunctionSeries series = new FunctionSeries ();
-
-                var boundaries = Boundaries (xValueTextbox.Text);
-                var realBoundaries = GetNewRangeBasedUponFixatedLimits (polynomial, polynomialPoints.ToArray (), boundaries[0], boundaries[1]);
-
-                for (double i = realBoundaries.lower; i < realBoundaries.upper; i += 0.3) {
-                    points.Add (new DataPoint (i, plotter.ProcessTree (i, polynomial)));
-                }
-
-                series.Points.AddRange (points);
+                ScatterSeries selectedPoints = new ScatterSeries { MarkerType = MarkerType.Diamond };
+                selectedPoints.Points.AddRange (ConvertDatapointsToScatterpoints (polynomialPoints.ToArray()));
 
                 myModel = new PlotModel () { Title = "Polynomial through points" };
-                myModel.Series.Add (series);
+                myModel.Series.Add (f);
+                myModel.Series.Add (selectedPoints);
                 plot.Model = myModel;
 
                 (sender as MaterialSkin.Controls.MaterialFlatButton).Text = "START POLYNOMIAL";

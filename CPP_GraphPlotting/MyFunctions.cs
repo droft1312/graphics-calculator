@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using OxyPlot;
-
+using OxyPlot.Series;
 
 namespace CPP_GraphPlotting
 {
@@ -88,6 +88,27 @@ namespace CPP_GraphPlotting
             newBoundaries = (lower: possibleValues.Min (), upper: possibleValues.Max ());
 
             return newBoundaries;
+        }
+
+        public static (double lower, double upper) GetNewRangeBasedUponSetOfPoints(DataPoint[] selectedPoints) {
+            double[] xPoints = new double[selectedPoints.Length];
+
+            for (int i = 0; i < selectedPoints.Length; i++) {
+                xPoints[i] = selectedPoints[i].X;
+            }
+
+            var max = xPoints.Max ();
+            var min = xPoints.Min ();
+
+            return (lower: min, upper: max);
+        }
+
+        public static List<ScatterPoint> ConvertDatapointsToScatterpoints(params DataPoint[] points) {
+            List<ScatterPoint> scatterPoints = new List<ScatterPoint> ();
+
+            foreach (var point in points) scatterPoints.Add (new ScatterPoint (point.X, point.Y, 5));
+
+            return scatterPoints;
         }
     }
 }
