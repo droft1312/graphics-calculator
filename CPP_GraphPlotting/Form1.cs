@@ -45,9 +45,6 @@ namespace CPP_GraphPlotting
         private void plotGraph_Click (object sender, EventArgs e) {
             string input = inputTextbox.Text.Replace(" ", string.Empty).ToLower();
 
-            List<DataPoint> points = new List<DataPoint>();
-            FunctionSeries series = new FunctionSeries ();
-
             try {
                 input = Plotter.DeleteAllOccurencesOfCharFromString (input, 'n');
                 input = Plotter.DeleteAllOccurencesOfCharFromString (input, 'r');
@@ -56,20 +53,17 @@ namespace CPP_GraphPlotting
 
                 var boundaries = Boundaries (xValueTextbox.Text);
 
-                for (int i = boundaries[0]; i < boundaries[1]; i++) {
-                    points.Add(new DataPoint (i, plotter.ProcessTree (i, plotter.Root)));
-                }
+                Func<double, double> func = (m) => plotter.ProcessTree (m, plotter.Root);
+                FunctionSeries f = new FunctionSeries (func, boundaries[0], boundaries[1], 0.1d, "Your Function");
 
-                series.Points.AddRange (points);
                 myModel = new PlotModel () { Title = "Plot" };
-                myModel.Series.Add (series);
+                myModel.Series.Add (f);
                 plot.Model = myModel;
 
                 plotter.GetGraphImage (graphPictureBox, plotter.Root);
 
                 plotGraph_called = true;
-
-                //infixFunctionLabel.Text = "Your function: " + plotter.PrefixToInfix (input);
+                
                 var x = Task.Run(() => GetInputImageFromWolfram (plotter.PrefixToInfix (input), functionPictureBox));
 
             } catch (Exception ex) {
@@ -79,21 +73,18 @@ namespace CPP_GraphPlotting
 
         private void findDerivativeButton_Click (object sender, EventArgs e) {
             if (plotGraph_called) {
-
-                List<DataPoint> points = new List<DataPoint> ();
-                FunctionSeries series = new FunctionSeries ();
-
                 try {
 
                     var boundaries = Boundaries (xValueTextbox.Text);
 
-                    for (int i = boundaries[0]; i < boundaries[1]; i++) {
-                        points.Add (new DataPoint (i, plotter.ProcessDerivative_Quotient (i, plotter.Root)));
-                    }
-
-                    series.Points.AddRange (points);
+                    Func<double, double> derivativeFunc = (m) => plotter.ProcessDerivative_Quotient (m, plotter.Root);
+                    Func<double, double> func = (m) => plotter.ProcessTree (m, plotter.Root);
+                    FunctionSeries d = new FunctionSeries (derivativeFunc, boundaries[0], boundaries[1], 0.1d, "Your Derivative");
+                    FunctionSeries f = new FunctionSeries (func, boundaries[0], boundaries[1], 0.1d, "Your Function");
+                    
                     myModel = new PlotModel () { Title = "Plot (derivative)" };
-                    myModel.Series.Add (series);
+                    myModel.Series.Add (d);
+                    myModel.Series.Add (f);
                     plot.Model = myModel;
 
                     plotter.GetGraphImage (graphPictureBox, plotter.Root);
@@ -120,20 +111,18 @@ namespace CPP_GraphPlotting
             Plotter.derivativeRoot = plotter.SimplifyTree (Plotter.derivativeRoot);
             plotter.GetGraphImage (graphPictureBox, Plotter.derivativeRoot);
 
-            List<DataPoint> points = new List<DataPoint> ();
-            FunctionSeries series = new FunctionSeries ();
-
             try {
 
                 var boundaries = Boundaries (xValueTextbox.Text);
 
-                for (int i = boundaries[0]; i < boundaries[1]; i++) {
-                    points.Add (new DataPoint (i, plotter.ProcessTree (i, Plotter.derivativeRoot)));
-                }
+                Func<double, double> d = (m) => plotter.ProcessTree (m, Plotter.derivativeRoot);
+                Func<double, double> f = (m) => plotter.ProcessTree (m, plotter.Root);
+                FunctionSeries dSeries = new FunctionSeries (d, boundaries[0], boundaries[1], 0.1d, "Derivative");
+                FunctionSeries fSeries = new FunctionSeries (f, boundaries[0], boundaries[1], 0.1d, "Function");
 
-                series.Points.AddRange (points);
                 myModel = new PlotModel () { Title = "Plot (derivative)" };
-                myModel.Series.Add (series);
+                myModel.Series.Add (dSeries);
+                myModel.Series.Add (fSeries);
                 plot.Model = myModel;
 
                 plotGraph_called = true;
