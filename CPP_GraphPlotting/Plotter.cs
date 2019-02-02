@@ -114,7 +114,7 @@ namespace CPP_GraphPlotting
         /// Generates text that would be inputted to GraphVIZ
         /// </summary>
         /// <returns>Input string for graphviz</returns>
-        private string GenerateGraphVIZTEXT (BaseNode baseNode) {
+        public string GenerateGraphVIZTEXT (BaseNode baseNode) {
             // -------------------------------------------------------------------
             // resetting all variables
             output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
