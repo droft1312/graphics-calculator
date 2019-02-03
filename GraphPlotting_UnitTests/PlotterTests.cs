@@ -122,6 +122,14 @@ namespace GraphPlotting_UnitTests
         }
 
         [TestMethod]
+        public void DeleteAllOccurences_Test() {
+            var result = Plotter.DeleteAllOccurencesOfCharFromString ("+(n(32), n(34))", 'n');
+            var expected = "+(32, 34)";
+            Assert.AreEqual (expected, result);
+
+        }
+
+        [TestMethod]
         public void CreateMcLaurienSeries_Test() {
             var plotter = new Plotter ();
             plotter.ProcessString ("s(x)");

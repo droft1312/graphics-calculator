@@ -62,5 +62,29 @@ namespace GraphPlotting_UnitTests
 
             Assert.AreEqual (0, plotter.ProcessTree (0, Plotter.derivativeRoot));
         }
+
+        [TestMethod]
+        public void PowerNodeDerivative_Test() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("^(x,s(x))");
+            plotter.CreateDerivativeTree ();
+
+            var result = plotter.ProcessTree (6, Plotter.derivativeRoot);
+            var expected = 1.01d;
+
+            Assert.AreEqual (expected, result, 2);
+        }
+
+        [TestMethod]
+        public void PowerNodeDerivative_Test2() {
+            var plotter = new Plotter ();
+            plotter.ProcessString ("^(5,^(x,2))");
+            plotter.CreateDerivativeTree ();
+
+            var result = plotter.ProcessTree (1, Plotter.derivativeRoot);
+            var expected = 16.09d;
+
+            Assert.AreEqual (expected, result, 2);
+        }
     }
 }
